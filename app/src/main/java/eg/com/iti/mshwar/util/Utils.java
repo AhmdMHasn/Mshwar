@@ -1,6 +1,6 @@
-package eg.com.iti.mshwar.utils;
+package eg.com.iti.mshwar.util;
 
-public final class MyValues {
+public final class Utils {
 
     // Database username & password
     public static final String DB_USERNAME = "";
