@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import eg.com.iti.mshwar.R;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -67,11 +69,21 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        String message = null;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case (R.id.action_settings):
+                message = "Settings clicked";
+                break;
+            case (R.id.menu_start_trip):
+                message = "Start Trip clicked";
+                break;
+            case (R.id.menu_sync):
+                message = "Synchronization clicked";
+                break;
         }
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
         return super.onOptionsItemSelected(item);
     }

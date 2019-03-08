@@ -23,8 +23,7 @@
   <string name="register">Register</string>
   <string name="sign_in">Sign In</string>
   <string name="password">Password</string>
-  <string name="tabian_consulting_logo">Tabian Consulting Logo</string>
-  <string name="email_registration">Email Registration</string>
+  <string name="email_registration">Create New Account</string>
   <string name="email">Email</string>
   <string name="confirm_password">Confirm Password</string>
   <string name="employee_dashboard">Employee Dashboard</string>
@@ -32,7 +31,7 @@
   <string name="employee_schedule">Employee Schedule</string>
   <string name="company_culture">Company Culture</string>
   <string name="tabian_consulting_sales_chart">Tabian Consulting Sales Chart</string>
-  <string name="cancel">CANCEL</string>
+  <string name="cancel">Cancel</string>
   <string name="confirm">CONFIRM</string>
   <string name="reset_password">Reset Password</string>
   <string name="sign_out">Sign out</string>
@@ -40,5 +39,7 @@
   <string name="current_password">Current Password</string>
   <string name="new_password">New Password</string>
   <string name="confirm_new_password">Confirm New Password</string>
+    <string name="menu_start_trip">New Trip</string>
+    <string name="menu_sync">Sync</string>
 
 </resources>

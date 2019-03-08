@@ -4,12 +4,20 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
- <color name="blue1">#66a3ff</color>
-    <color name="blue2">#0033cc</color>
-    <color name="Black">#000000</color>
-    <color name="linkBlue">#4d94ff</color>
-    <color name="blue3">#00c4cc</color>
-    <color name="blue4">#00aab1</color>
-    <color name="blue5">#007f85</color>
+ <color name="blue1">#66a3ff</color>
+
+    <color name="blue2">#0033cc</color>
+
+    <color name="Black">#000000</color>
+
+    <color name="linkBlue">#4d94ff</color>
+
+    <color name="blue3">#00c4cc</color>
+
+    <color name="blue4">#00aab1</color>
+
+    <color name="blue5">#007f85</color>
+    <color name="Grey">#3E3E3E</color>
+
 
 </resources>
