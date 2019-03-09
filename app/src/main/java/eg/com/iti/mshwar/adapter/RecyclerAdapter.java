@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         Log.d(TAG, "onBindViewHolder " + position);
 
         TripPojo currentObject = tripsList.get(position);
-//        holder.setData(currentObject, position);
+        myViewHolder.setData(currentObject, position);
     }
 
     @Override
@@ -49,8 +51,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tripName, startPoint, endPoint, status;
+        ImageView thumbnail, start, delete;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+        }
+
+        public void setData(TripPojo currentObject, int position) {
         }
     }
 }

@@ -24,4 +24,7 @@ public final class Utils {
     public static final String COLUMN_USER_PASSWORD = "password";
     public static final String COLUMN_USER_PICTURE = "profile_picture";
 
+    // Constants
+    public static final int ADD = 0;
+    public static final int REPLACE = 1;
 }

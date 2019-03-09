@@ -3,8 +3,12 @@ package eg.com.iti.mshwar.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import eg.com.iti.mshwar.R;
+import eg.com.iti.mshwar.fragment.MainFragment;
+import eg.com.iti.mshwar.util.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,7 +34,10 @@ public class MainActivity extends AppCompatActivity
     //Firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-
+    // Fragments
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+    ConstraintLayout fragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +66,15 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
 
+        // Add Main Fragment
+        fragmentContainer = findViewById(R.id.layout_content_main);
+        fragmentManager = getSupportFragmentManager();
+        if (savedInstanceState == null){
+            Fragment fragment = new MainFragment();
+            myFragmentTransaction(fragment, Utils.REPLACE);
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -155,9 +171,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    /*
-            ----------------------------- Firebase setup ---------------------------------
-         */
+    /*----------------------------- Firebase setup ---------------------------------*/
     private void setupFirebaseAuth(){
         Log.d(TAG, "setupFirebaseAuth: started.");
 
@@ -195,5 +209,20 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /*----------------------------- Fragment Replacement ---------------------------------*/
+    public void myFragmentTransaction(Fragment fragment, int type){
+        fragmentTransaction = fragmentManager.beginTransaction();
+        switch (type){
+            case Utils.ADD:
+                fragmentTransaction.add(R.id.layout_content_main, fragment, "fragment");
+                break;
+            case Utils.REPLACE:
+                fragmentTransaction.replace(R.id.layout_content_main, fragment, "fragment");
+                break;
+        }
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+    }
 
 }
