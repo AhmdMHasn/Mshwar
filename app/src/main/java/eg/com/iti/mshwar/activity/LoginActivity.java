@@ -31,12 +31,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import eg.com.iti.mshwar.R;
+import eg.com.iti.mshwar.dialog.PasswordResetDialog;
+import eg.com.iti.mshwar.dialog.ResendVerificationDialog;
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "LoginActivity";
-
+    private FirebaseUser user;
     //Firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -60,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         setupFirebaseAuth();
 
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -73,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 signIn();
             }
         });
+
 
         Button signIn = (Button) findViewById(R.id.sign_in_button_with_email);
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +103,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         @Override
                         public void onSuccess(AuthResult authResult) {
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -130,6 +133,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PasswordResetDialog dialog = new PasswordResetDialog();
+                dialog.show(getSupportFragmentManager(), "dialog_password_reset");
 
             }
         });
@@ -138,13 +143,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         resendEmailVerification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ResendVerificationDialog dialog = new ResendVerificationDialog();
+                dialog.show(getSupportFragmentManager(), "dialog_resend_email_verification");
             }
         });
 
+
+
         hideSoftKeyboard();
 
+
     }
+
 
     /**
      * Return true if the @param is null
@@ -152,6 +162,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      * @param string
      * @return
      */
+
+
     private boolean isEmpty(String string) {
         return string.equals("");
     }
@@ -172,9 +184,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
+
     /*
         ----------------------------- Firebase setup ---------------------------------
      */
+
+
     private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: started.");
 
@@ -183,8 +198,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+
+                    //check if email is verified
+                    if (user.isEmailVerified()) {
+                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                      //  Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Email is not Verified\nCheck your Inbox", Toast.LENGTH_SHORT).show();
+                        FirebaseAuth.getInstance().signOut();
+                    }
 
                 } else {
                     // User is signed out
@@ -195,31 +221,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         };
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
         FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account != null)
-        {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-        }
-
-
 
     }
 
     @Override
     public void onStop() {
         super.onStop();
+
         if (mAuthListener != null) {
             FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
         }
+
     }
-
-
 
 
     private void signIn() {
@@ -246,8 +264,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             // Signed in successfully, show authenticated UI.
             hideDialog();
+            /*
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+            */
 
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -255,6 +275,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             Toast.makeText(LoginActivity.this, "Authentication Failed",
                     Toast.LENGTH_SHORT).show();
+
         }
     }
 

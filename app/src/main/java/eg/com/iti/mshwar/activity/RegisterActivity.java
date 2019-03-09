@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import eg.com.iti.mshwar.R;
 
@@ -97,6 +98,9 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Log.d(TAG, "onComplete: AuthState: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+                            //send email verificaiton
+                            sendVerificationEmail();
+
                             FirebaseAuth.getInstance().signOut();
 
                             //redirect the user to the login screen
@@ -112,6 +116,30 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * sends an email verification link to the user
+     */
+    private void sendVerificationEmail() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this, "Sent Verification Email", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(RegisterActivity.this, "Couldn't Verification Send Email", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+
+    }
+
 
     /**
      * Returns True if the user's email contains '@tabian.ca'
