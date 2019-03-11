@@ -5,75 +5,79 @@
     android:layout_height="match_parent"
     >
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/relLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/relLayout1"
+        android:gravity="center"
+        android:orientation="vertical"
         android:padding="20dp">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="150sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/logo" />
+
         <TextView
+            android:id="@+id/textEmailReg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/email_registration"
-            android:textSize="25sp"
-            android:textColor="@color/Black"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:id="@+id/textEmailReg"/>
+            android:text="@string/email_registration"
+            android:textColor="@color/Grey"
+            android:textSize="25sp" />
 
 
-            <EditText
-                android:id="@+id/input_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:inputType="textEmailAddress"
-                android:hint="@string/prompt_email"
-                android:layout_below="@+id/textEmailReg"/>
+        <EditText
+            android:id="@+id/input_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:hint="@string/prompt_email"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            android:autofillHints="" />
 
 
-            <EditText
-                android:id="@+id/input_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:inputType="textPassword"
-                android:hint="@string/password"
-                android:layout_below="@+id/input_email"/>
+        <EditText
+            android:id="@+id/input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/input_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:inputType="textPassword"
             android:hint="@string/confirm_password"
-            android:layout_below="@+id/input_password"/>
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            android:autofillHints="" />
 
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_register"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
-            android:layout_below="@+id/input_confirm_password"
+            android:background="@drawable/rounded_button"
+            android:paddingLeft="35sp"
+            android:paddingRight="35sp"
             android:text="@string/register"
-            android:background="@drawable/blue_button"/>
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
-    </RelativeLayout>
-
-
-
-</RelativeLayout>
-    </ScrollView>
+    </LinearLayout>
 
     <ProgressBar
         android:layout_width="150dp"
