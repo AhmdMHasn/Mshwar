@@ -15,7 +15,13 @@ public final class Utils {
     public static final String COLUMN_TRIP_STATUS = "status";
     public static final String COLUMN_TRIP_NOTES = "notes";
     public static final String COLUMN_TRIP_TRIP_TYPE = "type";
+    public static final String COLUMN_TRIP_Date = "date";
+    public static final String COLUMN_TRIP_Time = "time";
     public static final String COLUMN_TRIP_USER_ID = "user_id";
+    public static final String COLUMN_TRIP_START_POINT_LATITUDE ="latitudeofstartpoint";
+    public static final String COLUMN_TRIP_START_POINT_LONGITUDE ="Longitudeofstartpoint";
+    public static final String COLUMN_TRIP_END_POINT_LATITUDE ="latitudeofendpoint";
+    public static final String COLUMN_TRIP_END_POINT_LONGITUDE ="Longitudeofendpoint";
 
     // User Table
     public static final String COLUMN_USER_ID = "id";
