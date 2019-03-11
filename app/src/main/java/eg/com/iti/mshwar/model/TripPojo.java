@@ -3,6 +3,7 @@ package eg.com.iti.mshwar.model;
 import java.util.ArrayList;
 
 import eg.com.iti.mshwar.R;
+import eg.com.iti.mshwar.util.Utils;
 
 enum Repetition{
     DAILY,
@@ -10,12 +11,24 @@ enum Repetition{
     MONTHLY;
 }
 
-enum Status{
-    UPCOMING, DONE, CANCELED;
-}
-
 enum TripType{
     SINGLE, ROUNDED;
+}
+
+enum Status{
+    UPCOMING (Utils.UPCOMING),
+    DONE (Utils.DONE),
+    CANCELED (Utils.CANCELED);
+
+    private String text;
+
+    Status(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return this.text;
+    }
 }
 
 public class TripPojo {
@@ -86,8 +99,8 @@ public class TripPojo {
         this.tripType = tripType;
     }
 
-    public Status getTripStatus() {
-        return tripStatus;
+    public String getTripStatus() {
+        return tripStatus.getText();
     }
 
     public void setTripStatus(Status tripStatus) {
@@ -123,16 +136,36 @@ public class TripPojo {
     TripPojo(){
 
     }
-/*
-    public static ArrayList<TripPojo> getTripData(String[] tripsId){
+
+    public static ArrayList<TripPojo> getTripData(String userId){
         ArrayList<TripPojo> tripsArrayList = new ArrayList<>();
 
-        for (int i = 0; i < tripsId.length; i++) {
-
+        for (int i = 0; i < 4; i++){
             TripPojo trip = new TripPojo();
-            trip.setTripId(tripsId[i].get);
-
+            trip.setTripId("" + i);
+            trip.setTripName("Trip " + i);
+            trip.setTripStartPoint("Start point " + i);
+            trip.setTripEndPoint("End point " + i);
+            trip.setTripStatus(Status.UPCOMING);
+            tripsArrayList.add(trip);
         }
+
+        TripPojo trip1 = new TripPojo();
+        trip1.setTripId("");
+        trip1.setTripName("Trip ");
+        trip1.setTripStartPoint("Start point ");
+        trip1.setTripEndPoint("End point ");
+        trip1.setTripStatus(Status.CANCELED);
+        tripsArrayList.add(trip1);
+
+        TripPojo trip2 = new TripPojo();
+        trip2.setTripId("" );
+        trip2.setTripName("Trip ");
+        trip2.setTripStartPoint("Start point ");
+        trip2.setTripEndPoint("End point ");
+        trip2.setTripStatus(Status.DONE);
+        tripsArrayList.add(trip2);
+        return tripsArrayList;
     }
-*/
+
 }

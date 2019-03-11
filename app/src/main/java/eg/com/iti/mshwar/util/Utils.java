@@ -27,4 +27,7 @@ public final class Utils {
     // Constants
     public static final int ADD = 0;
     public static final int REPLACE = 1;
+    public static final String UPCOMING = "UPCOMING";
+    public static final String CANCELED = "CANCELED";
+    public static final String DONE = "DONE";
 }
