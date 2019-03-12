@@ -62,10 +62,8 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
         startPoint.setOnClickListener(onClickListenerpoint);
         endPoint.setOnClickListener(onClickListenerpoint);
 
-
         Time.setOnClickListener(onClickListenerTimeAndDate);
         Date.setOnClickListener(onClickListenerTimeAndDate);
-
 
         typeOfTrip.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
