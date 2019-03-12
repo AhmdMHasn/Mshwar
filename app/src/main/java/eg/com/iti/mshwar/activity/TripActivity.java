@@ -3,14 +3,11 @@ package eg.com.iti.mshwar.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -29,38 +26,24 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-
 import eg.com.iti.mshwar.Beans.TripBean;
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.fragment.DatePickerFragment;
 import eg.com.iti.mshwar.fragment.TimePickerFragment;
 import eg.com.iti.mshwar.model.TripDao;
-import eg.com.iti.mshwar.util.Utils;
 
-public class TripActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
-    EditText nameOfTrip;
-    EditText startPoint;
-    EditText endPoint;
-    Spinner typeOfTrip;
-    Spinner repetition;
-    TextView Date;
-    TextView Time;
+public class TripActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+    EditText nameOfTrip, startPoint, endPoint;
+    Spinner typeOfTrip, repetition;
+    TextView Date, Time;
     Button addButton;
     TripBean tripBean;
     TripDao tripDao;
-    String tripNameText ;
-    String startPointText;
-    String endpointText;
-    String dateText;
-    String timeText;
-    String repetitionText;
-    String typeoftripText;
-    Double langitutdeOfStartPoint;
-    Double latitudeOfStartPoint;
-    Double langitutdeOfEndPoint;
-    Double latitudeOfEndPoint;
-   int REQUEST_CODE;
+    String tripNameText, startPointText, endpointText,
+            dateText, timeText, repetitionText, typeoftripText;
+    Double langitutdeOfStartPoint, latitudeOfStartPoint, langitutdeOfEndPoint, latitudeOfEndPoint;
+    int REQUEST_CODE;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,19 +67,18 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
         Date.setOnClickListener(onClickListenerTimeAndDate);
 
 
-
         typeOfTrip.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                 @Override
-                                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                                     typeoftripText=  adapterView.getItemAtPosition(i).toString();
-                                                     tripBean.setTypeOFTrip(typeoftripText);
-                                                 }
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                typeoftripText = adapterView.getItemAtPosition(i).toString();
+                tripBean.setType(typeoftripText);
+            }
 
-                                                 @Override
-                                                 public void onNothingSelected(AdapterView<?> adapterView) {
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-                                                 }
-                                             });
+            }
+        });
 
         repetition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -118,11 +100,10 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
         @Override
         public void onClick(View view) {
             tripNameText = nameOfTrip.getText().toString();
-            if(tripNameText==null||startPoint.getText()==null||endPoint.getText()==null)
-            {
-                Toast.makeText(TripActivity.this,"error",Toast.LENGTH_SHORT).show();
+            if (tripNameText == null || startPoint.getText() == null || endPoint.getText() == null) {
+                Toast.makeText(TripActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
-            tripBean.setNameOfTrip(tripNameText);
+            tripBean.setName(tripNameText);
             tripDao = new TripDao(tripBean);
         }
     };
@@ -136,18 +117,17 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
                 Intent intent =
                         new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(typeFilter)
                                 .build(TripActivity.this);
-                 switch (view.getId())
-                 {
-                     case R.id.startpointId :
-                         REQUEST_CODE = 1;
+                switch (view.getId()) {
+                    case R.id.startpointId:
+                        REQUEST_CODE = 1;
 
-                          break;
+                        break;
 
-                     case R.id.endpoint :
-                         REQUEST_CODE = 2;
+                    case R.id.endpoint:
+                        REQUEST_CODE = 2;
 
-                         break;
-                 }
+                        break;
+                }
                 startActivityForResult(intent, REQUEST_CODE);
 
 
@@ -168,18 +148,15 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
                 tripBean.setStartPoint(startPointText);
                 latitudeOfStartPoint = place.getLatLng().latitude;
                 langitutdeOfStartPoint = place.getLatLng().longitude;
-                tripBean.setLatitudeOfStartPoint(latitudeOfStartPoint);
-                tripBean.setLangitutdeOfStartPoint(langitutdeOfStartPoint);
-            }
-
-                else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                tripBean.setStartPointLatitude(latitudeOfStartPoint);
+                tripBean.setStartPointLongitude(langitutdeOfStartPoint);
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
 
                 Status status = PlaceAutocomplete.getStatus(TripActivity.this, data);
                 Toast.makeText(TripActivity.this, status + "", Toast.LENGTH_SHORT).show();
 
             }
-        } else if (requestCode == 2)
-        {
+        } else if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(TripActivity.this, data);
                 endpointText = place.getName().toString();
@@ -187,11 +164,9 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
                 tripBean.setEndPoint(endpointText);
                 latitudeOfEndPoint = place.getLatLng().latitude;
                 langitutdeOfEndPoint = place.getLatLng().longitude;
-                tripBean.setLatitudeOfEndPoint(latitudeOfEndPoint);
-                tripBean.setLangitutdeOfEndPoint(langitutdeOfEndPoint);
-            }
-
-            else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                tripBean.setEndPointLatitude(latitudeOfEndPoint);
+                tripBean.setEndPointLongitude(langitutdeOfEndPoint);
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
 
                 Status status = PlaceAutocomplete.getStatus(TripActivity.this, data);
                 Toast.makeText(TripActivity.this, status + "", Toast.LENGTH_SHORT).show();
@@ -199,6 +174,7 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
             }
         }
     }
+
     View.OnClickListener onClickListenerTimeAndDate = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -218,19 +194,16 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
 
-            String pm_am = "AM" ;
-                    if (hour>=12)
-                    {
-                        pm_am="PM";
-                    }
-                   if((hour==12 || hour ==0 ))
-                   {
-                       hour=12;
-                   }
-                   else
-                       hour=hour%12;
+        String pm_am = "AM";
+        if (hour >= 12) {
+            pm_am = "PM";
+        }
+        if ((hour == 12 || hour == 0)) {
+            hour = 12;
+        } else
+            hour = hour % 12;
 
-          timeText = hour+":"+String.format("%02d",minutes)+" "+ pm_am;
+        timeText = hour + ":" + String.format("%02d", minutes) + " " + pm_am;
 
         Time.setText(timeText);
         tripBean.setTime(timeText);
@@ -238,7 +211,7 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        dateText = day+"/"+month+"/"+year;
+        dateText = day + "/" + month + "/" + year;
         Date.setText(dateText);
         tripBean.setDate(dateText);
     }

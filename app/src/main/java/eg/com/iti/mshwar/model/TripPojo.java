@@ -42,6 +42,11 @@ public class TripPojo {
     private Status tripStatus;
     private int tripStatusImage;
     private String[] tripNotes;
+    private Double satrtoointLangitutde;
+    private Double startPointLatitude;
+    private Double endPointLangitutde;
+    private Double endPointLatitude;
+
 
     public Double getSatrtoointLangitutde() {
         return satrtoointLangitutde;
@@ -74,12 +79,6 @@ public class TripPojo {
     public void setEndPointLatitude(Double endPointLatitude) {
         this.endPointLatitude = endPointLatitude;
     }
-
-    private Double satrtoointLangitutde;
-    private Double startPointLatitude;
-    private Double endPointLangitutde;
-    private Double endPointLatitude;
-
 
     public String getTripId() {
         return tripId;

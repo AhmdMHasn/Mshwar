@@ -2,111 +2,112 @@ package eg.com.iti.mshwar.Beans;
 
 public class TripBean {
 
-    private String tripKey;
-    private String nameOfTrip;
+    private String key;
+    private String name;
     private String startPoint;
     private String endPoint;
-    private String Repetition;
-    private String typeOFTrip;
+    private String repetition;
+    private String type;
     private String date;
     private String time;
-    private Double langitutdeOfStartPoint;
-    private  Double latitudeOfStartPoint;
-    private Double langitutdeOfEndPoint;
-    private  Double latitudeOfEndPoint;
-    public void setNameOfTrip(String nameOfTrip) {
-        this.nameOfTrip = nameOfTrip;
+    private Double startPointLongitude;
+    private  Double startPointLatitude;
+    private Double endPointLongitude;
+    private  Double endPointLatitude;
+
+    public String getKey() {
+        return key;
     }
 
-    public void setTripKey(String tripKey) {
-        this.tripKey = tripKey;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public void setStartPoint(String startPoint) {
-        this.startPoint = startPoint;
+    public String getName() {
+        return name;
     }
 
-    public void setEndPoint(String endPoint) {
-        this.endPoint = endPoint;
-    }
-
-    public void setTypeOFTrip(String typeOFTrip) {
-        this.typeOFTrip = typeOFTrip;
-    }
-
-    public void setRepetition(String repetition) {
-        Repetition = repetition;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setLangitutdeOfStartPoint(Double langitude) {
-        this.langitutdeOfStartPoint = langitude;
-    }
-
-    public void setLatitudeOfStartPoint(Double latitude) {
-        this.latitudeOfStartPoint = latitude;
-    }
-
-    public void setLangitutdeOfEndPoint(Double langitutdeOfEndPoint) {
-        this.langitutdeOfEndPoint = langitutdeOfEndPoint;
-    }
-
-    public void setLatitudeOfEndPoint(Double latitudeOfEndPoint) {
-        this.latitudeOfEndPoint = latitudeOfEndPoint;
-    }
-
-    public String getTripKey() {
-        return tripKey;
-    }
-
-    public String getNameOfTrip() {
-        return nameOfTrip;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStartPoint() {
         return startPoint;
     }
 
+    public void setStartPoint(String startPoint) {
+        this.startPoint = startPoint;
+    }
+
     public String getEndPoint() {
         return endPoint;
     }
 
-    public String getTypeOFTrip() {
-        return typeOFTrip;
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
     }
 
     public String getRepetition() {
-        return Repetition;
+        return repetition;
     }
 
-    public String getTime() {
-        return time;
+    public void setRepetition(String repetition) {
+        this.repetition = repetition;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDate() {
         return date;
     }
 
-    public Double getLangitutdeOfStartPoint() {
-        return langitutdeOfStartPoint;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public Double getLatitudeOfStartPoint() {
-        return latitudeOfStartPoint;
+    public String getTime() {
+        return time;
     }
 
-    public Double getLangitutdeOfEndPoint() {
-        return langitutdeOfEndPoint;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public Double getLatitudeOfEndPoint() {
-        return latitudeOfEndPoint;
+    public Double getStartPointLongitude() {
+        return startPointLongitude;
+    }
+
+    public void setStartPointLongitude(Double startPointLongitude) {
+        this.startPointLongitude = startPointLongitude;
+    }
+
+    public Double getStartPointLatitude() {
+        return startPointLatitude;
+    }
+
+    public void setStartPointLatitude(Double startPointLatitude) {
+        this.startPointLatitude = startPointLatitude;
+    }
+
+    public Double getEndPointLongitude() {
+        return endPointLongitude;
+    }
+
+    public void setEndPointLongitude(Double endPointLongitude) {
+        this.endPointLongitude = endPointLongitude;
+    }
+
+    public Double getEndPointLatitude() {
+        return endPointLatitude;
+    }
+
+    public void setEndPointLatitude(Double endPointLatitude) {
+        this.endPointLatitude = endPointLatitude;
     }
 }
