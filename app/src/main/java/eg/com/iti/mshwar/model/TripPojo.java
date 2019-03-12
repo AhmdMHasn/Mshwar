@@ -43,6 +43,44 @@ public class TripPojo {
     private int tripStatusImage;
     private String[] tripNotes;
 
+    public Double getSatrtoointLangitutde() {
+        return satrtoointLangitutde;
+    }
+
+    public void setSatrtoointLangitutde(Double satrtoointLangitutde) {
+        this.satrtoointLangitutde = satrtoointLangitutde;
+    }
+
+    public Double getStartPointLatitude() {
+        return startPointLatitude;
+    }
+
+    public void setStartPointLatitude(Double startPointLatitude) {
+        this.startPointLatitude = startPointLatitude;
+    }
+
+    public Double getEndPointLangitutde() {
+        return endPointLangitutde;
+    }
+
+    public void setEndPointLangitutde(Double endPointLangitutde) {
+        this.endPointLangitutde = endPointLangitutde;
+    }
+
+    public Double getEndPointLatitude() {
+        return endPointLatitude;
+    }
+
+    public void setEndPointLatitude(Double endPointLatitude) {
+        this.endPointLatitude = endPointLatitude;
+    }
+
+    private Double satrtoointLangitutde;
+    private Double startPointLatitude;
+    private Double endPointLangitutde;
+    private Double endPointLatitude;
+
+
     public String getTripId() {
         return tripId;
     }
