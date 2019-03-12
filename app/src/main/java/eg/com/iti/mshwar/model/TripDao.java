@@ -1,13 +1,11 @@
 package eg.com.iti.mshwar.model;
 
-import android.util.Log;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-import eg.com.iti.mshwar.Beans.TripBean;
+import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.util.Utils;
 
 public class TripDao {

@@ -22,11 +22,8 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import eg.com.iti.mshwar.Beans.TripBean;
+import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.fragment.DatePickerFragment;
 import eg.com.iti.mshwar.fragment.TimePickerFragment;

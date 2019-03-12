@@ -36,4 +36,13 @@ public final class Utils {
     public static final String UPCOMING = "UPCOMING";
     public static final String CANCELED = "CANCELED";
     public static final String DONE = "DONE";
+
+    // Repetition
+    public static final String DAILY = "DAILY";
+    public static final String WEEKLY = "WEEKLY";
+    public static final String MONTHLY = "MONTHLY";
+
+    // Direction
+    public static final int ONE_DIRECTION = 0;
+    public static final int TWO_DIRECTIONS = 1;
 }

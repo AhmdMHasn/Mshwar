@@ -1,4 +1,10 @@
-package eg.com.iti.mshwar.Beans;
+package eg.com.iti.mshwar.beans;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import eg.com.iti.mshwar.R;
+import eg.com.iti.mshwar.util.Utils;
 
 public class TripBean {
 
@@ -10,10 +16,48 @@ public class TripBean {
     private String type;
     private String date;
     private String time;
+    private String status;
+
     private Double startPointLongitude;
-    private  Double startPointLatitude;
+    private Double startPointLatitude;
     private Double endPointLongitude;
-    private  Double endPointLatitude;
+    private Double endPointLatitude;
+
+    public TripBean(){
+
+    }
+
+    public int getStatusImage() {
+        switch (status){
+            case Utils.UPCOMING:
+                statusImage = R.drawable.upcoming;
+                break;
+            case Utils.DONE:
+                statusImage = R.drawable.done;
+                break;
+            case Utils.CANCELED:
+                statusImage = R.drawable.canceled;
+                break;
+            default:
+                statusImage = R.drawable.logo;
+                break;
+        }
+        return statusImage;
+    }
+
+    public void setStatusImage(int statusImage) {
+        this.statusImage = statusImage;
+    }
+
+    private int statusImage;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getKey() {
         return key;
@@ -109,5 +153,36 @@ public class TripBean {
 
     public void setEndPointLatitude(Double endPointLatitude) {
         this.endPointLatitude = endPointLatitude;
+    }
+
+    public static List<TripBean> getTripData(String userId) {
+        ArrayList<TripBean> tripsArrayList = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            TripBean trip = new TripBean();
+            trip.setKey("" + i);
+            trip.setName("Trip " + i);
+            trip.setStartPoint("Start point " + i);
+            trip.setEndPoint("End point " + i);
+            trip.setStatus(Utils.UPCOMING);
+            tripsArrayList.add(trip);
+        }
+
+        TripBean trip1 = new TripBean();
+        trip1.setKey("");
+        trip1.setName("Trip ");
+        trip1.setStartPoint("Start point ");
+        trip1.setEndPoint("End point ");
+        trip1.setStatus(Utils.CANCELED);
+        tripsArrayList.add(trip1);
+
+        TripBean trip2 = new TripBean();
+        trip2.setKey("");
+        trip2.setName("Trip ");
+        trip2.setStartPoint("Start point ");
+        trip2.setEndPoint("End point ");
+        trip2.setStatus(Utils.DONE);
+        tripsArrayList.add(trip2);
+        return tripsArrayList;
     }
 }

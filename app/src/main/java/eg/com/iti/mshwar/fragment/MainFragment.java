@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.adapter.RecyclerAdapter;
-import eg.com.iti.mshwar.model.TripPojo;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,7 +42,7 @@ public class MainFragment extends Fragment {
 
     private void setUpRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.mainRecyclerView);
-        RecyclerAdapter adapter = new RecyclerAdapter(getContext(), TripPojo.getTripData("userId"));
+        RecyclerAdapter adapter = new RecyclerAdapter(getContext(), TripBean.getTripData("userId"));
         recyclerView.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
