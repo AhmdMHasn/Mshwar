@@ -18,12 +18,18 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
       completions."
   </string>
+    <string name="menu_start_trip">New Trip</string>
+    <string name="menu_sync">Sync</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="resend_verification_email">Resend Verification Email</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="register">Register</string>
     <string name="sign_in">Sign In</string>
     <string name="password">Password</string>
-    <string name="email_registration">Create New Account</string>
+    <string name="tabian_consulting_logo">Tabian Consulting Logo</string>
+    <string name="email_registration">Email Registration</string>
     <string name="email">Email</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="employee_dashboard">Employee Dashboard</string>
@@ -31,7 +37,7 @@
     <string name="employee_schedule">Employee Schedule</string>
     <string name="company_culture">Company Culture</string>
     <string name="tabian_consulting_sales_chart">Tabian Consulting Sales Chart</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">CANCEL</string>
     <string name="confirm">CONFIRM</string>
     <string name="reset_password">Reset Password</string>
     <string name="sign_out">Sign out</string>
@@ -39,10 +45,35 @@
     <string name="current_password">Current Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
-    <string name="menu_start_trip">New Trip</string>
-    <string name="menu_sync">Sync</string>
+    <string name="Create_Trip">Create_Trip</string>
+    <string name="tripName">trip</string>
+    <string name="startpoint">startpoint</string>
+    <string name="StartPoint">Start point</string>
+    <string name="endpoint">End point</string>
+    <string name="Tripname">Trip name</string>
+    <string name="addaNewTrip">Add a new TRIP</string>
+    <string name="add_trip">Add a new trip</string>
+    <string name="Type_trip">Type of trip</string>
+    <string name="Repetition">Repetition</string>
+    <string name="time">00:00 AM</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="Time">Time</string>
+    <string name="Date">Date</string>
+    <string name="Add">Add</string>
+    <string name="Cancel">Cancel</string>
+    <string name="date">m/dd/yyyy</string>
+
+    <string-array name="typeoftrip">
+
+    <item>One Direction</item>
+    <item>Round Trip</item>
+</string-array>
+    <string-array name="repetition">
+
+        <item>daily</item>
+        <item>weekly</item>
+        <item>monthly</item>
+
+    </string-array>
 </resources>

@@ -1,0 +1,208 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".activity.TripActivity" >
+
+    <TextView
+        android:id="@+id/TripId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_trip"
+        android:paddingTop="16dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingTop="30dp"
+        android:text="@string/Tripname" />
+
+    <EditText
+        android:id="@+id/TripNameId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName">
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/StartPoint" />
+
+    <EditText
+        android:id="@+id/startpointId"
+        android:layout_width="377dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="none" />
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/endpoint" />
+
+    <EditText
+        android:id="@+id/endpoint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="none" />
+
+    <TextView
+
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Type_trip"
+        />
+
+    <Spinner
+        android:id="@+id/typeoftrip"
+        android:layout_width="381dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="32dp"
+        android:entries="@array/typeoftrip"
+        android:inputType="text"
+
+        />
+
+    <TextView
+
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Repetition" />
+
+    <Spinner
+        android:id="@+id/repetitionid"
+        android:layout_width="381dp"
+        android:layout_height="40dp"
+        android:inputType="text"
+        android:entries="@array/repetition"
+        android:layout_marginLeft="32dp"
+      />
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:weightSum="2"
+    android:orientation="horizontal"
+        android:layout_margin="16dp"
+        android:layout_marginLeft="8dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingRight="32dp"
+            android:weightSum="1"
+
+            >
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Time" />
+
+            <TextView
+                android:id="@+id/TimeId"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/textview_border"
+                android:paddingTop="8dp"
+                android:text="@string/time"
+                android:textAlignment="center"
+                android:textColor="@color/Black"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:weightSum="1"
+            android:paddingLeft="16dp"
+            android:layout_marginRight="32dp"
+            >
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Date" />
+
+
+            <TextView
+                android:id="@+id/dateId"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/textview_border"
+                android:paddingTop="8dp"
+                android:text="@string/date"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textColor="@color/Black"
+
+
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:addStatesFromChildren="true"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:weightSum="2">
+
+
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="@string/Add"
+            android:layout_margin="16dp"
+            android:background="@drawable/button_border"
+            android:backgroundTint="@color/colorAccent"
+            />
+
+
+        <Button
+            android:id="@+id/CancelBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Cancel"
+            android:layout_margin="16dp"
+            android:background="@drawable/button_border"
+            android:backgroundTint="@color/colorAccent"
+            />
+    </LinearLayout>
+
+</LinearLayout>
