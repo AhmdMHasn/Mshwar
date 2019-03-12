@@ -159,7 +159,7 @@ public class TripPojo {
         tripsArrayList.add(trip1);
 
         TripPojo trip2 = new TripPojo();
-        trip2.setTripId("" );
+        trip2.setTripId("");
         trip2.setTripName("Trip ");
         trip2.setTripStartPoint("Start point ");
         trip2.setTripEndPoint("End point ");
