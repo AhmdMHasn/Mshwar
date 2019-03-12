@@ -16,18 +16,18 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.R;
-import eg.com.iti.mshwar.model.TripPojo;
 import eg.com.iti.mshwar.util.Utils;
 
 import static android.support.constraint.Constraints.TAG;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
 
-    private List<TripPojo> tripsList;
+    private List<TripBean> tripsList;
     private LayoutInflater inflater;
 
-    public RecyclerAdapter(Context context, List<TripPojo> data){
+    public RecyclerAdapter(Context context, List<TripBean> data){
         this.tripsList = data;
         this.inflater = LayoutInflater.from(context);
     }
@@ -49,7 +49,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(@NonNull RecyclerAdapter.MyViewHolder myViewHolder, int position) {
         Log.d(TAG, "onBindViewHolder " + position);
 
-        TripPojo currentObject = tripsList.get(position);
+        TripBean currentObject = tripsList.get(position);
         myViewHolder.setData(currentObject, position);
         myViewHolder.setListeners();
     }
@@ -65,7 +65,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         notifyItemRangeChanged(position, tripsList.size());
     }
 
-    public void addItem(int position, TripPojo trip){
+    public void addItem(int position, TripBean trip){
         tripsList.add(position, trip);
         notifyItemInserted(position);
         notifyItemRangeChanged(position, tripsList.size());
@@ -78,7 +78,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         ImageView thumbnail, start, delete;
         MaterialCardView container;
         int position;
-        TripPojo currentObject;
+        TripBean currentObject;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,26 +89,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             thumbnail   = itemView.findViewById(R.id.img_list_item_main);
             start       = itemView.findViewById(R.id.start_list_item_main);
             delete      = itemView.findViewById(R.id.delete_list_item_main);
-//            container   = itemView.findViewById(R.id.container_list_item_main);
         }
 
-        public void setData(TripPojo currentObject, int position) {
-            this.tripName.setText(currentObject.getTripName());
-            this.startPoint.setText(currentObject.getTripStartPoint());
-            this.endPoint.setText(currentObject.getTripEndPoint());
-            this.status.setText((currentObject.getTripStatus()));
-            this.thumbnail.setImageResource(currentObject.getTripStatusImage());
+        public void setData(TripBean currentObject, int position) {
+            this.tripName.setText(currentObject.getName());
+            this.startPoint.setText(currentObject.getStartPoint());
+            this.endPoint.setText(currentObject.getEndPoint());
+            this.status.setText((currentObject.getStatus()));
+            this.thumbnail.setImageResource(currentObject.getStatusImage());
             this.position = position;
             this.currentObject = currentObject;
             this.delete.setImageResource(R.drawable.delete);
             this.start.setImageResource(R.drawable.start);
 
-            if (!currentObject.getTripStatus().equalsIgnoreCase(Utils.UPCOMING)){
+            if (!currentObject.getStatus().equalsIgnoreCase(Utils.UPCOMING)){
                 this.start.setVisibility(View.GONE);
             }
 
             // Change status text color based on status
-            switch (currentObject.getTripStatus()){
+            switch (currentObject.getStatus()){
                 case Utils.UPCOMING:
                     this.status.setTextColor(Color.parseColor("#1081e0"));
                     break;
