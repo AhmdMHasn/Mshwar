@@ -63,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                             //Initiate registration task
                             registerNewEmail(mEmail.getText().toString(), mPassword.getText().toString());
+
                         }else{
                             Toast.makeText(RegisterActivity.this, "Passwords do not Match", Toast.LENGTH_SHORT).show();
                         }
@@ -129,10 +130,10 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(RegisterActivity.this, "Sent Verification Email", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(RegisterActivity.this, "Couldn't Verification Send Email", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Couldn't Send Verification Email", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -163,6 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
     /**
      * Return true if @param 's1' matches @param 's2'
      * @param s1
@@ -179,7 +181,7 @@ public class RegisterActivity extends AppCompatActivity {
      * @return
      */
     private boolean isEmpty(String string){
-        return string.equals("");
+        return string.trim().equals("");
     }
 
 

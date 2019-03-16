@@ -47,14 +47,14 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
         setContentView(R.layout.activity_trip);
         tripBean = new TripBean();
 
-        nameOfTrip = (EditText) findViewById(R.id.TripNameId);
-        startPoint = (EditText) findViewById(R.id.startpointId);
-        endPoint = (EditText) findViewById(R.id.endpoint);
-        typeOfTrip = (Spinner) findViewById(R.id.typeoftrip);
-        repetition = (Spinner) findViewById(R.id.repetitionid);
-        Date = (TextView) findViewById(R.id.dateId);
-        Time = (TextView) findViewById(R.id.TimeId);
-        addButton = (Button) findViewById(R.id.addBtn);
+        nameOfTrip = findViewById(R.id.TripNameId);
+        startPoint = findViewById(R.id.startpointId);
+        endPoint = findViewById(R.id.endpoint);
+        typeOfTrip = findViewById(R.id.typeoftrip);
+        repetition = findViewById(R.id.repetitionid);
+        Date = findViewById(R.id.dateId);
+        Time = findViewById(R.id.TimeId);
+        addButton = findViewById(R.id.addBtn);
         addButton.setOnClickListener(onClickListener);
         startPoint.setOnClickListener(onClickListenerpoint);
         endPoint.setOnClickListener(onClickListenerpoint);
@@ -130,7 +130,6 @@ public class TripActivity extends AppCompatActivity implements DatePickerDialog.
 
             } catch (GooglePlayServicesRepairableException |
                     GooglePlayServicesNotAvailableException e) {
-
             }
         }
     };

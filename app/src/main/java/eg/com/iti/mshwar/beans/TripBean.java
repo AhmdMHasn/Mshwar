@@ -185,4 +185,24 @@ public class TripBean {
         tripsArrayList.add(trip2);
         return tripsArrayList;
     }
+
+    @Override
+    public String toString() {
+        return "TripBean{" +
+                "key='" + key + '\'' +
+                ", name='" + name + '\'' +
+                ", startPoint='" + startPoint + '\'' +
+                ", endPoint='" + endPoint + '\'' +
+                ", repetition='" + repetition + '\'' +
+                ", type='" + type + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", status='" + status + '\'' +
+                ", startPointLongitude=" + startPointLongitude +
+                ", startPointLatitude=" + startPointLatitude +
+                ", endPointLongitude=" + endPointLongitude +
+                ", endPointLatitude=" + endPointLatitude +
+                ", statusImage=" + statusImage +
+                '}';
+    }
 }
