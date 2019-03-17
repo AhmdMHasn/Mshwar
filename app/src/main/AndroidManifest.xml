@@ -3,6 +3,7 @@
     package="eg.com.iti.mshwar">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -30,6 +31,13 @@
         </activity>
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.DialogActivity" />
+
+        <receiver android:name=".service.MyReceiver"
+            android:enabled="true"/>
+
+        <service android:name=".service.service"
+            android:enabled="true"/>
     </application>
 
 </manifest>
