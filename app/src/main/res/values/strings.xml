@@ -66,6 +66,7 @@
     <string name="Cancel">Cancel</string>
     <string name="date">m/dd/yyyy</string>
     <string name="description">Description</string>
+    <string name="add_trip_error_message">PLease check you enter the enough details of trip</string>
 
     <string-array name="typeoftrip">
 

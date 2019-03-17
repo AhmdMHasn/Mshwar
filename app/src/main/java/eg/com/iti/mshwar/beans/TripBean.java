@@ -19,6 +19,11 @@ public class TripBean {
     private String date;
     private String time;
     private String status;
+    private Double startPointLongitude;
+    private Double startPointLatitude;
+    private Double endPointLongitude;
+    private Double endPointLatitude;
+
     private  ArrayList<String> notes = new ArrayList<>();
 
     public ArrayList<String> getNotes() {
@@ -33,10 +38,6 @@ public class TripBean {
         this.notes.add(note);
     }
 
-    private Double startPointLongitude;
-    private Double startPointLatitude;
-    private Double endPointLongitude;
-    private Double endPointLatitude;
 
     public TripBean(){
 

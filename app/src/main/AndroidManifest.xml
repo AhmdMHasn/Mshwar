@@ -13,10 +13,11 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDbVDVdGLhQIsG39CrBq0ZaUuZMTWnzDXc" />
-        <activity android:name=".activity.TripActivity"></activity>
+            android:value="AIzaSyBLPdtvo4KoNgMDdVYXcCtJOpM8yvkuSCQ" />
+        <activity android:name=".activity.TripActivity"/>
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.SplashScreenActivity"  android:theme="@style/SplashScreenTheme">
+        <activity android:name=".activity.SplashScreenActivity"
+            android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

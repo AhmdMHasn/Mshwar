@@ -59,25 +59,28 @@
         android:layout_height="wrap_content"
         android:text="@string/StartPoint" />
 
-    <EditText
+    <fragment
         android:id="@+id/editTxt_start_point"
-        android:layout_width="377dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="none" />
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:layout_width="341dp"
+        android:layout_height="44dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp" />
 
     <TextView
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/endpoint" />
 
-    <EditText
+    <fragment
         android:id="@+id/editTxt_end_point"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="none" />
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:layout_width="342dp"
+        android:layout_height="46dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp" />
 
     <TextView
 
