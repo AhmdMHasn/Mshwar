@@ -1,6 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -11,16 +14,29 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activity.TripActivity" >
 
-    <TextView
-        android:id="@+id/TripId"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_trip"
-        android:paddingTop="16dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:paddingTop="16dp"
+            android:text="@string/add_trip"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:id="@+id/add_note"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="10dp"
+            app:srcCompat="@drawable/edit" />
+    </LinearLayout>
 
     <TextView
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -28,7 +44,7 @@
         android:text="@string/Tripname" />
 
     <EditText
-        android:id="@+id/TripNameId"
+        android:id="@+id/editTxt_trip_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -44,7 +60,7 @@
         android:text="@string/StartPoint" />
 
     <EditText
-        android:id="@+id/startpointId"
+        android:id="@+id/editTxt_start_point"
         android:layout_width="377dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -57,7 +73,7 @@
         android:text="@string/endpoint" />
 
     <EditText
-        android:id="@+id/endpoint"
+        android:id="@+id/editTxt_end_point"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -72,7 +88,7 @@
         />
 
     <Spinner
-        android:id="@+id/typeoftrip"
+        android:id="@+id/spinner_type_trip"
         android:layout_width="381dp"
         android:layout_height="40dp"
         android:layout_marginLeft="32dp"
@@ -82,14 +98,12 @@
         />
 
     <TextView
-
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/Repetition" />
 
     <Spinner
-        android:id="@+id/repetitionid"
+        android:id="@+id/spinner_trip_repetition"
         android:layout_width="381dp"
         android:layout_height="40dp"
         android:inputType="text"
@@ -112,18 +126,15 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:paddingRight="32dp"
-            android:weightSum="1"
-
-            >
+            android:weightSum="1">
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Time" />
 
             <TextView
-                android:id="@+id/TimeId"
+                android:id="@+id/txtView_time"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
@@ -155,7 +166,7 @@
 
 
             <TextView
-                android:id="@+id/dateId"
+                android:id="@+id/txtView_date"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
@@ -182,7 +193,7 @@
 
 
         <Button
-            android:id="@+id/addBtn"
+            android:id="@+id/btn_add_trip"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -194,7 +205,7 @@
 
 
         <Button
-            android:id="@+id/CancelBtn"
+            android:id="@+id/btn_cancel_trip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -205,4 +216,7 @@
             />
     </LinearLayout>
 
+
+
 </LinearLayout>
+</ScrollView>

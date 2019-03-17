@@ -8,6 +8,8 @@ import eg.com.iti.mshwar.util.Utils;
 
 public class TripBean {
 
+    // please add alarm id
+    private String alarmId;
     private String key;
     private String name;
     private String startPoint;
@@ -17,6 +19,19 @@ public class TripBean {
     private String date;
     private String time;
     private String status;
+    private  ArrayList<String> notes = new ArrayList<>();
+
+    public ArrayList<String> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(ArrayList<String> notes) {
+        this.notes = notes;
+    }
+
+    public  void appendNotes(String note){
+        this.notes.add(note);
+    }
 
     private Double startPointLongitude;
     private Double startPointLatitude;
@@ -155,6 +170,14 @@ public class TripBean {
         this.endPointLatitude = endPointLatitude;
     }
 
+    public String getAlarmId() {
+        return alarmId;
+    }
+
+    public void setAlarmId(String alarmId) {
+        this.alarmId = alarmId;
+    }
+
     public static List<TripBean> getTripData(String userId) {
         ArrayList<TripBean> tripsArrayList = new ArrayList<>();
 
@@ -184,5 +207,25 @@ public class TripBean {
         trip2.setStatus(Utils.DONE);
         tripsArrayList.add(trip2);
         return tripsArrayList;
+    }
+
+    @Override
+    public String toString() {
+        return "TripBean{" +
+                "key='" + key + '\'' +
+                ", name='" + name + '\'' +
+                ", startPoint='" + startPoint + '\'' +
+                ", endPoint='" + endPoint + '\'' +
+                ", repetition='" + repetition + '\'' +
+                ", type='" + type + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", status='" + status + '\'' +
+                ", startPointLongitude=" + startPointLongitude +
+                ", startPointLatitude=" + startPointLatitude +
+                ", endPointLongitude=" + endPointLongitude +
+                ", endPointLatitude=" + endPointLatitude +
+                ", statusImage=" + statusImage +
+                '}';
     }
 }

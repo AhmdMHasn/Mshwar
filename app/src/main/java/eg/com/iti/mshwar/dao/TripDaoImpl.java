@@ -1,4 +1,4 @@
-package eg.com.iti.mshwar.model;
+package eg.com.iti.mshwar.dao;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -8,13 +8,11 @@ import java.util.HashMap;
 import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.util.Utils;
 
-public class TripDao {
-    TripBean tripBean;
-    public TripDao(TripBean tripBean)
-    {
-       insertDetailsOfTrip(tripBean);
-    }
-    public  void insertDetailsOfTrip(TripBean tripBean) {
+public class TripDaoImpl implements TripDao {
+
+    @Override
+    public void addTrip(TripBean tripBean) {
+
         DatabaseReference root = FirebaseDatabase.getInstance().getReference().child(Utils.TRIP_TABLE);
         String key = root.push().getKey();
         HashMap<String, Object> m = new HashMap<>();
