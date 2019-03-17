@@ -58,6 +58,7 @@ public class TripDao {
         map.put(Utils.COLUMN_TRIP_Date,tripBean.getDate());
         map.put(Utils.COLUMN_TRIP_Time,tripBean.getTime());
 
+
         DatabaseReference databaseReference = root.child(key);
         databaseReference.updateChildren(map);
 

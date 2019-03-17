@@ -1,32 +1,42 @@
-
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.TripActivity">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".activity.TripActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin">
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:paddingTop="16dp"
+            android:text="@string/add_trip"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:id="@+id/add_note"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="10dp"
+            app:srcCompat="@drawable/edit" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/TripId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:text="@string/add_trip"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -34,7 +44,7 @@
         android:text="@string/Tripname" />
 
     <EditText
-        android:id="@+id/TripNameId"
+        android:id="@+id/editTxt_trip_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -50,7 +60,7 @@
         android:text="@string/StartPoint" />
 
     <EditText
-        android:id="@+id/startpointId"
+        android:id="@+id/editTxt_start_point"
         android:layout_width="377dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -63,7 +73,7 @@
         android:text="@string/endpoint" />
 
     <EditText
-        android:id="@+id/endpoint"
+        android:id="@+id/editTxt_end_point"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -74,10 +84,11 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Type_trip" />
+        android:text="@string/Type_trip"
+        />
 
     <Spinner
-        android:id="@+id/typeoftrip"
+        android:id="@+id/spinner_type_trip"
         android:layout_width="381dp"
         android:layout_height="40dp"
         android:layout_marginLeft="32dp"
@@ -87,27 +98,27 @@
         />
 
     <TextView
-
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/Repetition" />
 
     <Spinner
-        android:id="@+id/repetitionid"
+        android:id="@+id/spinner_trip_repetition"
         android:layout_width="381dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="32dp"
+        android:inputType="text"
         android:entries="@array/repetition"
-        android:inputType="text" />
+        android:layout_marginLeft="32dp"
+      />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:weightSum="2"
+    android:orientation="horizontal"
         android:layout_margin="16dp"
         android:layout_marginLeft="8dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -115,18 +126,15 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:paddingRight="32dp"
-            android:weightSum="1"
-
-            >
+            android:weightSum="1">
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Time" />
 
             <TextView
-                android:id="@+id/TimeId"
+                android:id="@+id/txtView_time"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
@@ -143,11 +151,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="32dp"
             android:layout_weight="1"
             android:orientation="vertical"
+            android:weightSum="1"
             android:paddingLeft="16dp"
-            android:weightSum="1">
+            android:layout_marginRight="32dp"
+            >
 
             <TextView
 
@@ -157,7 +166,7 @@
 
 
             <TextView
-                android:id="@+id/dateId"
+                android:id="@+id/txtView_date"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
@@ -165,8 +174,8 @@
                 android:paddingTop="8dp"
                 android:text="@string/date"
                 android:textAlignment="center"
-                android:textColor="@color/Black"
                 android:textSize="16sp"
+                android:textColor="@color/Black"
 
 
                 />
@@ -184,26 +193,30 @@
 
 
         <Button
-            android:id="@+id/addBtn"
+            android:id="@+id/btn_add_trip"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_margin="16dp"
             android:layout_weight="1"
+            android:text="@string/Add"
+            android:layout_margin="16dp"
             android:background="@drawable/button_border"
             android:backgroundTint="@color/colorAccent"
-            android:text="@string/Add" />
+            />
 
 
         <Button
-            android:id="@+id/CancelBtn"
+            android:id="@+id/btn_cancel_trip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:layout_weight="1"
+            android:text="@string/Cancel"
+            android:layout_margin="16dp"
             android:background="@drawable/button_border"
             android:backgroundTint="@color/colorAccent"
-            android:text="@string/Cancel" />
+            />
     </LinearLayout>
 
-    </LinearLayout>
+
+
+</LinearLayout>
 </ScrollView>

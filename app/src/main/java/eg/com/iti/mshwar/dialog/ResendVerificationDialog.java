@@ -27,7 +27,7 @@ import eg.com.iti.mshwar.R;
 
 public class ResendVerificationDialog extends DialogFragment {
 
-    private static final String TAG = "ResendVerificationDialo";
+    private static final String TAG = "ResendVerification";
 
     //widgets
     private EditText mConfirmPassword, mConfirmEmail;

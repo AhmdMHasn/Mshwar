@@ -59,9 +59,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         signInButtonWithGmail = findViewById(R.id.sign_in_button_with_gmail);
         signInButtonWithGmail.setSize(SignInButton.SIZE_STANDARD);
-
         setupFirebaseAuth();
-
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
