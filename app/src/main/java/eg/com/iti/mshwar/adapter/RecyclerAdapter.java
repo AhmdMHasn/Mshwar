@@ -118,8 +118,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
             Picasso.with(context)
                     .load(imgPath)
-                    .placeholder(R.drawable.ic_img_placeholer_route)
-                    .error(R.drawable.ic_img_default)
+                    .placeholder(R.drawable.ic_img_default_img)
+                    .error(R.drawable.ic_img_default_logo)
                     .into(mapThumbnail);
 
             // Hide map if status is cancelled
