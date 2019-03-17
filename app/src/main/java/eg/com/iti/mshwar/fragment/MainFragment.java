@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.adapter.RecyclerAdapter;
+import eg.com.iti.mshwar.model.TripDao;
+import eg.com.iti.mshwar.util.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +38,14 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
+
+
+        // testing
+        TripDao tripDao = new TripDao();
+        tripDao.getAllTrips(Utils.ALL);
+
         setUpRecyclerView(view);
     }
 

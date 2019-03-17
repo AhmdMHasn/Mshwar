@@ -189,6 +189,10 @@ public class TripBean {
             trip.setStartPoint("Start point " + i);
             trip.setEndPoint("End point " + i);
             trip.setStatus(Utils.UPCOMING);
+            trip.setStartPointLatitude(30.6210726);
+            trip.setStartPointLongitude(32.2690443);
+            trip.setEndPointLatitude(31.033831);
+            trip.setEndPointLongitude(31.383138);
             tripsArrayList.add(trip);
         }
 
@@ -205,6 +209,10 @@ public class TripBean {
         trip2.setName("Trip ");
         trip2.setStartPoint("Start point ");
         trip2.setEndPoint("End point ");
+        trip2.setStartPointLatitude(30.037948);
+        trip2.setStartPointLongitude(31.216393);
+        trip2.setEndPointLatitude(30.0410286);
+        trip2.setEndPointLongitude(31.2172423);
         trip2.setStatus(Utils.DONE);
         tripsArrayList.add(trip2);
         return tripsArrayList;

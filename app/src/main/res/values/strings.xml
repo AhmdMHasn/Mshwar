@@ -54,7 +54,7 @@
     <string name="endpoint">End point</string>
     <string name="Tripname">Trip name</string>
     <string name="addaNewTrip">Add a new TRIP</string>
-    <string name="add_trip">Add a new trip</string>
+    <string name="add_trip">Add trip</string>
     <string name="Type_trip">Type of trip</string>
     <string name="Repetition">Repetition</string>
     <string name="time">00:00 AM</string>
@@ -67,6 +67,14 @@
     <string name="date">m/dd/yyyy</string>
     <string name="description">Description</string>
     <string name="add_trip_error_message">PLease check you enter the enough details of trip</string>
+    <string name="str_all_trips">All Trips</string>
+    <string name="str_trips_all">All Trips</string>
+    <string name="str_trips_cancelled">Cancelled</string>
+    <string name="str_trips_done">Done</string>
+    <string name="str_trips_upcoming">Upcoming</string>
+    <string name="str_navigation_user">User Area</string>
+    <string name="str_user_settings">User Settings</string>
+    <string name="str_user_logout">Logout</string>
 
     <string-array name="typeoftrip">
 

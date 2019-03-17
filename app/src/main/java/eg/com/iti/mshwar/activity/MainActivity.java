@@ -19,12 +19,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.fragment.MainFragment;
+import eg.com.iti.mshwar.model.TripDao;
 import eg.com.iti.mshwar.util.Utils;
 
 public class MainActivity extends AppCompatActivity
@@ -53,10 +56,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                Intent intent = new Intent(MainActivity.this,TripActivity.class);
-                startActivity(intent);
+                addTripActivity();
             }
         });
 
@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Add Main Fragment
+
+        // Add Main Fragment (trips recycler view)
         fragmentContainer = findViewById(R.id.layout_content_main);
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null){
@@ -125,6 +126,9 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
 
         switch (item.getItemId()){
+            case R.id.optionAddTrip:
+                addTripActivity();
+                return true;
             case R.id.optionSignOut:
                 signOut();
                 return true;
@@ -139,32 +143,38 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     /**
      * Sign out the current user
      */
     private void signOut(){
         Log.d(TAG, "signOut: signing out");
         FirebaseAuth.getInstance().signOut();
+
+        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_trips_all) {
+            // Handle all trips action
+        } else if (id == R.id.nav_trips_upcoming) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_trips_done) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_trips_cancelled) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_settings) {
+            startUserSettingsActivity();
+        } else if (id == R.id.nav_logout) {
+            signOut();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -211,7 +221,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /*----------------------------- Fragment Replacement ---------------------------------*/
+    /*----------------------------- Recycler Views Replacement ---------------------------------*/
     public void myFragmentTransaction(Fragment fragment, int type){
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (type){
@@ -222,9 +232,20 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.replace(R.id.layout_content_main, fragment, "fragment");
                 break;
         }
-        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
+    }
+
+
+    private void addTripActivity() {
+        Intent intent = new Intent(MainActivity.this,TripActivity.class);
+        startActivity(intent);
+    }
+
+    private void startUserSettingsActivity() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
 }
