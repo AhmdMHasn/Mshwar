@@ -23,24 +23,21 @@ import static android.support.constraint.Constraints.TAG;
 public class TripDao {
 
     TripBean tripBean;
-    DatabaseReference reference;
-    public static final String TAG = "TripDao";
 
 
     public TripDao(){
-        reference = FirebaseDatabase.getInstance().getReference();
+
     }
 
     public TripDao(TripBean tripBean)
     {
         // TODO: What is this?!!
         insertDetailsOfTrip(tripBean);
-        reference = FirebaseDatabase.getInstance().getReference();
     }
 
 
     public  void insertDetailsOfTrip(TripBean tripBean) {
-        DatabaseReference root = reference.child(Utils.TRIP_TABLE);
+        DatabaseReference root = FirebaseDatabase.getInstance().getReference().child(Utils.TRIP_TABLE);
         String key = root.push().getKey();
         HashMap<String, Object> m = new HashMap<>();
         root.updateChildren(m);
@@ -64,52 +61,4 @@ public class TripDao {
 
     }
 
-    // Get data for recycler view
-    public List<TripBean> getAllTrips(String tripStatus){
-        List<TripBean> tripList = null;
-        Query query;
-        switch (tripStatus){
-            case (Utils.UPCOMING):
-                query = reference.child(Utils.TRIP_TABLE)
-                        .child(Utils.COLUMN_TRIP_STATUS)
-                        .equalTo(Utils.UPCOMING);
-                break;
-            case (Utils.DONE):
-                query = reference.child(Utils.TRIP_TABLE)
-                    .child(Utils.COLUMN_TRIP_STATUS)
-                    .equalTo(Utils.DONE);
-                break;
-            case (Utils.CANCELED):
-                query = reference.child(Utils.TRIP_TABLE)
-                        .child(Utils.COLUMN_TRIP_STATUS)
-                        .equalTo(Utils.CANCELED);
-                break;
-            default:
-                query = reference.child(Utils.TRIP_TABLE);
-                break;
-        }
-
-        Log.d(TAG, "onDataChange: " + "Test1");
-        query.addListenerForSingleValueEvent(valueEventListener);
-        return tripList;
-
-    }
-
-    ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            Log.d(TAG, "onDataChange: " + "Test2");
-            for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                TripBean trip= singleSnapshot.getValue(TripBean.class);
-                trip.setKey(singleSnapshot.getKey());
-                Log.d(TAG, "onDataChange: Key: " + trip.toString() );
-//                Log.d(TAG, "onDataChange: " + singleSnapshot.getValue().toString());
-            }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
 }

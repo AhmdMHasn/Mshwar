@@ -5,21 +5,13 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/nav_done"
+            android:title="@string/str_home" />
+        <item
             android:id="@+id/nav_trips_all"
             android:icon="@drawable/nav_all"
             android:title="@string/str_trips_all" />
-        <item
-            android:id="@+id/nav_trips_upcoming"
-            android:icon="@drawable/nav_upcoming"
-            android:title="@string/str_trips_upcoming" />
-        <item
-            android:id="@+id/nav_trips_done"
-            android:icon="@drawable/nav_done"
-            android:title="@string/str_trips_done" />
-        <item
-            android:id="@+id/nav_trips_cancelled"
-            android:icon="@drawable/nav_cancelled"
-            android:title="@string/str_trips_cancelled" />
     </group>
 
     <item android:title="@string/str_navigation_user">

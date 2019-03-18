@@ -12,9 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.adapter.RecyclerAdapter;
+import eg.com.iti.mshwar.dao.TripDaoImpl;
 import eg.com.iti.mshwar.model.TripDao;
 import eg.com.iti.mshwar.util.Utils;
 
@@ -23,6 +27,7 @@ import eg.com.iti.mshwar.util.Utils;
  */
 public class MainFragment extends Fragment {
 
+    private String status;
 
     public MainFragment() {
         // Required empty public constructor
@@ -38,26 +43,32 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         super.onViewCreated(view, savedInstanceState);
 
-
-        // testing
-        TripDao tripDao = new TripDao();
-        tripDao.getAllTrips(Utils.ALL);
-
         setUpRecyclerView(view);
+
     }
 
     private void setUpRecyclerView(View view) {
+
         RecyclerView recyclerView = view.findViewById(R.id.mainRecyclerView);
-        RecyclerAdapter adapter = new RecyclerAdapter(getContext(), TripBean.getTripData("userId"));
-        recyclerView.setAdapter(adapter);
+        RecyclerAdapter adapter = new RecyclerAdapter(getContext());
+
+//        List<TripBean> tripList = new ArrayList<>();
+        TripDaoImpl tripDao = new TripDaoImpl();
+//        tripList = tripDao.getTripsFromFirebase(Utils.ALL);
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        adapter.setUpdatedData(tripDao.getTripsFromFirebase(status, adapter));
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

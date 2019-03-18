@@ -20,6 +20,7 @@ import java.util.List;
 
 import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.R;
+import eg.com.iti.mshwar.dao.TripDaoImpl;
 import eg.com.iti.mshwar.util.Utils;
 
 import static android.support.constraint.Constraints.TAG;
@@ -30,8 +31,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private LayoutInflater inflater;
     private Context context;
 
-    public RecyclerAdapter(Context context, List<TripBean> data){
-        this.tripsList = data;
+    private final int VIEW_TYPE_EMPTY_LIST = 0;
+    private final int VIEW_TYPE_FULL_VIEW = 1;
+
+
+    public RecyclerAdapter(Context context){
         this.inflater = LayoutInflater.from(context);
         this.context = context;
     }
@@ -58,6 +62,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         myViewHolder.setListeners();
     }
 
+    public void setUpdatedData(List<TripBean> tripList){
+        this.tripsList = tripList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return tripsList.size();
@@ -74,7 +83,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         notifyItemInserted(position);
         notifyItemRangeChanged(position, tripsList.size());
     }
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -94,6 +102,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             start       = itemView.findViewById(R.id.start_list_item_main);
             delete      = itemView.findViewById(R.id.delete_list_item_main);
             mapThumbnail= itemView.findViewById(R.id.img_list_item_map);
+
+            this.itemView.setClickable(true);
+            this.start.setClickable(true);
+            this.delete.setClickable(true);
         }
 
         public void setData(TripBean currentObject, int position) {
@@ -123,7 +135,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     .into(mapThumbnail);
 
             // Hide map if status is cancelled
-            if (currentObject.getStatus().equalsIgnoreCase(Utils.CANCELED)){
+            if (currentObject.getStatus().equalsIgnoreCase(Utils.CANCELLED)){
                 this.mapThumbnail.setVisibility(View.GONE);
             }
 
@@ -137,7 +149,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 case Utils.UPCOMING:
                     this.status.setTextColor(Color.parseColor("#1081e0"));
                     break;
-                case Utils.CANCELED:
+                case Utils.CANCELLED:
                     this.status.setTextColor(Color.parseColor("#d75a4a"));
                     break;
                 case Utils.DONE:

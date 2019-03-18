@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -40,6 +41,7 @@ public class TripActivity extends AppCompatActivity implements AddNoteDialog.Add
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
+
         tripBean = new TripBean();
         editTxtTripName = (EditText) findViewById(R.id.editTxt_trip_name);
         editTxtStartPoint = (EditText) findViewById(R.id.editTxt_start_point);

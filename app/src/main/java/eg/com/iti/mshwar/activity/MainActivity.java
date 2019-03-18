@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         Log.d(TAG, "onCreate: started.");
         setupFirebaseAuth();
 
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -75,6 +79,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null){
             Fragment fragment = new MainFragment();
+            ((MainFragment) fragment).setStatus(Utils.UPCOMING);
             myFragmentTransaction(fragment, Utils.REPLACE);
         }
     }
@@ -163,16 +168,14 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_trips_all) {
+        if (id == R.id.nav_home) {
             // Handle all trips action
-        } else if (id == R.id.nav_trips_upcoming) {
-
-        } else if (id == R.id.nav_trips_done) {
-
-        } else if (id == R.id.nav_trips_cancelled) {
-
+        } else if (id == R.id.nav_trips_all) {
+            Intent intent = new Intent(this, TripsHistoryActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_settings) {
-            startUserSettingsActivity();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_logout) {
             signOut();
         }
@@ -240,11 +243,6 @@ public class MainActivity extends AppCompatActivity
 
     private void addTripActivity() {
         Intent intent = new Intent(MainActivity.this,TripActivity.class);
-        startActivity(intent);
-    }
-
-    private void startUserSettingsActivity() {
-        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

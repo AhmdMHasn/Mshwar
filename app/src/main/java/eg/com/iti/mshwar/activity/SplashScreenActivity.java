@@ -7,6 +7,8 @@ import android.view.Menu;
 
 import android.os.Handler;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import eg.com.iti.mshwar.R;
 
 public class SplashScreenActivity extends AppCompatActivity {

@@ -74,6 +74,8 @@
     <string name="str_navigation_user">User Area</string>
     <string name="str_user_settings">User Settings</string>
     <string name="str_user_logout">Logout</string>
+    <string name="str_home">Home</string>
+    <string name="str_trips_past">Past</string>
 
     <string-array name="typeoftrip">
         <item>One Direction</item>
