@@ -8,7 +8,9 @@ import eg.com.iti.mshwar.util.Utils;
 
 public class TripBean {
 
+
     // please add alarm id
+    private String userId;
     private String alarmId;
     private String key;
     private String name;
@@ -169,6 +171,14 @@ public class TripBean {
 
     public void setEndPointLatitude(Double endPointLatitude) {
         this.endPointLatitude = endPointLatitude;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getAlarmId() {
