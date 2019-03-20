@@ -34,7 +34,9 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.SettingsActivity" />
-        <activity android:name=".activity.DialogActivity" />
+
+        <activity android:name=".activity.DialogActivity"
+            android:theme="@style/Theme.AppCompat.Translucent"/>
 
         <receiver android:name=".service.MyReceiver"
             android:enabled="true"/>

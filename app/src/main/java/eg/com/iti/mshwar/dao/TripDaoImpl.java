@@ -70,7 +70,7 @@ public class TripDaoImpl implements TripDao {
         map.put(Utils.COLUMN_TRIP_Time,tripBean.getTime());
         map.put(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
         map.put(Utils.COLUMN_TRIP_STATUS, tripBean.getStatus());
-        map.put(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmId());
+        map.put(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
         map.put(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
 
 

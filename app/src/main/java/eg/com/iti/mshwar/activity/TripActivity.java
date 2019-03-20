@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,47 +40,52 @@ import eg.com.iti.mshwar.dao.TripDaoImpl;
 import eg.com.iti.mshwar.service.MyReceiver;
 import eg.com.iti.mshwar.util.Utils;
 
-public class TripActivity extends AppCompatActivity  {
+public class TripActivity extends AppCompatActivity {
     public static final String TAG = "Error";
 
     EditText editTxtTripName, editTxtAddNote;
     Spinner spinnerTripType, spinnerTripRepetition;
-    TextView txtViewDate, txtViewTime;
+    TextView txtViewDate, txtViewTime, txtViewTime2, txtViewDate2;
     Button btnAddTrip;
     ImageView imageViewAddNote;
+    LinearLayout roundTripTimeAndDate;
+
     TripBean tripBean;
     TripDaoImpl tripImpl;
-    Calendar calendar;
+    Intent intent;
+
+    Calendar calendar, calendar2;
     ArrayList<String> notesArrayList;
     NotesAdapter notesAdapter;
     ListView notesList;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
-        final String uid = user.getUid();
 
-        notesArrayList = new ArrayList<>();
-        notesAdapter = new NotesAdapter(notesArrayList, this);
-
-        //notesList = findViewById(R.id.list_view_notes);
-//        notesList = findViewById(R.layout.list_notes_layout);
-        notesList.setAdapter(notesAdapter);
-
+        notesList = findViewById(R.id.list_view_notes);
         editTxtTripName = findViewById(R.id.editTxt_trip_name);
         editTxtAddNote = findViewById(R.id.textView_add_note);
         spinnerTripType = findViewById(R.id.spinner_type_trip);
         spinnerTripRepetition = findViewById(R.id.spinner_trip_repetition);
         txtViewDate = findViewById(R.id.txtView_date);
+        txtViewDate2 = findViewById(R.id.txtView_date2);
         txtViewTime = findViewById(R.id.txtView_time);
+        txtViewTime2 = findViewById(R.id.txtView_time2);
         btnAddTrip = findViewById(R.id.btn_add_trip);
-//        imageViewAddNote = findViewById(R.id.add_note);
+        imageViewAddNote = findViewById(R.id.image_add_note);
+        roundTripTimeAndDate = findViewById(R.id.round_trip_layout);
+
+        notesArrayList = new ArrayList<>();
+        notesAdapter = new NotesAdapter(notesArrayList, this);
+        notesList.setAdapter(notesAdapter);
+        final String uid = user.getUid();
+
         tripBean = new TripBean();
         calendar = Calendar.getInstance();
+        calendar2 = Calendar.getInstance();
 
         btnAddTrip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,36 +93,60 @@ public class TripActivity extends AppCompatActivity  {
                 // code to start trip
                 tripBean.setName(editTxtTripName.getText().toString());
 
+                if (tripBean.getName() != null && tripBean.getStartPoint() != null
+                        && tripBean.getEndPoint() != null && tripBean.getTime() != null
+                        && tripBean.getDate() != null) {
 
-                if (tripBean.getName() != null && tripBean.getStartPoint() != null && tripBean.getEndPoint() != null
-                        && tripBean.getTime() != null && tripBean.getDate() != null) {
-
-                    Toast.makeText(TripActivity.this, tripBean.getName() + "hello", Toast.LENGTH_LONG).show();
                     tripBean.setStatus(Utils.UPCOMING);
                     tripBean.setNotes(notesArrayList);
                     tripBean.setUserId(uid);
-                    setAlarm();
+
+                    if (spinnerTripType.getSelectedItem().equals("Round Trip")) {
+                        String firstAlarmId = String.valueOf(setAlarm(calendar));
+                        String secondAlarmId = String.valueOf(setAlarm(calendar2));
+
+                        tripBean.addAlarmId(firstAlarmId);
+                        tripBean.addAlarmId(secondAlarmId);
+                    } else {
+                        tripBean.addAlarmId(String.valueOf(setAlarm(calendar)));
+                    }
+
                     tripImpl = new TripDaoImpl();
+
                     tripImpl.addTrip(tripBean);
+                    Toast.makeText(TripActivity.this,
+                            "Trip added successfully", Toast.LENGTH_LONG).show();
                 } else
-                    Toast.makeText(TripActivity.this, R.string.add_trip_error_message, Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(TripActivity.this,
+                            R.string.add_trip_error_message, Toast.LENGTH_LONG).show();
             }
-
         });
-
 
         txtViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDatePickerDialog();
+                showDatePickerDialog("single");
             }
         });
 
         txtViewTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTimePickerDialog();
+                showTimePickerDialog("single");
+            }
+        });
+
+        txtViewDate2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog("round");
+            }
+        });
+
+        txtViewTime2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog("round");
             }
         });
 
@@ -125,7 +155,10 @@ public class TripActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String tripType = adapterView.getItemAtPosition(i).toString();
                 tripBean.setType(tripType);
-
+                if (tripType.equals("Round Trip")) {
+                    roundTripTimeAndDate.setVisibility(View.VISIBLE);
+                } else
+                    roundTripTimeAndDate.setVisibility(View.GONE);
             }
 
             @Override
@@ -152,18 +185,16 @@ public class TripActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
 
-                        if(editTxtAddNote.getText().toString().length() > 0) {
-                            notesArrayList.add(editTxtAddNote.getText().toString());
-                            editTxtAddNote.setText("");
-                            notesAdapter.notifyDataSetChanged();
-                        }
+                if (editTxtAddNote.getText().toString().length() > 0) {
+                    notesArrayList.add(editTxtAddNote.getText().toString());
+                    editTxtAddNote.setText("");
+                    notesAdapter.notifyDataSetChanged();
+                }
             }
         });
-
     }
 
-
-    void showDatePickerDialog() {
+    void showDatePickerDialog(final String tripDirection) {
         Calendar mcurrentDate = Calendar.getInstance();
         int mYear = mcurrentDate.get(Calendar.YEAR);
         int mMonth = mcurrentDate.get(Calendar.MONTH);
@@ -172,42 +203,71 @@ public class TripActivity extends AppCompatActivity  {
         DatePickerDialog mDatePicker;
         mDatePicker = new DatePickerDialog(TripActivity.this, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                datepicker.setMinDate(System.currentTimeMillis());
+                String dateStr = selectedDay + "/" + selectedMonth + 1 + "/" + selectedYear;
 
-                calendar.set(Calendar.YEAR, selectedYear);
-                calendar.set(Calendar.MONTH, selectedMonth);
-                calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
-                selectedMonth = selectedMonth + 1;
-                String dateStr = selectedDay + "/" + selectedMonth + "/" + selectedYear;
-                txtViewDate.setText(dateStr);
-                tripBean.setDate(dateStr);
+                if (!tripDirection.equals("single")) {
+                    calendar2.set(Calendar.YEAR, selectedYear);
+                    calendar2.set(Calendar.MONTH, selectedMonth);
+                    calendar2.set(Calendar.DAY_OF_MONTH, selectedDay);
+
+                    txtViewDate2.setText(dateStr);
+                    tripBean.addDate(dateStr);
+                } else {
+                    calendar.set(Calendar.YEAR, selectedYear);
+                    calendar.set(Calendar.MONTH, selectedMonth);
+                    calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+
+                    txtViewDate.setText(dateStr);
+                    tripBean.addDate(dateStr);
+                }
             }
         }, mYear, mMonth, mDay);
         mDatePicker.setTitle("Select Date");
         mDatePicker.show();
     }
 
-    void showTimePickerDialog() {
+    void showTimePickerDialog(final String tripDirection) {
         Calendar calendar1 = Calendar.getInstance();
-        int hour = calendar1.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar1.get(Calendar.MINUTE);
+        final int hour = calendar1.get(Calendar.HOUR_OF_DAY);
+        final int minute = calendar1.get(Calendar.MINUTE);
 
-        TimePickerDialog mTimePicker;
+        final TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(TripActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                calendar.set(Calendar.HOUR_OF_DAY, selectedHour);
-                calendar.set(Calendar.MINUTE, selectedMinute);
                 String timeStr = selectedHour + ":" + selectedMinute;
-                txtViewTime.setText(timeStr);
-                tripBean.setTime(timeStr);
+
+                if (!tripDirection.equals("single")) {
+                    calendar2.set(Calendar.HOUR_OF_DAY, selectedHour);
+                    calendar2.set(Calendar.MINUTE, selectedMinute);
+
+                    txtViewTime2.setText(timeStr);
+                    tripBean.addTime(timeStr);
+                } else {
+                    calendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+                    calendar.set(Calendar.MINUTE, selectedMinute);
+
+                    txtViewTime.setText(timeStr);
+                    tripBean.addTime(timeStr);
+                }
             }
         }, hour, minute, false);
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
     }
 
-    void setAlarm() {
-        Intent intent = new Intent(TripActivity.this, MyReceiver.class);
+    private int setAlarm(Calendar mCalendar) {
+        intent = new Intent(TripActivity.this, MyReceiver.class);
+
+        intent.putExtra(Utils.COLUMN_TRIP_NAME, tripBean.getName());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT, tripBean.getEndPoint());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT, tripBean.getStartPoint());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, tripBean.getStartPointLatitude());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, tripBean.getStartPointLongitude());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
+
         int alarmID = (int) System.currentTimeMillis();
 
         PendingIntent pendingIntent =
@@ -219,11 +279,11 @@ public class TripActivity extends AppCompatActivity  {
         AlarmManager manager = (AlarmManager) TripActivity.this.getSystemService(Context.ALARM_SERVICE);
         manager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(),
+                mCalendar.getTimeInMillis(),
                 0,
                 pendingIntent);
 
-        tripBean.setAlarmId(String.valueOf(alarmID));
+        return alarmID;
     }
 
     @Override
