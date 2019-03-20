@@ -57,15 +57,19 @@ public class TripDaoImpl implements TripDao {
         HashMap<String, Object> map = new HashMap<>();
         map.put(Utils.COLUMN_TRIP_NAME, tripBean.getName());
         map.put(Utils.COLUMN_TRIP_START_POINT, tripBean.getStartPoint());
-        map.put(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, tripBean.getStartPointLongitude());
-        map.put(Utils.COLUMN_TRIP_START_POINT_LATITUDE, tripBean.getStartPointLatitude());
-        map.put(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
-        map.put(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
-        map.put(Utils.COLUMN_TRIP_END_POINT, tripBean.getEndPoint());
-        map.put(Utils.COLUMN_TRIP_TRIP_TYPE, tripBean.getType());
-        map.put(Utils.COLUMN_TRIP_REPETITION, tripBean.getRepetition());
-        map.put(Utils.COLUMN_TRIP_Date, tripBean.getDate());
-        map.put(Utils.COLUMN_TRIP_Time, tripBean.getTime());
+        map.put(Utils.COLUMN_TRIP_START_POINT_LONGITUDE,tripBean.getStartPointLongitude());
+        map.put(Utils.COLUMN_TRIP_START_POINT_LATITUDE,tripBean.getStartPointLatitude());
+        map.put(Utils.COLUMN_TRIP_END_POINT_LONGITUDE,tripBean.getEndPointLongitude());
+        map.put(Utils.COLUMN_TRIP_END_POINT_LATITUDE,tripBean.getEndPointLatitude());
+        map.put(Utils.COLUMN_TRIP_END_POINT,tripBean.getEndPoint());
+        map.put(Utils.COLUMN_TRIP_TRIP_TYPE,tripBean.getType());
+        map.put(Utils.COLUMN_TRIP_REPETITION,tripBean.getRepetition());
+        map.put(Utils.COLUMN_TRIP_Date,tripBean.getDate());
+        map.put(Utils.COLUMN_TRIP_Time,tripBean.getTime());
+        map.put(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
+        map.put(Utils.COLUMN_TRIP_STATUS, tripBean.getStatus());
+        map.put(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmId());
+        map.put(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
 
 
         DatabaseReference databaseReference = root.child(key);

@@ -39,8 +39,8 @@ public class ResendVerificationDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_resend_verification, container, false);
-        mConfirmPassword = (EditText) view.findViewById(R.id.confirm_password);
-        mConfirmEmail = (EditText) view.findViewById(R.id.confirm_email);
+        mConfirmPassword =  view.findViewById(R.id.confirm_password);
+        mConfirmEmail =  view.findViewById(R.id.confirm_email);
         mContext = getActivity();
 
 

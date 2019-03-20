@@ -3,6 +3,7 @@
     package="eg.com.iti.mshwar">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -16,11 +17,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDbVDVdGLhQIsG39CrBq0ZaUuZMTWnzDXc" />
-
         <activity android:name=".activity.TripActivity" />
+            android:value="AIzaSyBLPdtvo4KoNgMDdVYXcCtJOpM8yvkuSCQ" />
         <activity android:name=".activity.MainActivity" />
-        <activity
-            android:name=".activity.SplashScreenActivity"
+        <activity android:name=".activity.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +34,13 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.DialogActivity" />
+
+        <receiver android:name=".service.MyReceiver"
+            android:enabled="true"/>
+
+        <service android:name=".service.service"
+            android:enabled="true"/>
     </application>
 
 </manifest>

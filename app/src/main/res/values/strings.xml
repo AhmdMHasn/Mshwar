@@ -66,6 +66,7 @@
     <string name="Cancel">Cancel</string>
     <string name="date">m/dd/yyyy</string>
     <string name="description">Description</string>
+    <string name="add_trip_error_message">PLease check you enter the enough details of trip</string>
     <string name="str_all_trips">All Trips</string>
     <string name="str_trips_all">All Trips</string>
     <string name="str_trips_cancelled">Cancelled</string>
@@ -78,13 +79,15 @@
     <string name="str_trips_past">Past</string>
 
     <string-array name="typeoftrip">
-        <item>One Direction</item>
-        <item>Round Trip</item>
-    </string-array>
 
+    <item>One Direction</item>
+    <item>Round Trip</item>
+</string-array>
     <string-array name="repetition">
+
         <item>daily</item>
         <item>weekly</item>
         <item>monthly</item>
+
     </string-array>
 </resources>

@@ -8,7 +8,9 @@ import eg.com.iti.mshwar.util.Utils;
 
 public class TripBean {
 
+
     // please add alarm id
+    private String userId;
     private String alarmId;
     private String key;
     private String name;
@@ -19,6 +21,11 @@ public class TripBean {
     private String date;
     private String time;
     private String status;
+    private Double startPointLongitude;
+    private Double startPointLatitude;
+    private Double endPointLongitude;
+    private Double endPointLatitude;
+
     private  ArrayList<String> notes = new ArrayList<>();
 
     public ArrayList<String> getNotes() {
@@ -33,10 +40,6 @@ public class TripBean {
         this.notes.add(note);
     }
 
-    private Double startPointLongitude;
-    private Double startPointLatitude;
-    private Double endPointLongitude;
-    private Double endPointLatitude;
 
     public TripBean(){
 
@@ -168,6 +171,14 @@ public class TripBean {
 
     public void setEndPointLatitude(Double endPointLatitude) {
         this.endPointLatitude = endPointLatitude;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getAlarmId() {

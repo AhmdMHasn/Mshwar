@@ -8,6 +8,7 @@ public final class Utils {
 
     // Trip Table
     public static final String COLUMN_TRIP_ID = "id";
+    public static final String COLUMN_TRIP_ALARM_ID = "alarm_id";
     public static final String COLUMN_TRIP_NAME = "name";
     public static final String COLUMN_TRIP_START_POINT = "startPoint";
     public static final String COLUMN_TRIP_END_POINT = "endPoint";
