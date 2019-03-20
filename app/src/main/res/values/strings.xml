@@ -77,12 +77,11 @@
     <string name="str_user_logout">Logout</string>
 
     <string-array name="typeoftrip">
+        <item>One Direction</item>
+        <item>Round Trip</item>
+    </string-array>
 
-    <item>One Direction</item>
-    <item>Round Trip</item>
-</string-array>
     <string-array name="repetition">
-
         <item>daily</item>
         <item>weekly</item>
         <item>monthly</item>
