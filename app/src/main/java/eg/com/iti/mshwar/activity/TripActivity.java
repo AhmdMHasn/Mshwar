@@ -66,7 +66,8 @@ public class TripActivity extends AppCompatActivity  {
         notesArrayList = new ArrayList<>();
         notesAdapter = new NotesAdapter(notesArrayList, this);
 
-        notesList = findViewById(R.id.list_view_notes);
+        //notesList = findViewById(R.id.list_view_notes);
+//        notesList = findViewById(R.layout.list_notes_layout);
         notesList.setAdapter(notesAdapter);
 
         editTxtTripName = findViewById(R.id.editTxt_trip_name);
@@ -76,7 +77,7 @@ public class TripActivity extends AppCompatActivity  {
         txtViewDate = findViewById(R.id.txtView_date);
         txtViewTime = findViewById(R.id.txtView_time);
         btnAddTrip = findViewById(R.id.btn_add_trip);
-        imageViewAddNote = findViewById(R.id.image_add_note);
+//        imageViewAddNote = findViewById(R.id.add_note);
         tripBean = new TripBean();
         calendar = Calendar.getInstance();
 

@@ -189,6 +189,8 @@ public class TripBean {
         this.alarmId = alarmId;
     }
 
+    // For testing purposes
+    /*
     public static List<TripBean> getTripData(String userId) {
         ArrayList<TripBean> tripsArrayList = new ArrayList<>();
 
@@ -227,7 +229,7 @@ public class TripBean {
         tripsArrayList.add(trip2);
         return tripsArrayList;
     }
-
+*/
     @Override
     public String toString() {
         return "TripBean{" +
@@ -247,4 +249,5 @@ public class TripBean {
                 ", statusImage=" + statusImage +
                 '}';
     }
+
 }

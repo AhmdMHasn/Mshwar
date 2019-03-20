@@ -30,7 +30,7 @@ public class TripsHistoryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Trips");
+        getSupportActionBar().setTitle(getString(R.string.title_activity_history));
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -41,15 +41,15 @@ public class TripsHistoryActivity extends AppCompatActivity {
         Fragment pastTripsFrag = new MainFragment();
         ((MainFragment) pastTripsFrag).setStatus(Utils.DONE);
 
-        adapter.addFragment(pastTripsFrag, "Past");
-        adapter.addFragment(allTripsFrag, "All Trips");
+        adapter.addFragment(pastTripsFrag, getString(R.string.str_trips_past));
+        adapter.addFragment(allTripsFrag, getString(R.string.str_trips_all));
 
         // Adapter setup
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
+    @Override // For action bar
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;

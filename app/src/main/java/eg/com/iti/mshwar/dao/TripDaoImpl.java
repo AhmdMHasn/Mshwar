@@ -25,7 +25,8 @@ public class TripDaoImpl implements TripDao {
 
     public static final String TAG = "TripDao";
     public static DatabaseReference reference;
-    private static FirebaseDatabase mDatabase;
+    public static FirebaseDatabase mDatabase;
+    public static String currentUserId;
     List<TripBean> tripList;
 
 
@@ -40,6 +41,7 @@ public class TripDaoImpl implements TripDao {
         if (mDatabase == null) {
             mDatabase = FirebaseDatabase.getInstance();
             mDatabase.setPersistenceEnabled(true);
+            currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
         reference = FirebaseDatabase.getInstance().getReference();
 
@@ -82,10 +84,11 @@ public class TripDaoImpl implements TripDao {
      * The data is added to the recycle view adapter to update the list
      */
     public List<TripBean> getTripsFromFirebase(final String tripStatus, final RecyclerAdapter adapter) {
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         tripList = new ArrayList<>();
 
-        Query query = reference.child(Utils.TRIP_TABLE);
+        Query query = reference.child(Utils.TRIP_TABLE)
+                .orderByChild(Utils.COLUMN_TRIP_USER_ID)
+                .equalTo(currentUserId);
 
         Log.d(TAG, "Current User ID: " + currentUserId);
 
@@ -106,41 +109,36 @@ public class TripDaoImpl implements TripDao {
 
                 List<TripBean> tripListFiltered = new ArrayList<>();
 
-                switch (_tripStatus) {
-                    case (Utils.UPCOMING):
-
-                        for (int i = 0; i < tripList.size(); i++) {
-                            if (tripList.get(i).getStatus().equalsIgnoreCase(Utils.UPCOMING)){
-                                tripListFiltered.add(tripList.get(i));
+                if (_tripStatus != null){
+                    switch (_tripStatus) {
+                        case (Utils.UPCOMING):
+                            for (int i = 0; i < tripList.size(); i++) {
+                                if (tripList.get(i).getStatus().equalsIgnoreCase(Utils.UPCOMING)){
+                                    tripListFiltered.add(tripList.get(i));
+                                }
                             }
-                        }
+                            break;
 
-                        break;
-                    case (Utils.DONE):
-                    case (Utils.CANCELLED):
-
-                        for (int i = 0; i < tripList.size(); i++) {
-                            if (!tripList.get(i).getStatus().equalsIgnoreCase(Utils.UPCOMING)){
-                                tripListFiltered.add(tripList.get(i));
+                        case (Utils.DONE):
+                        case (Utils.CANCELLED):
+                            for (int i = 0; i < tripList.size(); i++) {
+                                if (!tripList.get(i).getStatus().equalsIgnoreCase(Utils.UPCOMING)){
+                                    tripListFiltered.add(tripList.get(i));
+                                }
                             }
-                        }
+                            break;
 
-                        break;
-                    default:
-
-                        tripListFiltered = tripList;
-
-                        break;
-
+                        default:
+                            tripListFiltered = tripList;
+                            break;
+                    }
+                    adapter.setUpdatedData(tripListFiltered);
                 }
-
-                adapter.setUpdatedData(tripListFiltered);
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.d(TAG,databaseError.getMessage());
             }
         });
 

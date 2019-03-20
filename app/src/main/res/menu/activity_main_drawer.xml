@@ -12,6 +12,11 @@
             android:id="@+id/nav_trips_all"
             android:icon="@drawable/nav_all"
             android:title="@string/str_trips_all" />
+
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:title="@string/str_help" />
     </group>
 
     <item android:title="@string/str_navigation_user">

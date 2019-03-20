@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,8 +88,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView tripName, startPoint, endPoint, status;
-        ImageView thumbnail, start, delete, mapThumbnail;
+        TextView tripName, description, status;
+        ImageView thumbnail, mapThumbnail;
+        Button delete, note;
+        ImageButton start;
         MaterialCardView container;
         int position;
         TripBean currentObject;
@@ -95,29 +99,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tripName    = itemView.findViewById(R.id.title_list_item_main);
-            startPoint  = itemView.findViewById(R.id.startpoint_list_item_main);
-            endPoint    = itemView.findViewById(R.id.endpoint_list_item_main);
+            description = itemView.findViewById(R.id.desc_list_item_main);
             status      = itemView.findViewById(R.id.status_list_item_main);
             thumbnail   = itemView.findViewById(R.id.img_list_item_main);
+            mapThumbnail= itemView.findViewById(R.id.img_list_item_map);
             start       = itemView.findViewById(R.id.start_list_item_main);
             delete      = itemView.findViewById(R.id.delete_list_item_main);
-            mapThumbnail= itemView.findViewById(R.id.img_list_item_map);
-
-            this.itemView.setClickable(true);
-            this.start.setClickable(true);
-            this.delete.setClickable(true);
+            note        = itemView.findViewById(R.id.note_list_item_main);
         }
 
         public void setData(TripBean currentObject, int position) {
             this.tripName.setText(currentObject.getName());
-            this.startPoint.setText(currentObject.getStartPoint());
-            this.endPoint.setText(currentObject.getEndPoint());
+            this.description.setText(currentObject.getStartPoint() + " - " + currentObject.getEndPoint());
             this.status.setText((currentObject.getStatus()));
             this.thumbnail.setImageResource(currentObject.getStatusImage());
             this.position = position;
             this.currentObject = currentObject;
-            this.delete.setImageResource(R.drawable.delete);
-            this.start.setImageResource(R.drawable.start);
 
             String imgPath = "https://maps.googleapis.com/maps/api/staticmap?size=500x250" +
                     "&markers=color:blue%7Clabel:S%7C"
@@ -133,11 +130,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     .placeholder(R.drawable.ic_img_default_img)
                     .error(R.drawable.ic_img_default_logo)
                     .into(mapThumbnail);
-
-            // Hide map if status is cancelled
-            if (currentObject.getStatus().equalsIgnoreCase(Utils.CANCELLED)){
-                this.mapThumbnail.setVisibility(View.GONE);
-            }
 
             // Hide start button if the status is not upcoming
             if (!currentObject.getStatus().equalsIgnoreCase(Utils.UPCOMING)){
@@ -161,6 +153,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         public void setListeners() {
             start.setOnClickListener(MyViewHolder.this);
             delete.setOnClickListener(MyViewHolder.this);
+            note.setOnClickListener(MyViewHolder.this);
             this.itemView.setOnClickListener(MyViewHolder.this);
         }
 
@@ -175,7 +168,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     removeItem(position);
                     Toast.makeText(v.getContext(), "Delete at Position " + position, Toast.LENGTH_SHORT).show();
                     break;
-//                case R.id.container_list_item_main:
+                case R.id.note_list_item_main:
+                    Toast.makeText(v.getContext(), "Note at Position " + position, Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     Toast.makeText(v.getContext(), "Click at Position " + position, Toast.LENGTH_SHORT).show();
                     break;

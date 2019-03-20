@@ -55,6 +55,13 @@ public class SettingsActivity extends AppCompatActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mResetPasswordLink = (TextView) findViewById(R.id.change_password);
 
+        // Setup upper toolbar with title and back button
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.title_activity_settings));
+
         setupFirebaseAuth();
 
         setCurrentEmail();
@@ -109,6 +116,12 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         hideSoftKeyboard();
+    }
+
+    @Override // For action bar
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void sendResetPasswordLink(){
