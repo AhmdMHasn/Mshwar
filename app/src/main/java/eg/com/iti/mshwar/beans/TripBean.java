@@ -1,12 +1,13 @@
 package eg.com.iti.mshwar.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.util.Utils;
 
-public class TripBean {
+public class TripBean implements Serializable {
 
     // please add alarm id
     private String userId;

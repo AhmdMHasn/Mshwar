@@ -29,7 +29,7 @@ import eg.com.iti.mshwar.util.Utils;
 import static android.support.constraint.Constraints.TAG;
 import static android.view.View.GONE;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
+public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> {
 
     private List<TripBean> tripsList;
     private LayoutInflater inflater;
@@ -40,7 +40,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private final int TYPE_FULL_LIST = 1;
 
 
-    public RecyclerAdapter(Context context, LinearLayout empty){
+    public TripAdapter(Context context, LinearLayout empty){
         this.inflater = LayoutInflater.from(context);
         this.context = context;
         emptyLayout = empty;
@@ -60,7 +60,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapter.MyViewHolder myViewHolder, int position) {
+    public void onBindViewHolder(@NonNull TripAdapter.MyViewHolder myViewHolder, int position) {
         Log.d(TAG, "onBindViewHolder " + position);
 
         TripBean currentObject = tripsList.get(position);
@@ -179,13 +179,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
             switch (v.getId()){
                 case R.id.start_list_item_main:
-                    //addItem(position, currentObject);
-                    Toast.makeText(v.getContext(), "Start trip " + tripsList.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "Starting trip " + tripsList.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    tripDao.startTrip(v.getContext(), tripsList.get(position));
                     break;
                 case R.id.delete_list_item_main:
                     if (tripDao.deleteTripFromFirebase(tripsList.get(position).getKey())){
+                        Toast.makeText(v.getContext(), tripsList.get(position).getName() + " deleted." , Toast.LENGTH_SHORT).show();
                         removeItem(position);
-                        Toast.makeText(v.getContext(), "Delete at Position " + position, Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case R.id.note_list_item_main:
