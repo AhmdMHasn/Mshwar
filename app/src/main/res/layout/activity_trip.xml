@@ -169,6 +169,75 @@
                     />
             </LinearLayout>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/round_trip_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginLeft="8dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingRight="32dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Time" />
+
+                <TextView
+                    android:id="@+id/txtView_time2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/textview_border"
+                    android:paddingTop="8dp"
+                    android:text="@string/time"
+                    android:textAlignment="center"
+                    android:textColor="@color/Black"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="32dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:weightSum="1">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Date" />
+
+
+                <TextView
+                    android:id="@+id/txtView_date2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/textview_border"
+                    android:paddingTop="8dp"
+                    android:text="@string/date"
+                    android:textAlignment="center"
+                    android:textColor="@color/Black"
+                    android:textSize="16sp"
+
+
+                    />
+            </LinearLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

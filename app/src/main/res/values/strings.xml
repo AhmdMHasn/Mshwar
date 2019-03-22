@@ -75,14 +75,17 @@
     <string name="str_navigation_user">User Area</string>
     <string name="str_user_settings">User Settings</string>
     <string name="str_user_logout">Logout</string>
+    <string name="create_floating_widget">Create Floating Widget</string>
+    <string name="floating_widget_label">Floating Widget Label</string>
+    <string name="floating_widget_details">Floating Widget Details</string>
+    <string name="draw_other_app_permission_denied">Draw over other app permission not available. App won\'t work without permission. Please try again.</string>
 
     <string-array name="typeoftrip">
+        <item>One Direction</item>
+        <item>Round Trip</item>
+    </string-array>
 
-    <item>One Direction</item>
-    <item>Round Trip</item>
-</string-array>
     <string-array name="repetition">
-
         <item>daily</item>
         <item>weekly</item>
         <item>monthly</item>

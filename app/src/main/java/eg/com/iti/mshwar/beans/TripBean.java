@@ -8,18 +8,14 @@ import eg.com.iti.mshwar.util.Utils;
 
 public class TripBean {
 
-
     // please add alarm id
     private String userId;
-    private String alarmId;
     private String key;
     private String name;
     private String startPoint;
     private String endPoint;
     private String repetition;
     private String type;
-    private String date;
-    private String time;
     private String status;
     private Double startPointLongitude;
     private Double startPointLatitude;
@@ -27,7 +23,21 @@ public class TripBean {
     private Double endPointLatitude;
 
     private  ArrayList<String> notes = new ArrayList<>();
+    private  ArrayList<String> alarmIds = new ArrayList<>();
+    private  ArrayList<String> time = new ArrayList<>();
+    private  ArrayList<String> date = new ArrayList<>();
 
+    public ArrayList<String> getAlarmIds() {
+        return alarmIds;
+    }
+
+    public void setAlarmIds(ArrayList<String> alarmIds) {
+        this.alarmIds = alarmIds;
+    }
+
+    public void addAlarmId(String alarmId){
+        this.alarmIds.add(alarmId);
+    }
     public ArrayList<String> getNotes() {
         return notes;
     }
@@ -125,20 +135,20 @@ public class TripBean {
         this.type = type;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTime() {
+    public ArrayList<String> getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void addTime(String time) {
+        this.time.add(time);
+    }
+
+    public ArrayList<String> getDate() {
+        return date;
+    }
+
+    public void addDate(String date) {
+        this.date.add(date);
     }
 
     public Double getStartPointLongitude() {
@@ -179,14 +189,6 @@ public class TripBean {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getAlarmId() {
-        return alarmId;
-    }
-
-    public void setAlarmId(String alarmId) {
-        this.alarmId = alarmId;
     }
 
     public static List<TripBean> getTripData(String userId) {
