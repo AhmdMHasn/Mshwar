@@ -86,6 +86,10 @@
     <string name="card_delete">Delete</string>
     <string name="add_note_hint">Add Note</string>
     <string name="add_more_trips">Opps! No trips here. Start by adding(+) more trips.</string>
+    <string name="todo">TODO</string>
+    <string name="meet_the_makers">Meet the Makers!</string>
+    <string name="title_activity_team">About us</string>
+    <string name="str_about_us">About Us</string>
 
     <string-array name="typeoftrip">
         <item>One Direction</item>

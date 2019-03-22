@@ -32,6 +32,9 @@ import eg.com.iti.mshwar.util.Utils;
 public class MainFragment extends Fragment {
 
     private String status;
+    private RecyclerView recyclerView;
+    private RecyclerAdapter adapter;
+    private LinearLayout empty;
 
     public MainFragment() {
         // Required empty public constructor
@@ -48,7 +51,25 @@ public class MainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setUpRecyclerView(view);
+        //setUpRecyclerView(view);
+        empty = view.findViewById(R.id.layout_empty);
+        recyclerView = view.findViewById(R.id.mainRecyclerView);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        adapter = new RecyclerAdapter(getContext(), empty);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        adapter.setUpdatedData(new TripDaoImpl().getTripsFromFirebase(status, adapter));
+        recyclerView.setAdapter(adapter);
 
     }
 
@@ -56,13 +77,13 @@ public class MainFragment extends Fragment {
 
         LinearLayout empty = view.findViewById(R.id.layout_empty);
         RecyclerView recyclerView = view.findViewById(R.id.mainRecyclerView);
-        RecyclerAdapter adapter = new RecyclerAdapter(getContext(), empty);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        RecyclerAdapter adapter = new RecyclerAdapter(getContext(), empty);
         adapter.setUpdatedData(new TripDaoImpl().getTripsFromFirebase(status, adapter));
         recyclerView.setAdapter(adapter);
     }

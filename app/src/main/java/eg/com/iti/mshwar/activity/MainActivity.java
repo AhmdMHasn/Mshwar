@@ -191,7 +191,12 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_help:
+                
+                break;
 
+            case R.id.nav_about_us:
+                intent = new Intent(this, TeamActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.nav_settings:
