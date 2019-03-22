@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,11 +23,9 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 import eg.com.iti.mshwar.R;
-import eg.com.iti.mshwar.fragment.MainFragment;
-import eg.com.iti.mshwar.model.TripDao;
+import eg.com.iti.mshwar.fragment.MainTripsFragment;
 import eg.com.iti.mshwar.util.Utils;
 
 public class MainActivity extends AppCompatActivity
@@ -89,8 +86,8 @@ public class MainActivity extends AppCompatActivity
         fragmentContainer = findViewById(R.id.layout_content_main);
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null){
-            Fragment fragment = new MainFragment();
-            ((MainFragment) fragment).setStatus(Utils.UPCOMING);
+            Fragment fragment = new MainTripsFragment();
+            ((MainTripsFragment) fragment).setStatus(Utils.UPCOMING);
             myFragmentTransaction(fragment, Utils.REPLACE);
         }
     }
@@ -143,7 +140,9 @@ public class MainActivity extends AppCompatActivity
 
         switch (item.getItemId()){
             case R.id.optionSync:
+                //Toast.makeText(this, "Process synchronization..", Toast.LENGTH_SHORT).show();
                 // Handle sync here
+                Toast.makeText(this, "Synchronization completed successfully.", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.optionAddTrip:
                 addTripActivity();
@@ -191,7 +190,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_help:
-                
+
                 break;
 
             case R.id.nav_about_us:

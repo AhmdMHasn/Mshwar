@@ -2,14 +2,14 @@ package eg.com.iti.mshwar.dao;
 
 import android.content.Context;
 import java.util.List;
-import eg.com.iti.mshwar.adapter.RecyclerAdapter;
+import eg.com.iti.mshwar.adapter.TripAdapter;
 import eg.com.iti.mshwar.beans.TripBean;
 
 public interface TripDao {
 
     String addTrip(TripBean tripBean);
 
-    List<TripBean> getTripsFromFirebase(String tripStatus, RecyclerAdapter adapter);
+    List<TripBean> getTripsFromFirebase(String tripStatus, TripAdapter adapter);
 
     boolean deleteTripFromFirebase(String key);
 

@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import eg.com.iti.mshwar.activity.DialogActivity;
-import eg.com.iti.mshwar.adapter.RecyclerAdapter;
+import eg.com.iti.mshwar.adapter.TripAdapter;
 import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.util.Utils;
 
@@ -94,7 +93,7 @@ public class TripDaoImpl implements TripDao {
      * This great method :) is called to get data from firebase depending on the trip status
      * The data is added to the recycle view adapter to update the list
      */
-    public List<TripBean> getTripsFromFirebase(final String tripStatus, final RecyclerAdapter adapter) {
+    public List<TripBean> getTripsFromFirebase(final String tripStatus, final TripAdapter adapter) {
         tripList = new ArrayList<>();
 
         Query query = reference.child(Utils.TRIP_TABLE)

@@ -22,6 +22,8 @@
 
         <activity android:name=".activity.TripsHistoryActivity" />
 
+        <activity android:name=".activity.TeamActivity" />
+
         <activity android:name=".activity.TripActivity" />
 
         <activity android:name=".activity.MainActivity" />

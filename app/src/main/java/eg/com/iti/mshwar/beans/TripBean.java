@@ -39,6 +39,7 @@ public class TripBean implements Serializable {
     public void addAlarmId(String alarmId){
         this.alarmIds.add(alarmId);
     }
+
     public ArrayList<String> getNotes() {
         return notes;
     }
@@ -50,7 +51,6 @@ public class TripBean implements Serializable {
     public  void appendNotes(String note){
         this.notes.add(note);
     }
-
 
     public TripBean(){
 

@@ -12,31 +12,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.R;
-import eg.com.iti.mshwar.adapter.RecyclerAdapter;
+import eg.com.iti.mshwar.adapter.TripAdapter;
 import eg.com.iti.mshwar.dao.TripDaoImpl;
-import eg.com.iti.mshwar.model.TripDao;
-import eg.com.iti.mshwar.util.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment {
+public class MainTripsFragment extends Fragment {
 
     private String status;
     private RecyclerView recyclerView;
-    private RecyclerAdapter adapter;
+    private TripAdapter adapter;
     private LinearLayout empty;
 
-    public MainFragment() {
+    public MainTripsFragment() {
         // Required empty public constructor
     }
 
@@ -60,7 +51,7 @@ public class MainFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new RecyclerAdapter(getContext(), empty);
+        adapter = new TripAdapter(getContext(), empty);
 
     }
 
@@ -83,7 +74,7 @@ public class MainFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        RecyclerAdapter adapter = new RecyclerAdapter(getContext(), empty);
+        TripAdapter adapter = new TripAdapter(getContext(), empty);
         adapter.setUpdatedData(new TripDaoImpl().getTripsFromFirebase(status, adapter));
         recyclerView.setAdapter(adapter);
     }
