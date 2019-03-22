@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,20 +27,23 @@ import eg.com.iti.mshwar.dao.TripDaoImpl;
 import eg.com.iti.mshwar.util.Utils;
 
 import static android.support.constraint.Constraints.TAG;
+import static android.view.View.GONE;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
 
     private List<TripBean> tripsList;
     private LayoutInflater inflater;
     private Context context;
+    private LinearLayout emptyLayout;
 
-    private final int VIEW_TYPE_EMPTY_LIST = 0;
-    private final int VIEW_TYPE_FULL_VIEW = 1;
+    private final int TYPE_EMPTY_LIST = 0;
+    private final int TYPE_FULL_LIST = 1;
 
 
-    public RecyclerAdapter(Context context){
+    public RecyclerAdapter(Context context, LinearLayout empty){
         this.inflater = LayoutInflater.from(context);
         this.context = context;
+        emptyLayout = empty;
     }
 
     @Override
@@ -64,9 +68,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         myViewHolder.setListeners();
     }
 
+    private void onChange(){
+        if (tripsList.isEmpty()){
+            emptyLayout.setVisibility(View.VISIBLE);
+        } else {
+            emptyLayout.setVisibility(GONE);
+        }
+    }
+
     public void setUpdatedData(List<TripBean> tripList){
         this.tripsList = tripList;
         notifyDataSetChanged();
+        onChange();
     }
 
     @Override
@@ -78,12 +91,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         tripsList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, tripsList.size());
+        onChange();
     }
 
     public void addItem(int position, TripBean trip){
         tripsList.add(position, trip);
         notifyItemInserted(position);
         notifyItemRangeChanged(position, tripsList.size());
+        onChange();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -115,11 +130,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             this.thumbnail.setImageResource(currentObject.getStatusImage());
             this.position = position;
             this.currentObject = currentObject;
+            this.note.setVisibility(GONE);
 
             String imgPath = "https://maps.googleapis.com/maps/api/staticmap?size=500x250" +
-                    "&markers=color:blue%7Clabel:S%7C"
+                    "&markers=color:blue|label:S|"
                     +currentObject.getStartPointLatitude()+","+currentObject.getStartPointLongitude()+
-                    "&markers=color:red%7Clabel:E%7C"
+                    "&markers=color:red|label:E|"
                     +currentObject.getEndPointLatitude()+","+currentObject.getEndPointLongitude()+
                     "&key=AIzaSyDIJ9XX2ZvRKCJcFRrl-lRanEtFUow4piM";
 
@@ -133,7 +149,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
             // Hide start button if the status is not upcoming
             if (!currentObject.getStatus().equalsIgnoreCase(Utils.UPCOMING)){
-                this.start.setVisibility(View.GONE);
+                this.start.setVisibility(GONE);
             }
 
             // Change status text color based on status
@@ -153,23 +169,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         public void setListeners() {
             start.setOnClickListener(MyViewHolder.this);
             delete.setOnClickListener(MyViewHolder.this);
-            note.setOnClickListener(MyViewHolder.this);
+            //note.setOnClickListener(MyViewHolder.this);
             this.itemView.setOnClickListener(MyViewHolder.this);
         }
 
         @Override
         public void onClick(View v) {
+            TripDaoImpl tripDao = new TripDaoImpl();
+
             switch (v.getId()){
                 case R.id.start_list_item_main:
-                    addItem(position, currentObject);
-                    Toast.makeText(v.getContext(), "Start at Position " + position, Toast.LENGTH_SHORT).show();
+                    //addItem(position, currentObject);
+                    Toast.makeText(v.getContext(), "Start trip " + tripsList.get(position).getName(), Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.delete_list_item_main:
-                    removeItem(position);
-                    Toast.makeText(v.getContext(), "Delete at Position " + position, Toast.LENGTH_SHORT).show();
+                    if (tripDao.deleteTripFromFirebase(tripsList.get(position).getKey())){
+                        removeItem(position);
+                        Toast.makeText(v.getContext(), "Delete at Position " + position, Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case R.id.note_list_item_main:
-                    Toast.makeText(v.getContext(), "Note at Position " + position, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(v.getContext(), "Note at Position: " + tripsList.get(position).getName(), Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     Toast.makeText(v.getContext(), "Click at Position " + position, Toast.LENGTH_SHORT).show();

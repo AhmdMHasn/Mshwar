@@ -8,8 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -87,6 +89,13 @@ public class TripActivity extends AppCompatActivity {
         calendar = Calendar.getInstance();
         calendar2 = Calendar.getInstance();
 
+        // Setup upper toolbar with title and back button
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.add_trip));
+
         btnAddTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +125,8 @@ public class TripActivity extends AppCompatActivity {
                     tripImpl.addTrip(tripBean);
                     Toast.makeText(TripActivity.this,
                             "Trip added successfully", Toast.LENGTH_LONG).show();
+
+                    onBackPressed();
                 } else
                     Toast.makeText(TripActivity.this,
                             R.string.add_trip_error_message, Toast.LENGTH_LONG).show();
@@ -332,6 +343,12 @@ public class TripActivity extends AppCompatActivity {
                 }
             });
         else Toast.makeText(this, "Problem with loading page", Toast.LENGTH_LONG).show();
+    }
+
+    @Override // For action bar
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
 

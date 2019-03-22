@@ -53,7 +53,7 @@
     <string name="endpoint">End point</string>
     <string name="Tripname">Trip name</string>
     <string name="addaNewTrip">Add a new TRIP</string>
-    <string name="add_trip">Add trip</string>
+    <string name="add_trip">Add Trip</string>
     <string name="Type_trip">Type of trip</string>
     <string name="Repetition">Repetition</string>
     <string name="time">00:00 AM</string>
@@ -84,6 +84,8 @@
     <string name="str_help">Help</string>
     <string name="card_notes">Notes</string>
     <string name="card_delete">Delete</string>
+    <string name="add_note_hint">Add Note</string>
+    <string name="add_more_trips">Opps! No trips here. Start by adding(+) more trips.</string>
 
     <string-array name="typeoftrip">
         <item>One Direction</item>
@@ -91,9 +93,9 @@
     </string-array>
 
     <string-array name="repetition">
-        <item>daily</item>
-        <item>weekly</item>
-        <item>monthly</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
     </string-array>
 
 </resources>

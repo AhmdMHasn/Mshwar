@@ -63,7 +63,7 @@ public class TripBean {
             case Utils.DONE:
                 statusImage = R.drawable.done;
                 break;
-            case Utils.CANCELED:
+            case Utils.CANCELLED:
                 statusImage = R.drawable.canceled;
                 break;
             default:
@@ -213,7 +213,7 @@ public class TripBean {
         trip1.setName("Trip ");
         trip1.setStartPoint("Start point ");
         trip1.setEndPoint("End point ");
-        trip1.setStatus(Utils.CANCELED);
+        trip1.setStatus(Utils.CANCELLED);
         tripsArrayList.add(trip1);
 
         TripBean trip2 = new TripBean();

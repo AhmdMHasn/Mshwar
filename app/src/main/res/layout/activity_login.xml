@@ -131,6 +131,6 @@
         android:layout_height="150sp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

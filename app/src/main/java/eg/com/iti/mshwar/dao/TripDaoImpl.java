@@ -73,14 +73,13 @@ public class TripDaoImpl implements TripDao {
         map.put(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
         map.put(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
 
-
         DatabaseReference databaseReference = root.child(key);
         databaseReference.updateChildren(map);
 
     }
 
     /**
-     * This great method is called to get data from firebase depending on the trip status
+     * This great method :) is called to get data from firebase depending on the trip status
      * The data is added to the recycle view adapter to update the list
      */
     public List<TripBean> getTripsFromFirebase(final String tripStatus, final RecyclerAdapter adapter) {
@@ -89,6 +88,8 @@ public class TripDaoImpl implements TripDao {
         Query query = reference.child(Utils.TRIP_TABLE)
                 .orderByChild(Utils.COLUMN_TRIP_USER_ID)
                 .equalTo(currentUserId);
+
+        query.keepSynced(true);
 
         Log.d(TAG, "Current User ID: " + currentUserId);
 
@@ -147,8 +148,8 @@ public class TripDaoImpl implements TripDao {
 
     public boolean deleteTripFromFirebase(String key){
 
-        // Some code...
-
+        // handle removing the alarm here .. if succeed return true ya Sallam
+        reference.child(Utils.TRIP_TABLE).child(key).removeValue();
         return true;
     }
 

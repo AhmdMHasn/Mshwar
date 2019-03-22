@@ -11,6 +11,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +37,6 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,20 +54,16 @@ public class MainFragment extends Fragment {
 
     private void setUpRecyclerView(View view) {
 
+        LinearLayout empty = view.findViewById(R.id.layout_empty);
         RecyclerView recyclerView = view.findViewById(R.id.mainRecyclerView);
-        RecyclerAdapter adapter = new RecyclerAdapter(getContext());
-
-//        List<TripBean> tripList = new ArrayList<>();
-        TripDaoImpl tripDao = new TripDaoImpl();
-//        tripList = tripDao.getTripsFromFirebase(Utils.ALL);
-
+        RecyclerAdapter adapter = new RecyclerAdapter(getContext(), empty);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter.setUpdatedData(tripDao.getTripsFromFirebase(status, adapter));
+        adapter.setUpdatedData(new TripDaoImpl().getTripsFromFirebase(status, adapter));
         recyclerView.setAdapter(adapter);
     }
 
@@ -72,3 +71,4 @@ public class MainFragment extends Fragment {
         this.status = status;
     }
 }
+

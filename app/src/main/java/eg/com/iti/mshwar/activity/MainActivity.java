@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
     /**
      * Sign out the current user
      */
@@ -174,7 +173,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

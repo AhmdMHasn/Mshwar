@@ -269,11 +269,11 @@
                 </LinearLayout>
 
 
-                <ListView
-                    android:id="@+id/list_view_notes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="true" />
+                    <ListView
+                        android:id="@+id/list_view_notes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="true"/>
             </LinearLayout>
 
             <Button
@@ -282,10 +282,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@drawable/rounded_button"
-                android:text="@string/Add"
-                android:textColor="@color/white"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingRight="10dp"
+                android:text="@string/Add"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>

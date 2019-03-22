@@ -83,6 +83,6 @@
         android:id="@+id/progressBar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
-        android:visibility="invisible"/>
+        android:visibility="gone"/>
 
 </RelativeLayout>

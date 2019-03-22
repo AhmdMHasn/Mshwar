@@ -47,7 +47,6 @@ public class NotesAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.list_notes_layout, null);
         }
 
-
         TextView textViewAddNote = view.findViewById(R.id.textView_add_note);
         textViewAddNote.setText(notesList.get(position));
 
@@ -56,7 +55,6 @@ public class NotesAdapter extends BaseAdapter implements ListAdapter {
         imgDeleteNote.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
                 notesList.remove(position);
                 notifyDataSetChanged();
             }
