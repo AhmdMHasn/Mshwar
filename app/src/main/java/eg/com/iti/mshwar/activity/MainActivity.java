@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,11 +47,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "onCreate: started.");
+
         setupFirebaseAuth();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getString(R.string.title_activity_home));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,14 +69,28 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            TextView userEmail = headerView.findViewById(R.id.navUserEmail);
+            TextView userName = headerView.findViewById(R.id.navUserName);
+
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+
+            userName.setText("Welcome, " + name);
+            userEmail.setText(email);
+        }
 
         // Add Main Fragment (trips recycler view)
         fragmentContainer = findViewById(R.id.layout_content_main);
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null){
             Fragment fragment = new MainFragment();
+            ((MainFragment) fragment).setStatus(Utils.UPCOMING);
             myFragmentTransaction(fragment, Utils.REPLACE);
         }
     }
@@ -126,6 +142,9 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
 
         switch (item.getItemId()){
+            case R.id.optionSync:
+                // Handle sync here
+                return true;
             case R.id.optionAddTrip:
                 addTripActivity();
                 return true;
@@ -162,19 +181,29 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent intent;
+        switch (id){
+            case R.id.nav_home:
+                // Handle all trips action
+                break;
 
-        if (id == R.id.nav_trips_all) {
-            // Handle all trips action
-        } else if (id == R.id.nav_trips_upcoming) {
+            case R.id.nav_trips_all:
+                intent = new Intent(this, TripsHistoryActivity.class);
+                startActivity(intent);
+                break;
 
-        } else if (id == R.id.nav_trips_done) {
+            case R.id.nav_help:
 
-        } else if (id == R.id.nav_trips_cancelled) {
+                break;
 
-        } else if (id == R.id.nav_settings) {
-            startUserSettingsActivity();
-        } else if (id == R.id.nav_logout) {
-            signOut();
+            case R.id.nav_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.nav_logout:
+                signOut();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -237,14 +266,8 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
-
     private void addTripActivity() {
         Intent intent = new Intent(MainActivity.this,TripActivity.class);
-        startActivity(intent);
-    }
-
-    private void startUserSettingsActivity() {
-        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

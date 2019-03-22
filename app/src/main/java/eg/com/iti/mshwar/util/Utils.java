@@ -35,7 +35,7 @@ public final class Utils {
     public static final int ADD = 0;
     public static final int REPLACE = 1;
     public static final String UPCOMING = "UPCOMING";
-    public static final String CANCELED = "CANCELED";
+    public static final String CANCELLED = "CANCELLED";
     public static final String DONE = "DONE";
     public static final String ALL = "ALL";
 

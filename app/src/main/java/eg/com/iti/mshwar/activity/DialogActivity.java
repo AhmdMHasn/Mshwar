@@ -3,6 +3,8 @@ package eg.com.iti.mshwar.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,24 +12,39 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 import eg.com.iti.mshwar.service.NoteHeadService;
+
+import eg.com.iti.mshwar.beans.TripBean;
+import eg.com.iti.mshwar.dao.TripDaoImpl;
 import eg.com.iti.mshwar.service.service;
 import eg.com.iti.mshwar.util.Utils;
 
 public class DialogActivity extends Activity {
     Intent ReceivedIntent;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
+    TripBean tripBean;
+    Ringtone ringtone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_dialog);
-        ReceivedIntent = getIntent();
-        String title = ReceivedIntent.getStringExtra(Utils.COLUMN_TRIP_NAME);
-        String msg = "It's time for your trip from " + ReceivedIntent.getStringExtra(Utils.COLUMN_TRIP_START_POINT)
-                + " to " + ReceivedIntent.getStringExtra(Utils.COLUMN_TRIP_END_POINT);
+
+        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        ringtone = RingtoneManager.getRingtone(getApplicationContext(), alarmUri);
+
+        Intent receivedIntent = getIntent();
+        if (receivedIntent.getStringExtra("ringtone") == null)
+            ringtone.play();
+
+        tripBean = (TripBean) receivedIntent.getSerializableExtra(Utils.TRIP_TABLE);
+        String title = tripBean.getName();
+        String msg = "It's time for your trip from " + tripBean.getStartPoint()
+                + " to " + tripBean.getEndPoint();
+
+        final String key = tripBean.getKey();
+        final TripDaoImpl dao = new TripDaoImpl();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
         builder.setMessage(msg)
                 .setTitle(title)
                 .setPositiveButton("start", new DialogInterface.OnClickListener() {
@@ -51,32 +68,15 @@ public class DialogActivity extends Activity {
 
 
 
+                        dao.startTrip(DialogActivity.this, tripBean);
+                        DialogActivity.this.finish();
                     }
                 })
                 .setNeutralButton("later", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(DialogActivity.this, service.class);
-                        intent.putExtra(Utils.COLUMN_TRIP_NAME,
-                                ReceivedIntent.getStringExtra(Utils.COLUMN_TRIP_NAME));
-
-                        intent.putExtra(Utils.COLUMN_TRIP_END_POINT,
-                                ReceivedIntent.getStringExtra(Utils.COLUMN_TRIP_END_POINT));
-
-                        intent.putExtra(Utils.COLUMN_TRIP_START_POINT,
-                                ReceivedIntent.getStringExtra(Utils.COLUMN_TRIP_START_POINT));
-
-                        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE,
-                                ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0));
-
-                        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE,
-                                ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0));
-
-                        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE,
-                                ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0));
-
-                        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE,
-                                ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0));
+                        intent.putExtra(Utils.TRIP_TABLE, tripBean);
 
                         startService(intent);
                         finish();
@@ -85,13 +85,28 @@ public class DialogActivity extends Activity {
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO: cancel the trip
+                        dao.updateTripStatus(key, Utils.CANCELLED);
                         finish();
                     }
                 });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (ringtone.isPlaying())
+                    ringtone.stop();
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (ringtone.isPlaying())
+            ringtone.stop();
     }
 
     private void showNoteHead() {

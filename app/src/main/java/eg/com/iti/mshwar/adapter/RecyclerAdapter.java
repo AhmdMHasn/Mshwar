@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.R;
+import eg.com.iti.mshwar.dao.TripDaoImpl;
 import eg.com.iti.mshwar.util.Utils;
 
 import static android.support.constraint.Constraints.TAG;
@@ -30,8 +33,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private LayoutInflater inflater;
     private Context context;
 
-    public RecyclerAdapter(Context context, List<TripBean> data){
-        this.tripsList = data;
+    private final int VIEW_TYPE_EMPTY_LIST = 0;
+    private final int VIEW_TYPE_FULL_VIEW = 1;
+
+
+    public RecyclerAdapter(Context context){
         this.inflater = LayoutInflater.from(context);
         this.context = context;
     }
@@ -58,6 +64,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         myViewHolder.setListeners();
     }
 
+    public void setUpdatedData(List<TripBean> tripList){
+        this.tripsList = tripList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return tripsList.size();
@@ -75,11 +86,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         notifyItemRangeChanged(position, tripsList.size());
     }
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView tripName, startPoint, endPoint, status;
-        ImageView thumbnail, start, delete, mapThumbnail;
+        TextView tripName, description, status;
+        ImageView thumbnail, mapThumbnail;
+        Button delete, note;
+        ImageButton start;
         MaterialCardView container;
         int position;
         TripBean currentObject;
@@ -87,25 +99,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tripName    = itemView.findViewById(R.id.title_list_item_main);
-            startPoint  = itemView.findViewById(R.id.startpoint_list_item_main);
-            endPoint    = itemView.findViewById(R.id.endpoint_list_item_main);
+            description = itemView.findViewById(R.id.desc_list_item_main);
             status      = itemView.findViewById(R.id.status_list_item_main);
             thumbnail   = itemView.findViewById(R.id.img_list_item_main);
+            mapThumbnail= itemView.findViewById(R.id.img_list_item_map);
             start       = itemView.findViewById(R.id.start_list_item_main);
             delete      = itemView.findViewById(R.id.delete_list_item_main);
-            mapThumbnail= itemView.findViewById(R.id.img_list_item_map);
+            note        = itemView.findViewById(R.id.note_list_item_main);
         }
 
         public void setData(TripBean currentObject, int position) {
             this.tripName.setText(currentObject.getName());
-            this.startPoint.setText(currentObject.getStartPoint());
-            this.endPoint.setText(currentObject.getEndPoint());
+            this.description.setText(currentObject.getStartPoint() + " - " + currentObject.getEndPoint());
             this.status.setText((currentObject.getStatus()));
             this.thumbnail.setImageResource(currentObject.getStatusImage());
             this.position = position;
             this.currentObject = currentObject;
-            this.delete.setImageResource(R.drawable.delete);
-            this.start.setImageResource(R.drawable.start);
 
             String imgPath = "https://maps.googleapis.com/maps/api/staticmap?size=500x250" +
                     "&markers=color:blue%7Clabel:S%7C"
@@ -122,11 +131,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     .error(R.drawable.ic_img_default_logo)
                     .into(mapThumbnail);
 
-            // Hide map if status is cancelled
-            if (currentObject.getStatus().equalsIgnoreCase(Utils.CANCELED)){
-                this.mapThumbnail.setVisibility(View.GONE);
-            }
-
             // Hide start button if the status is not upcoming
             if (!currentObject.getStatus().equalsIgnoreCase(Utils.UPCOMING)){
                 this.start.setVisibility(View.GONE);
@@ -137,7 +141,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 case Utils.UPCOMING:
                     this.status.setTextColor(Color.parseColor("#1081e0"));
                     break;
-                case Utils.CANCELED:
+                case Utils.CANCELLED:
                     this.status.setTextColor(Color.parseColor("#d75a4a"));
                     break;
                 case Utils.DONE:
@@ -149,6 +153,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         public void setListeners() {
             start.setOnClickListener(MyViewHolder.this);
             delete.setOnClickListener(MyViewHolder.this);
+            note.setOnClickListener(MyViewHolder.this);
             this.itemView.setOnClickListener(MyViewHolder.this);
         }
 
@@ -163,7 +168,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     removeItem(position);
                     Toast.makeText(v.getContext(), "Delete at Position " + position, Toast.LENGTH_SHORT).show();
                     break;
-//                case R.id.container_list_item_main:
+                case R.id.note_list_item_main:
+                    Toast.makeText(v.getContext(), "Note at Position " + position, Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     Toast.makeText(v.getContext(), "Click at Position " + position, Toast.LENGTH_SHORT).show();
                     break;

@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/optionSync"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:title="@string/menu_sync"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/optionAddTrip"
         android:title="@string/add_trip"/>
 

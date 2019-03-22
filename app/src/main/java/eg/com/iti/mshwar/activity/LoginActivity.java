@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -156,16 +157,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     /**
      * Return true if the @param is null
-     *
      * @param string
      * @return
      */
 
-
     private boolean isEmpty(String string) {
         return string.equals("");
     }
-
 
     private void showDialog() {
         mProgressBar.setVisibility(View.VISIBLE);
@@ -219,7 +217,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         };
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -236,7 +233,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
 
     }
-
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

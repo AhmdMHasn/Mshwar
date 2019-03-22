@@ -84,6 +84,8 @@ public class TripActivity extends AppCompatActivity {
         final String uid = user.getUid();
 
         tripBean = new TripBean();
+        tripImpl = new TripDaoImpl();
+
         calendar = Calendar.getInstance();
         calendar2 = Calendar.getInstance();
 
@@ -101,21 +103,30 @@ public class TripActivity extends AppCompatActivity {
                     tripBean.setNotes(notesArrayList);
                     tripBean.setUserId(uid);
 
+                    String firstAlarmId, secondAlarmId;
+                    firstAlarmId = String.valueOf((int) System.currentTimeMillis());
+                    secondAlarmId = String.valueOf((int) System.currentTimeMillis() + 51655);
+
                     if (spinnerTripType.getSelectedItem().equals("Round Trip")) {
-                        String firstAlarmId = String.valueOf(setAlarm(calendar));
-                        String secondAlarmId = String.valueOf(setAlarm(calendar2));
 
                         tripBean.addAlarmId(firstAlarmId);
                         tripBean.addAlarmId(secondAlarmId);
+
+                        String key = tripImpl.addTrip(tripBean);
+                        tripBean.setKey(key);
+
+                        setAlarm(calendar, firstAlarmId);
+                        setAlarm(calendar2, secondAlarmId);
                     } else {
-                        tripBean.addAlarmId(String.valueOf(setAlarm(calendar)));
+                        tripBean.addAlarmId(String.valueOf(firstAlarmId));
+                        String key = tripImpl.addTrip(tripBean);
+                        tripBean.setKey(key);
+                        setAlarm(calendar, firstAlarmId);
                     }
 
-                    tripImpl = new TripDaoImpl();
-
-                    tripImpl.addTrip(tripBean);
                     Toast.makeText(TripActivity.this,
                             "Trip added successfully", Toast.LENGTH_LONG).show();
+                    finish();
                 } else
                     Toast.makeText(TripActivity.this,
                             R.string.add_trip_error_message, Toast.LENGTH_LONG).show();
@@ -192,6 +203,8 @@ public class TripActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     void showDatePickerDialog(final String tripDirection) {
@@ -203,7 +216,6 @@ public class TripActivity extends AppCompatActivity {
         DatePickerDialog mDatePicker;
         mDatePicker = new DatePickerDialog(TripActivity.this, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
-                datepicker.setMinDate(System.currentTimeMillis());
                 String dateStr = selectedDay + "/" + selectedMonth + 1 + "/" + selectedYear;
 
                 if (!tripDirection.equals("single")) {
@@ -223,6 +235,7 @@ public class TripActivity extends AppCompatActivity {
                 }
             }
         }, mYear, mMonth, mDay);
+        mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
         mDatePicker.setTitle("Select Date");
         mDatePicker.show();
     }
@@ -257,33 +270,19 @@ public class TripActivity extends AppCompatActivity {
         mTimePicker.show();
     }
 
-    private int setAlarm(Calendar mCalendar) {
+    private void setAlarm(Calendar mCalendar, String alarmID) {
         intent = new Intent(TripActivity.this, MyReceiver.class);
 
-        intent.putExtra(Utils.COLUMN_TRIP_NAME, tripBean.getName());
-        intent.putExtra(Utils.COLUMN_TRIP_END_POINT, tripBean.getEndPoint());
-        intent.putExtra(Utils.COLUMN_TRIP_START_POINT, tripBean.getStartPoint());
-        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, tripBean.getStartPointLatitude());
-        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, tripBean.getStartPointLongitude());
-        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
-        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
+        intent.putExtra(Utils.TRIP_TABLE, tripBean);
+        int alarmId = Integer.valueOf(alarmID);
 
-        int alarmID = (int) System.currentTimeMillis();
-
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(
-                        TripActivity.this,
-                        alarmID, intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(TripActivity.this, alarmId,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager manager = (AlarmManager) TripActivity.this.getSystemService(Context.ALARM_SERVICE);
-        manager.setRepeating(
-                AlarmManager.RTC_WAKEUP,
-                mCalendar.getTimeInMillis(),
-                0,
-                pendingIntent);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), 0, pendingIntent);
 
-        return alarmID;
     }
 
     @Override
@@ -300,7 +299,6 @@ public class TripActivity extends AppCompatActivity {
                     LatLng myLatLong = place.getLatLng();
                     tripBean.setStartPointLatitude(myLatLong.latitude);
                     tripBean.setStartPointLongitude(myLatLong.longitude);
-
                 }
 
                 @Override
@@ -310,7 +308,6 @@ public class TripActivity extends AppCompatActivity {
                 }
             });
         else Toast.makeText(this, "Problem with loading page", Toast.LENGTH_LONG).show();
-
 
         PlaceAutocompleteFragment placeAutoCompleteFragmentEndPoint = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.editTxt_end_point);
         if (placeAutoCompleteFragmentEndPoint != null)

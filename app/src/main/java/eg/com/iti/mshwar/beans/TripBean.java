@@ -1,12 +1,13 @@
 package eg.com.iti.mshwar.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.util.Utils;
 
-public class TripBean {
+public class TripBean implements Serializable {
 
     // please add alarm id
     private String userId;
@@ -63,7 +64,7 @@ public class TripBean {
             case Utils.DONE:
                 statusImage = R.drawable.done;
                 break;
-            case Utils.CANCELED:
+            case Utils.CANCELLED:
                 statusImage = R.drawable.canceled;
                 break;
             default:
@@ -213,7 +214,7 @@ public class TripBean {
         trip1.setName("Trip ");
         trip1.setStartPoint("Start point ");
         trip1.setEndPoint("End point ");
-        trip1.setStatus(Utils.CANCELED);
+        trip1.setStatus(Utils.CANCELLED);
         tripsArrayList.add(trip1);
 
         TripBean trip2 = new TripBean();

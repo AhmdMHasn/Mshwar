@@ -10,6 +10,7 @@ import android.util.Log;
 
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.activity.DialogActivity;
+import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.util.Utils;
 
 public class service extends IntentService {
@@ -22,43 +23,29 @@ public class service extends IntentService {
 
     @Override
     public void onHandleIntent(Intent intent) {
-        sendNotification(intent.getStringExtra(Utils.COLUMN_TRIP_NAME), intent);
+        sendNotification(intent);
     }
 
-    private void sendNotification(String msg, Intent intent) {
-        Log.d("AlarmService", "Preparing to send notification...: " + msg);
+    private void sendNotification(Intent intent) {
+        Log.d("AlarmService", "Preparing to send notification...: ");
         alarmNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
-//        int id = intent.getExtras().getInt("id");
+        TripBean tripBean = (TripBean) intent.getSerializableExtra(Utils.TRIP_TABLE);
+
         Intent dialogActivityIntent = new Intent(this, DialogActivity.class);
+        dialogActivityIntent.putExtra(Utils.TRIP_TABLE, tripBean);
+        dialogActivityIntent.putExtra("ringtone", "stop");
+        dialogActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 dialogActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_NAME,
-                intent.getStringExtra(Utils.COLUMN_TRIP_NAME));
-
-        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_END_POINT,
-                intent.getStringExtra(Utils.COLUMN_TRIP_END_POINT));
-
-        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_START_POINT,
-                intent.getStringExtra(Utils.COLUMN_TRIP_START_POINT));
-
-        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE,
-                intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0));
-
-        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE,
-                intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0));
-
-        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE,
-                intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0));
-
-        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE,
-                intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0));
+        String msg = "from " + tripBean.getStartPoint() + " to " + tripBean.getEndPoint();
 
         NotificationCompat.Builder alarmNotificationBuilder =
-                new NotificationCompat.Builder(this, "Mshwar")
-                        .setContentTitle(intent.getStringExtra(Utils.COLUMN_TRIP_NAME))
+                new NotificationCompat.Builder(this, "")
+                        .setContentTitle(tripBean.getName())
                         .setSmallIcon(R.drawable.logo)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                         .setContentText(msg).setAutoCancel(true).setOngoing(true);
