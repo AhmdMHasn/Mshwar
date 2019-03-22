@@ -1,5 +1,9 @@
 package eg.com.iti.mshwar.dao;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -15,12 +19,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import eg.com.iti.mshwar.activity.DialogActivity;
 import eg.com.iti.mshwar.adapter.RecyclerAdapter;
 import eg.com.iti.mshwar.beans.TripBean;
 import eg.com.iti.mshwar.util.Utils;
 
 public class TripDaoImpl implements TripDao {
-
 
 
     public static final String TAG = "TripDao";
@@ -49,7 +53,7 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
-    public void addTrip(TripBean tripBean) {
+    public String addTrip(TripBean tripBean) {
 
         DatabaseReference root = FirebaseDatabase.getInstance().getReference().child(Utils.TRIP_TABLE);
         String key = root.push().getKey();
@@ -57,26 +61,33 @@ public class TripDaoImpl implements TripDao {
         root.updateChildren(m);
 
         HashMap<String, Object> map = new HashMap<>();
+
         map.put(Utils.COLUMN_TRIP_NAME, tripBean.getName());
         map.put(Utils.COLUMN_TRIP_START_POINT, tripBean.getStartPoint());
-        map.put(Utils.COLUMN_TRIP_START_POINT_LONGITUDE,tripBean.getStartPointLongitude());
-        map.put(Utils.COLUMN_TRIP_START_POINT_LATITUDE,tripBean.getStartPointLatitude());
-        map.put(Utils.COLUMN_TRIP_END_POINT_LONGITUDE,tripBean.getEndPointLongitude());
-        map.put(Utils.COLUMN_TRIP_END_POINT_LATITUDE,tripBean.getEndPointLatitude());
-        map.put(Utils.COLUMN_TRIP_END_POINT,tripBean.getEndPoint());
-        map.put(Utils.COLUMN_TRIP_TRIP_TYPE,tripBean.getType());
-        map.put(Utils.COLUMN_TRIP_REPETITION,tripBean.getRepetition());
-        map.put(Utils.COLUMN_TRIP_Date,tripBean.getDate());
-        map.put(Utils.COLUMN_TRIP_Time,tripBean.getTime());
+        map.put(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, tripBean.getStartPointLongitude());
+        map.put(Utils.COLUMN_TRIP_START_POINT_LATITUDE, tripBean.getStartPointLatitude());
+        map.put(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
+        map.put(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
+        map.put(Utils.COLUMN_TRIP_END_POINT, tripBean.getEndPoint());
+        map.put(Utils.COLUMN_TRIP_TRIP_TYPE, tripBean.getType());
+        map.put(Utils.COLUMN_TRIP_REPETITION, tripBean.getRepetition());
+        map.put(Utils.COLUMN_TRIP_Date, tripBean.getDate());
+        map.put(Utils.COLUMN_TRIP_Time, tripBean.getTime());
         map.put(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
         map.put(Utils.COLUMN_TRIP_STATUS, tripBean.getStatus());
         map.put(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
         map.put(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
 
-
         DatabaseReference databaseReference = root.child(key);
         databaseReference.updateChildren(map);
 
+        return key;
+    }
+
+    //for updating the trip status to upcoming, done or cancelled
+    public void updateTripStatus(String tripKey, String updatedStatus) {
+        DatabaseReference root = FirebaseDatabase.getInstance().getReference().child(Utils.TRIP_TABLE);
+        root.child(tripKey).child(Utils.COLUMN_TRIP_STATUS).setValue(updatedStatus);
     }
 
     /**
@@ -109,11 +120,11 @@ public class TripDaoImpl implements TripDao {
 
                 List<TripBean> tripListFiltered = new ArrayList<>();
 
-                if (_tripStatus != null){
+                if (_tripStatus != null) {
                     switch (_tripStatus) {
                         case (Utils.UPCOMING):
                             for (int i = 0; i < tripList.size(); i++) {
-                                if (tripList.get(i).getStatus().equalsIgnoreCase(Utils.UPCOMING)){
+                                if (tripList.get(i).getStatus().equalsIgnoreCase(Utils.UPCOMING)) {
                                     tripListFiltered.add(tripList.get(i));
                                 }
                             }
@@ -122,7 +133,7 @@ public class TripDaoImpl implements TripDao {
                         case (Utils.DONE):
                         case (Utils.CANCELLED):
                             for (int i = 0; i < tripList.size(); i++) {
-                                if (!tripList.get(i).getStatus().equalsIgnoreCase(Utils.UPCOMING)){
+                                if (!tripList.get(i).getStatus().equalsIgnoreCase(Utils.UPCOMING)) {
                                     tripListFiltered.add(tripList.get(i));
                                 }
                             }
@@ -138,18 +149,35 @@ public class TripDaoImpl implements TripDao {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d(TAG,databaseError.getMessage());
+                Log.d(TAG, databaseError.getMessage());
             }
         });
 
         return tripList;
     }
 
-    public boolean deleteTripFromFirebase(String key){
+    public boolean deleteTripFromFirebase(String key) {
 
         // Some code...
 
         return true;
     }
+
+    public void startTrip(Context context, TripBean trip) {
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?saddr="
+                        + trip.getStartPointLatitude() + ","
+                        + trip.getStartPointLongitude()
+                        + "(" + trip.getStartPoint() + ")"
+                        + "&daddr="
+                        + trip.getEndPointLatitude() + ","
+                        + trip.getStartPointLongitude()
+                        + "(" + trip.getEndPoint() + ")"
+                ));
+
+        context.startActivity(intent);
+        updateTripStatus(trip.getKey(), Utils.DONE);
+    }
+
 
 }
