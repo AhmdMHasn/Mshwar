@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     ConstraintLayout fragmentContainer;
+    Fragment fragment;
 
     View headerView;
 
@@ -79,7 +80,8 @@ public class MainActivity extends AppCompatActivity
         fragmentContainer = findViewById(R.id.layout_content_main);
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null){
-            Fragment fragment = new MainTripsFragment();
+            fragment = new MainTripsFragment();
+
             ((MainTripsFragment) fragment).setStatus(Utils.UPCOMING);
             myFragmentTransaction(fragment, Utils.REPLACE);
         }
@@ -148,6 +150,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.optionSync:
                 //Toast.makeText(this, "Process synchronization..", Toast.LENGTH_SHORT).show();
                 // Handle sync here
+                ((MainTripsFragment) fragment).setUpRecyclerView();
                 Toast.makeText(this, "Synchronization completed successfully.", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.optionAddTrip:

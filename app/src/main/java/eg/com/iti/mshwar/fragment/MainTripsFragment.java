@@ -59,24 +59,15 @@ public class MainTripsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        adapter.setUpdatedData(new TripDaoImpl().getTripsFromFirebase(status, adapter));
-        recyclerView.setAdapter(adapter);
+        setUpRecyclerView();
 
     }
 
-    private void setUpRecyclerView(View view) {
+    public void setUpRecyclerView() {
 
-        LinearLayout empty = view.findViewById(R.id.layout_empty);
-        RecyclerView recyclerView = view.findViewById(R.id.mainRecyclerView);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        TripAdapter adapter = new TripAdapter(getContext(), empty);
         adapter.setUpdatedData(new TripDaoImpl().getTripsFromFirebase(status, adapter));
         recyclerView.setAdapter(adapter);
+
     }
 
     public void setStatus(String status) {
