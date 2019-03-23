@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     ConstraintLayout fragmentContainer;
+    Fragment fragment;
 
     View headerView;
 
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
         headerView = navigationView.getHeaderView(0);
 
@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity
         fragmentContainer = findViewById(R.id.layout_content_main);
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null){
-            Fragment fragment = new MainTripsFragment();
+            fragment = new MainTripsFragment();
+
             ((MainTripsFragment) fragment).setStatus(Utils.UPCOMING);
             myFragmentTransaction(fragment, Utils.REPLACE);
         }
@@ -101,7 +102,6 @@ public class MainActivity extends AppCompatActivity
             userEmail.setText(user.getEmail());
             userImage.setImageURI(user.getPhotoUrl());
 
-//            Log.d(TAG, user.getPhotoUrl().toString() + "~~~~~~~~");
             if (userImage.getDrawable() == null) userImage.setImageResource(R.drawable.nav_user);
         }
     }
@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.optionSync:
                 //Toast.makeText(this, "Process synchronization..", Toast.LENGTH_SHORT).show();
                 // Handle sync here
+                ((MainTripsFragment) fragment).setUpRecyclerView();
                 Toast.makeText(this, "Synchronization completed successfully.", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.optionAddTrip:
@@ -199,7 +200,8 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_help:
-
+                intent = new Intent(this, HowItWorksActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.nav_about_us:
@@ -221,7 +223,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     /*----------------------------- Firebase setup ---------------------------------*/
     private void setupFirebaseAuth(){

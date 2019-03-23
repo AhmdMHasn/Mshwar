@@ -95,6 +95,7 @@
     <string name="title_activity_team">About us</string>
     <string name="str_about_us">About Us</string>
     <string name="prompt_first_name">Your name</string>
+    <string name="title_how_it_works">How it Works</string>
 
     <string-array name="typeoftrip">
         <item>One Direction</item>
