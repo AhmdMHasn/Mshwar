@@ -82,7 +82,6 @@ public class DialogActivity extends Activity {
                         } else {
                             showNoteHead();
                             openMap();
-
                         }
 
                         dao.startTrip(DialogActivity.this, tripBean);

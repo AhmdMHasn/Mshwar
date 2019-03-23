@@ -111,9 +111,9 @@ public class TripActivity extends AppCompatActivity {
                 // code to start trip
                 tripBean.setName(editTxtTripName.getText().toString());
 
-                if (tripBean.getName() != null && tripBean.getStartPoint() != null
-                        && tripBean.getEndPoint() != null && tripBean.getTime() != null
-                        && tripBean.getDate() != null) {
+                if (tripBean.getName().length() > 0 && tripBean.getStartPoint().length() > 0
+                        && tripBean.getEndPoint().length() > 0 && tripBean.getTime().size() > 0
+                        && tripBean.getDate().size() > 0) {
 
                     tripBean.setStatus(Utils.UPCOMING);
                     tripBean.setNotes(notesArrayList);
@@ -142,6 +142,10 @@ public class TripActivity extends AppCompatActivity {
 
                     Toast.makeText(TripActivity.this,
                             "Trip added successfully", Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(TripActivity.this,
+                            tripBean.getName()+"," , Toast.LENGTH_LONG).show();
+
                     finish();
                 } else
                     Toast.makeText(TripActivity.this,

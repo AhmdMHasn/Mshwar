@@ -1,6 +1,7 @@
 package eg.com.iti.mshwar.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -18,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.URLUtil;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +37,14 @@ public class MainActivity extends AppCompatActivity
 
     //Firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
+    FirebaseUser user;
 
     // Fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     ConstraintLayout fragmentContainer;
+
+    View headerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +74,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
-        View headerView = navigationView.getHeaderView(0);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            TextView userEmail = headerView.findViewById(R.id.navUserEmail);
-            TextView userName = headerView.findViewById(R.id.navUserName);
-
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-
-            userName.setText("Welcome, " + name);
-            userEmail.setText(email);
-        }
+        headerView = navigationView.getHeaderView(0);
 
         // Add Main Fragment (trips recycler view)
         fragmentContainer = findViewById(R.id.layout_content_main);
@@ -96,12 +90,26 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         checkAuthenticationState();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            TextView userEmail = headerView.findViewById(R.id.navUserEmail);
+            TextView userName = headerView.findViewById(R.id.navUserName);
+            ImageView userImage = headerView.findViewById(R.id.navUserImage);
+
+            userName.setText("Welcome, " + user.getDisplayName());
+            userEmail.setText(user.getEmail());
+            userImage.setImageURI(user.getPhotoUrl());
+
+//            Log.d(TAG, user.getPhotoUrl().toString() + "~~~~~~~~");
+            if (userImage.getDrawable() == null) userImage.setImageResource(R.drawable.nav_user);
+        }
     }
 
     private void checkAuthenticationState(){
         Log.d(TAG, "checkAuthenticationState: checking authentication state.");
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user == null){
             Log.d(TAG, "checkAuthenticationState: user is null, navigating back to login screen.");

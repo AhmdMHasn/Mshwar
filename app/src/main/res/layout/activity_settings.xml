@@ -28,22 +28,23 @@
         android:orientation="vertical"
         android:padding="25dp">
 
-        <ImageView
-            android:id="@+id/inp"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/input_image"
             android:layout_width="@dimen/nav_header_image"
             android:layout_height="@dimen/nav_header_image"
             android:contentDescription="@string/nav_header_desc"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            app:srcCompat="@drawable/nav_user" />
+            android:src="@drawable/nav_user" />
 
         <EditText
-            android:id="@+id/input_username"
+            android:id="@+id/input_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:hint="@string/prompt_username"
+            android:hint="@string/prompt_first_name"
             android:inputType="text"
             android:textAlignment="center"/>
+
 
         <EditText
             android:id="@+id/input_email"
@@ -52,17 +53,14 @@
             android:layout_margin="10dp"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            />
 
-
-        <EditText
-            android:id="@+id/input_password"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/change_image"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:hint="@string/current_password"
-            android:inputType="textPassword"
-            android:textAlignment="center"/>
+            android:text="Change Image"/>
 
 
         <android.support.v7.widget.AppCompatButton
