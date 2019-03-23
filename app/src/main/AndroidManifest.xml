@@ -18,8 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.HowItWorksActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.HowItWorksActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -52,11 +53,11 @@
             android:theme="@style/Theme.AppCompat.Translucent" />
 
         <receiver
-            android:name=".service.MyReceiver"
+            android:name=".service.AlarmReceiver"
             android:enabled="true" />
 
         <service
-            android:name=".service.service"
+            android:name=".service.NotificationService"
             android:enabled="true" />
         <service
             android:name=".service.NoteHeadService"

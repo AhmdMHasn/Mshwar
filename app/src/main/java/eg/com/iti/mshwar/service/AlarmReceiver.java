@@ -8,7 +8,7 @@ import android.util.Log;
 import eg.com.iti.mshwar.activity.DialogActivity;
 import eg.com.iti.mshwar.util.Utils;
 
-public class MyReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

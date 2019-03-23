@@ -101,7 +101,7 @@ public class NoteHeadService extends Service {
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //close the service and remove the chat head from the window
+                //close the NotificationService and remove the chat head from the window
                 stopSelf();
             }
         });

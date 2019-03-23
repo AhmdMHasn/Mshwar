@@ -3,19 +3,19 @@ package eg.com.iti.mshwar.dao;
 import android.content.Context;
 import java.util.List;
 import eg.com.iti.mshwar.adapter.TripAdapter;
-import eg.com.iti.mshwar.beans.TripBean;
+import eg.com.iti.mshwar.beans.Trip;
 
 public interface TripDao {
 
-    String addTrip(TripBean tripBean);
+    String addTrip(Trip trip);
 
-    List<TripBean> getTripsFromFirebase(String tripStatus, TripAdapter adapter);
+    List<Trip> getTripsFromFirebase(String tripStatus, TripAdapter adapter);
 
-    boolean deleteTripFromFirebase(Context context, TripBean tripBean);
+    boolean deleteTripFromFirebase(Context context, Trip trip);
 
     void updateTripStatus(String tripKey, String updatedStatus);
 
-    void startTrip(Context context, TripBean trip);
+    void startTrip(Context context, Trip trip);
 
-    void updateTripInfo(TripBean tripBean);
+    void updateTripInfo(Trip trip);
 }

@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -32,21 +31,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.adapter.NotesAdapter;
-import eg.com.iti.mshwar.beans.TripBean;
+import eg.com.iti.mshwar.beans.Trip;
 import eg.com.iti.mshwar.dao.TripDaoImpl;
-import eg.com.iti.mshwar.service.MyReceiver;
+import eg.com.iti.mshwar.service.AlarmReceiver;
 import eg.com.iti.mshwar.util.Utils;
 
 public class TripActivity extends AppCompatActivity {
@@ -59,7 +51,7 @@ public class TripActivity extends AppCompatActivity {
     ImageView imageViewAddNote;
     LinearLayout roundTripTimeAndDate;
 
-    TripBean tripBean;
+    Trip trip;
     TripDaoImpl tripImpl;
     Intent intent;
 
@@ -92,7 +84,7 @@ public class TripActivity extends AppCompatActivity {
         notesList.setAdapter(notesAdapter);
         final String uid = user.getUid();
 
-        tripBean = new TripBean();
+        trip = new Trip();
         tripImpl = new TripDaoImpl();
 
         calendar = Calendar.getInstance();
@@ -109,15 +101,15 @@ public class TripActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // code to start trip
-                tripBean.setName(editTxtTripName.getText().toString());
+                trip.setName(editTxtTripName.getText().toString());
 
-                if (tripBean.getName().length() > 0 && tripBean.getStartPoint().length() > 0
-                        && tripBean.getEndPoint().length() > 0 && tripBean.getTime().size() > 0
-                        && tripBean.getDate().size() > 0) {
+                if (trip.getName().length() > 0 && trip.getStartPoint().length() > 0
+                        && trip.getEndPoint().length() > 0 && trip.getTime().size() > 0
+                        && trip.getDate().size() > 0) {
 
-                    tripBean.setStatus(Utils.UPCOMING);
-                    tripBean.setNotes(notesArrayList);
-                    tripBean.setUserId(uid);
+                    trip.setStatus(Utils.UPCOMING);
+                    trip.setNotes(notesArrayList);
+                    trip.setUserId(uid);
 
                     String firstAlarmId, secondAlarmId;
                     firstAlarmId = String.valueOf((int) System.currentTimeMillis());
@@ -125,18 +117,18 @@ public class TripActivity extends AppCompatActivity {
 
                     if (spinnerTripType.getSelectedItem().equals("Round Trip")) {
 
-                        tripBean.addAlarmId(firstAlarmId);
-                        tripBean.addAlarmId(secondAlarmId);
+                        trip.addAlarmId(firstAlarmId);
+                        trip.addAlarmId(secondAlarmId);
 
-                        String key = tripImpl.addTrip(tripBean);
-                        tripBean.setKey(key);
+                        String key = tripImpl.addTrip(trip);
+                        trip.setKey(key);
 
                         setAlarm(calendar, firstAlarmId);
                         setAlarm(calendar2, secondAlarmId);
                     } else {
-                        tripBean.addAlarmId(String.valueOf(firstAlarmId));
-                        String key = tripImpl.addTrip(tripBean);
-                        tripBean.setKey(key);
+                        trip.addAlarmId(String.valueOf(firstAlarmId));
+                        String key = tripImpl.addTrip(trip);
+                        trip.setKey(key);
                         setAlarm(calendar, firstAlarmId);
                     }
 
@@ -181,7 +173,7 @@ public class TripActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String tripType = adapterView.getItemAtPosition(i).toString();
-                tripBean.setType(tripType);
+                trip.setType(tripType);
                 if (tripType.equals("Round Trip")) {
                     roundTripTimeAndDate.setVisibility(View.VISIBLE);
                 } else
@@ -198,7 +190,7 @@ public class TripActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String tripRepetition = adapterView.getItemAtPosition(i).toString();
-                tripBean.setRepetition(tripRepetition);
+                trip.setRepetition(tripRepetition);
             }
 
             @Override
@@ -239,14 +231,14 @@ public class TripActivity extends AppCompatActivity {
                     calendar2.set(Calendar.DAY_OF_MONTH, selectedDay);
 
                     txtViewDate2.setText(dateStr);
-                    tripBean.addDate(dateStr);
+                    trip.addDate(dateStr);
                 } else {
                     calendar.set(Calendar.YEAR, selectedYear);
                     calendar.set(Calendar.MONTH, selectedMonth);
                     calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
 
                     txtViewDate.setText(dateStr);
-                    tripBean.addDate(dateStr);
+                    trip.addDate(dateStr);
                 }
             }
         }, mYear, mMonth, mDay);
@@ -271,13 +263,13 @@ public class TripActivity extends AppCompatActivity {
                     calendar2.set(Calendar.MINUTE, selectedMinute);
 
                     txtViewTime2.setText(timeStr);
-                    tripBean.addTime(timeStr);
+                    trip.addTime(timeStr);
                 } else {
                     calendar.set(Calendar.HOUR_OF_DAY, selectedHour);
                     calendar.set(Calendar.MINUTE, selectedMinute);
 
                     txtViewTime.setText(timeStr);
-                    tripBean.addTime(timeStr);
+                    trip.addTime(timeStr);
                 }
             }
         }, hour, minute, false);
@@ -286,33 +278,33 @@ public class TripActivity extends AppCompatActivity {
     }
 
     private void setAlarm(Calendar mCalendar, String alarmID) {
-        intent = new Intent(TripActivity.this, MyReceiver.class);
+        intent = new Intent(TripActivity.this, AlarmReceiver.class);
 
-//        intent.putExtra(Utils.TRIP_TABLE, tripBean);
+//        intent.putExtra(Utils.TRIP_TABLE, trip);
 //        try {
-//            byte[] arr = Utils.convertToBytes(tripBean);
+//            byte[] arr = Utils.convertToBytes(trip);
 //            intent.putExtra(Utils.TRIP_TABLE, arr);
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
 
-        intent.putExtra("key", tripBean.getKey());
-        intent.putExtra(Utils.COLUMN_TRIP_NAME, tripBean.getName());
-        intent.putExtra(Utils.COLUMN_TRIP_START_POINT, tripBean.getStartPoint());
-        intent.putExtra(Utils.COLUMN_TRIP_END_POINT, tripBean.getEndPoint());
-        intent.putExtra(Utils.COLUMN_TRIP_REPETITION, tripBean.getRepetition());
-        intent.putExtra(Utils.COLUMN_TRIP_TRIP_TYPE, tripBean.getType());
-        intent.putExtra(Utils.COLUMN_TRIP_STATUS, tripBean.getStatus());
-        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, tripBean.getStartPointLatitude());
-        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, tripBean.getStartPointLongitude());
-        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
-        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
+        intent.putExtra("key", trip.getKey());
+        intent.putExtra(Utils.COLUMN_TRIP_NAME, trip.getName());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT, trip.getStartPoint());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT, trip.getEndPoint());
+        intent.putExtra(Utils.COLUMN_TRIP_REPETITION, trip.getRepetition());
+        intent.putExtra(Utils.COLUMN_TRIP_TRIP_TYPE, trip.getType());
+        intent.putExtra(Utils.COLUMN_TRIP_STATUS, trip.getStatus());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, trip.getStartPointLatitude());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, trip.getStartPointLongitude());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, trip.getEndPointLongitude());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, trip.getEndPointLatitude());
 
-        intent.putExtra(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
-        intent.putExtra(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
-        intent.putExtra(Utils.COLUMN_TRIP_Time, tripBean.getTime());
-        intent.putExtra(Utils.COLUMN_TRIP_Date, tripBean.getDate());
-        intent.putExtra(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
+        intent.putExtra(Utils.COLUMN_TRIP_NOTES, trip.getNotes());
+        intent.putExtra(Utils.COLUMN_TRIP_ALARM_ID, trip.getAlarmIds());
+        intent.putExtra(Utils.COLUMN_TRIP_Time, trip.getTime());
+        intent.putExtra(Utils.COLUMN_TRIP_Date, trip.getDate());
+        intent.putExtra(Utils.COLUMN_TRIP_USER_ID, trip.getUserId());
 
         int alarmId = Integer.valueOf(alarmID);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TripActivity.this, alarmId,
@@ -333,10 +325,10 @@ public class TripActivity extends AppCompatActivity {
                 public void onPlaceSelected(Place place) {
                     // TODO: Get info about the selected place.
                     Log.i(TAG, "Place: " + place.getName());
-                    tripBean.setStartPoint(place.getName().toString());
+                    trip.setStartPoint(place.getName().toString());
                     LatLng myLatLong = place.getLatLng();
-                    tripBean.setStartPointLatitude(myLatLong.latitude);
-                    tripBean.setStartPointLongitude(myLatLong.longitude);
+                    trip.setStartPointLatitude(myLatLong.latitude);
+                    trip.setStartPointLongitude(myLatLong.longitude);
                 }
 
                 @Override
@@ -354,10 +346,10 @@ public class TripActivity extends AppCompatActivity {
                 public void onPlaceSelected(Place place) {
                     // TODO: Get info about the selected place.
                     Log.i(TAG, "Place: " + place.getName());
-                    tripBean.setEndPoint(place.getName().toString());
+                    trip.setEndPoint(place.getName().toString());
                     LatLng myLatLong = place.getLatLng();
-                    tripBean.setEndPointLatitude(myLatLong.latitude);
-                    tripBean.setEndPointLongitude(myLatLong.longitude);
+                    trip.setEndPointLatitude(myLatLong.latitude);
+                    trip.setEndPointLongitude(myLatLong.longitude);
                 }
 
                 @Override

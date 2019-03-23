@@ -3,14 +3,13 @@ package eg.com.iti.mshwar.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.util.Utils;
 
-public class TripBean implements Parcelable {
+public class Trip implements Parcelable {
 
     // please add alarm id
     private String userId;
@@ -31,7 +30,7 @@ public class TripBean implements Parcelable {
     private  ArrayList<String> time = new ArrayList<>();
     private  ArrayList<String> date = new ArrayList<>();
 
-    protected TripBean(Parcel in) {
+    protected Trip(Parcel in) {
         userId = in.readString();
         key = in.readString();
         name = in.readString();
@@ -75,15 +74,15 @@ public class TripBean implements Parcelable {
         this.date = date;
     }
 
-    public static final Creator<TripBean> CREATOR = new Creator<TripBean>() {
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
         @Override
-        public TripBean createFromParcel(Parcel in) {
-            return new TripBean(in);
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
         }
 
         @Override
-        public TripBean[] newArray(int size) {
-            return new TripBean[size];
+        public Trip[] newArray(int size) {
+            return new Trip[size];
         }
     };
 
@@ -111,7 +110,7 @@ public class TripBean implements Parcelable {
         this.notes.add(note);
     }
 
-    public TripBean(){
+    public Trip(){
 
     }
 
@@ -251,11 +250,11 @@ public class TripBean implements Parcelable {
         this.userId = userId;
     }
 
-    public static List<TripBean> getTripData(String userId) {
-        ArrayList<TripBean> tripsArrayList = new ArrayList<>();
+    public static List<Trip> getTripData(String userId) {
+        ArrayList<Trip> tripsArrayList = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
-            TripBean trip = new TripBean();
+            Trip trip = new Trip();
             trip.setKey("" + i);
             trip.setName("Trip " + i);
             trip.setStartPoint("Start point " + i);
@@ -268,7 +267,7 @@ public class TripBean implements Parcelable {
             tripsArrayList.add(trip);
         }
 
-        TripBean trip1 = new TripBean();
+        Trip trip1 = new Trip();
         trip1.setKey("");
         trip1.setName("Trip ");
         trip1.setStartPoint("Start point ");
@@ -276,7 +275,7 @@ public class TripBean implements Parcelable {
         trip1.setStatus(Utils.CANCELLED);
         tripsArrayList.add(trip1);
 
-        TripBean trip2 = new TripBean();
+        Trip trip2 = new Trip();
         trip2.setKey("");
         trip2.setName("Trip ");
         trip2.setStartPoint("Start point ");
@@ -292,7 +291,7 @@ public class TripBean implements Parcelable {
 
     @Override
     public String toString() {
-        return "TripBean{" +
+        return "Trip{" +
                 "key='" + key + '\'' +
                 ", name='" + name + '\'' +
                 ", startPoint='" + startPoint + '\'' +

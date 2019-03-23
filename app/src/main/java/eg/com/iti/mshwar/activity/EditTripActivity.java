@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -38,9 +37,9 @@ import java.util.Calendar;
 
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.adapter.NotesAdapter;
-import eg.com.iti.mshwar.beans.TripBean;
+import eg.com.iti.mshwar.beans.Trip;
 import eg.com.iti.mshwar.dao.TripDaoImpl;
-import eg.com.iti.mshwar.service.MyReceiver;
+import eg.com.iti.mshwar.service.AlarmReceiver;
 import eg.com.iti.mshwar.util.Utils;
 
 /**
@@ -60,7 +59,7 @@ public class EditTripActivity extends AppCompatActivity {
     ImageView imageViewAddNote;
     LinearLayout roundTripTimeAndDate;
 
-    TripBean tripBean;
+    Trip trip;
     TripDaoImpl tripImpl;
     Intent intent;
 
@@ -77,25 +76,25 @@ public class EditTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_trip);
 
         intent = getIntent();
-        tripBean = new TripBean();
+        trip = new Trip();
 
-        tripBean.setKey(intent.getStringExtra("key"));
-        tripBean.setName(intent.getStringExtra(Utils.COLUMN_TRIP_NAME));
-        tripBean.setStartPoint(intent.getStringExtra(Utils.COLUMN_TRIP_START_POINT));
-        tripBean.setEndPoint(intent.getStringExtra(Utils.COLUMN_TRIP_END_POINT));
-        tripBean.setRepetition(intent.getStringExtra(Utils.COLUMN_TRIP_REPETITION));
-        tripBean.setType(intent.getStringExtra(Utils.COLUMN_TRIP_TRIP_TYPE));
-        tripBean.setStatus(intent.getStringExtra(Utils.COLUMN_TRIP_STATUS));
+        trip.setKey(intent.getStringExtra("key"));
+        trip.setName(intent.getStringExtra(Utils.COLUMN_TRIP_NAME));
+        trip.setStartPoint(intent.getStringExtra(Utils.COLUMN_TRIP_START_POINT));
+        trip.setEndPoint(intent.getStringExtra(Utils.COLUMN_TRIP_END_POINT));
+        trip.setRepetition(intent.getStringExtra(Utils.COLUMN_TRIP_REPETITION));
+        trip.setType(intent.getStringExtra(Utils.COLUMN_TRIP_TRIP_TYPE));
+        trip.setStatus(intent.getStringExtra(Utils.COLUMN_TRIP_STATUS));
 
-        tripBean.setStartPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0));
-        tripBean.setStartPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0));
-        tripBean.setEndPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0));
-        tripBean.setEndPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0));
+        trip.setStartPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0));
+        trip.setStartPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0));
+        trip.setEndPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0));
+        trip.setEndPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0));
 
-        tripBean.setNotes(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_NOTES));
-        tripBean.setAlarmIds(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID));
-        tripBean.setTime(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Time));
-        tripBean.setDate(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Date));
+        trip.setNotes(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_NOTES));
+        trip.setAlarmIds(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID));
+        trip.setTime(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Time));
+        trip.setDate(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Date));
 
         notesList = findViewById(R.id.list_view_notes_EditActivity);
         editTxtTripName = findViewById(R.id.editTxt_trip_name_EditActivity);
@@ -110,35 +109,35 @@ public class EditTripActivity extends AppCompatActivity {
         imageViewAddNote = findViewById(R.id.image_add_note_EditActivity);
         roundTripTimeAndDate = findViewById(R.id.round_trip_layout_EditActivity);
 
-        editTxtTripName.setText(tripBean.getName());
-        spinnerTripType.setSelection(((ArrayAdapter) spinnerTripType.getAdapter()).getPosition(tripBean.getType()));
-        spinnerTripRepetition.setSelection(((ArrayAdapter) spinnerTripRepetition.getAdapter()).getPosition(tripBean.getRepetition()));
+        editTxtTripName.setText(trip.getName());
+        spinnerTripType.setSelection(((ArrayAdapter) spinnerTripType.getAdapter()).getPosition(trip.getType()));
+        spinnerTripRepetition.setSelection(((ArrayAdapter) spinnerTripRepetition.getAdapter()).getPosition(trip.getRepetition()));
 
-        txtViewDate.setText(tripBean.getDate().get(0));
-        txtViewTime.setText(tripBean.getTime().get(0));
+        txtViewDate.setText(trip.getDate().get(0));
+        txtViewTime.setText(trip.getTime().get(0));
 
-        if (tripBean.getTime().size() > 1) {
-            txtViewTime2.setText(tripBean.getTime().get(1));
+        if (trip.getTime().size() > 1) {
+            txtViewTime2.setText(trip.getTime().get(1));
         }
-        if (tripBean.getDate().size() > 1) {
-            txtViewDate2.setText(tripBean.getDate().get(1));
+        if (trip.getDate().size() > 1) {
+            txtViewDate2.setText(trip.getDate().get(1));
         }
-        notesArrayList = tripBean.getNotes();
+        notesArrayList = trip.getNotes();
         notesAdapter = new NotesAdapter(notesArrayList, this);
         notesList.setAdapter(notesAdapter);
-        final String uid = tripBean.getUserId();
+        final String uid = trip.getUserId();
 
         tripImpl = new TripDaoImpl();
 
         calendar = Calendar.getInstance();
         calendar2 = Calendar.getInstance();
 
-        getTimeDetails(tripBean.getTime().get(0), calendar);
-        getDateDetails(tripBean.getDate().get(0), calendar);
+        getTimeDetails(trip.getTime().get(0), calendar);
+        getDateDetails(trip.getDate().get(0), calendar);
 
         if (spinnerTripType.getSelectedItem().equals("Round Trip")) {
-            getTimeDetails(tripBean.getTime().get(1), calendar2);
-            getDateDetails(tripBean.getDate().get(1), calendar2);
+            getTimeDetails(trip.getTime().get(1), calendar2);
+            getDateDetails(trip.getDate().get(1), calendar2);
         }
 
         // Setup upper toolbar with title and back button
@@ -151,38 +150,38 @@ public class EditTripActivity extends AppCompatActivity {
         btnAddTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (String id : tripBean.getAlarmIds()) {
+                for (String id : trip.getAlarmIds()) {
                     cancelOldAlarm(Integer.valueOf(id));
                 }
                 // code to start trip
-                tripBean.setName(editTxtTripName.getText().toString());
+                trip.setName(editTxtTripName.getText().toString());
 
-                if (tripBean.getName() != null && tripBean.getStartPoint() != null
-                        && tripBean.getEndPoint() != null && tripBean.getTime() != null
-                        && tripBean.getDate() != null) {
+                if (trip.getName() != null && trip.getStartPoint() != null
+                        && trip.getEndPoint() != null && trip.getTime() != null
+                        && trip.getDate() != null) {
 
-                    tripBean.setStatus(Utils.UPCOMING);
-                    tripBean.setNotes(notesArrayList);
-                    tripBean.setUserId(uid);
+                    trip.setStatus(Utils.UPCOMING);
+                    trip.setNotes(notesArrayList);
+                    trip.setUserId(uid);
 
                     String firstAlarmId, secondAlarmId;
-                    firstAlarmId = String.valueOf(tripBean.getAlarmIds().get(0));
+                    firstAlarmId = String.valueOf(trip.getAlarmIds().get(0));
 
                     if (spinnerTripType.getSelectedItem().equals("Round Trip")) {
-                        if (tripBean.getAlarmIds().size() > 1)
-                            secondAlarmId = String.valueOf(tripBean.getAlarmIds().get(1));
+                        if (trip.getAlarmIds().size() > 1)
+                            secondAlarmId = String.valueOf(trip.getAlarmIds().get(1));
                         else {
                             secondAlarmId = String.valueOf((int) System.currentTimeMillis());
-                            tripBean.addAlarmId(secondAlarmId);
+                            trip.addAlarmId(secondAlarmId);
                         }
 
-                        tripImpl.updateTripInfo(tripBean);
+                        tripImpl.updateTripInfo(trip);
 
                         setAlarm(calendar, firstAlarmId);
                         setAlarm(calendar2, secondAlarmId);
                     } else {
-                        tripBean.addAlarmId(String.valueOf(firstAlarmId));
-                        tripImpl.updateTripInfo(tripBean);
+                        trip.addAlarmId(String.valueOf(firstAlarmId));
+                        tripImpl.updateTripInfo(trip);
                         setAlarm(calendar, firstAlarmId);
                     }
 
@@ -227,7 +226,7 @@ public class EditTripActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String tripType = adapterView.getItemAtPosition(i).toString();
-                tripBean.setType(tripType);
+                trip.setType(tripType);
                 if (tripType.equals("Round Trip")) {
                     roundTripTimeAndDate.setVisibility(View.VISIBLE);
                 } else
@@ -244,7 +243,7 @@ public class EditTripActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String tripRepetition = adapterView.getItemAtPosition(i).toString();
-                tripBean.setRepetition(tripRepetition);
+                trip.setRepetition(tripRepetition);
             }
 
             @Override
@@ -269,7 +268,7 @@ public class EditTripActivity extends AppCompatActivity {
 
     private void cancelOldAlarm(int alarmId) {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmId,
-                new Intent(getApplicationContext(), MyReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                new Intent(getApplicationContext(), AlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager manager = (AlarmManager) EditTripActivity.this.getSystemService(Context.ALARM_SERVICE);
         manager.cancel(pendingIntent);
@@ -292,14 +291,14 @@ public class EditTripActivity extends AppCompatActivity {
                     calendar2.set(Calendar.DAY_OF_MONTH, selectedDay);
 
                     txtViewDate2.setText(dateStr);
-                    tripBean.addDate(dateStr);
+                    trip.addDate(dateStr);
                 } else {
                     calendar.set(Calendar.YEAR, selectedYear);
                     calendar.set(Calendar.MONTH, selectedMonth);
                     calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
 
                     txtViewDate.setText(dateStr);
-                    tripBean.addDate(dateStr);
+                    trip.addDate(dateStr);
                 }
             }
         }, mYear, mMonth, mDay);
@@ -324,13 +323,13 @@ public class EditTripActivity extends AppCompatActivity {
                     calendar2.set(Calendar.MINUTE, selectedMinute);
 
                     txtViewTime2.setText(timeStr);
-                    tripBean.addTime(timeStr);
+                    trip.addTime(timeStr);
                 } else {
                     calendar.set(Calendar.HOUR_OF_DAY, selectedHour);
                     calendar.set(Calendar.MINUTE, selectedMinute);
 
                     txtViewTime.setText(timeStr);
-                    tripBean.addTime(timeStr);
+                    trip.addTime(timeStr);
                 }
             }
         }, hour, minute, false);
@@ -339,9 +338,9 @@ public class EditTripActivity extends AppCompatActivity {
     }
 
     private void setAlarm(Calendar mCalendar, String alarmID) {
-        intent = new Intent(EditTripActivity.this, MyReceiver.class);
+        intent = new Intent(EditTripActivity.this, AlarmReceiver.class);
 
-        intent.putExtra(Utils.TRIP_TABLE, tripBean);
+        intent.putExtra(Utils.TRIP_TABLE, trip);
         int alarmId = Integer.valueOf(alarmID);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(EditTripActivity.this, alarmId,
@@ -358,16 +357,16 @@ public class EditTripActivity extends AppCompatActivity {
         super.onStart();
         PlaceAutocompleteFragment placeAutocompleteFragmentStartPoint = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.editTxt_start_point_EditActivity);
         if (placeAutocompleteFragmentStartPoint != null) {
-            placeAutocompleteFragmentStartPoint.setText(tripBean.getStartPoint());
+            placeAutocompleteFragmentStartPoint.setText(trip.getStartPoint());
             placeAutocompleteFragmentStartPoint.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
                     // TODO: Get info about the selected place.
                     Log.i(TAG, "Place: " + place.getName());
-                    tripBean.setStartPoint(place.getName().toString());
+                    trip.setStartPoint(place.getName().toString());
                     LatLng myLatLong = place.getLatLng();
-                    tripBean.setStartPointLatitude(myLatLong.latitude);
-                    tripBean.setStartPointLongitude(myLatLong.longitude);
+                    trip.setStartPointLatitude(myLatLong.latitude);
+                    trip.setStartPointLongitude(myLatLong.longitude);
                 }
 
                 @Override
@@ -380,16 +379,16 @@ public class EditTripActivity extends AppCompatActivity {
 
         PlaceAutocompleteFragment placeAutoCompleteFragmentEndPoint = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.editTxt_end_point_EditActivity);
         if (placeAutoCompleteFragmentEndPoint != null) {
-            placeAutoCompleteFragmentEndPoint.setText(tripBean.getEndPoint());
+            placeAutoCompleteFragmentEndPoint.setText(trip.getEndPoint());
             placeAutoCompleteFragmentEndPoint.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
                     // TODO: Get info about the selected place.
                     Log.i(TAG, "Place: " + place.getName());
-                    tripBean.setEndPoint(place.getName().toString());
+                    trip.setEndPoint(place.getName().toString());
                     LatLng myLatLong = place.getLatLng();
-                    tripBean.setEndPointLatitude(myLatLong.latitude);
-                    tripBean.setEndPointLongitude(myLatLong.longitude);
+                    trip.setEndPointLatitude(myLatLong.latitude);
+                    trip.setEndPointLongitude(myLatLong.longitude);
                 }
 
                 @Override

@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import eg.com.iti.mshwar.activity.EditTripActivity;
-import eg.com.iti.mshwar.beans.TripBean;
+import eg.com.iti.mshwar.beans.Trip;
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.dao.TripDaoImpl;
 import eg.com.iti.mshwar.util.Utils;
@@ -33,7 +33,7 @@ import static android.view.View.GONE;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> {
 
-    private List<TripBean> tripsList;
+    private List<Trip> tripsList;
     private LayoutInflater inflater;
     private Context context;
     private LinearLayout emptyLayout;
@@ -65,7 +65,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull TripAdapter.MyViewHolder myViewHolder, int position) {
         Log.d(TAG, "onBindViewHolder " + position);
 
-        TripBean currentObject = tripsList.get(position);
+        Trip currentObject = tripsList.get(position);
         myViewHolder.setData(currentObject, position);
         myViewHolder.setListeners();
     }
@@ -78,7 +78,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
         }
     }
 
-    public void setUpdatedData(List<TripBean> tripList) {
+    public void setUpdatedData(List<Trip> tripList) {
         this.tripsList = tripList;
         notifyDataSetChanged();
         onChange();
@@ -96,7 +96,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
         onChange();
     }
 
-    public void addItem(int position, TripBean trip) {
+    public void addItem(int position, Trip trip) {
         tripsList.add(position, trip);
         notifyItemInserted(position);
         notifyItemRangeChanged(position, tripsList.size());
@@ -111,7 +111,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
         ImageButton start;
         MaterialCardView container;
         int position;
-        TripBean currentObject;
+        Trip currentObject;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,7 +125,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
             note = itemView.findViewById(R.id.note_list_item_main);
         }
 
-        public void setData(TripBean currentObject, int position) {
+        public void setData(Trip currentObject, int position) {
             this.tripName.setText(currentObject.getName());
             this.description.setText(currentObject.getStartPoint() + " - " + currentObject.getEndPoint());
             this.status.setText((currentObject.getStatus()));
