@@ -43,8 +43,12 @@ public class HowItWorksActivity extends AppCompatActivity {
 
     private void addImagesToList() {
 
-        mList.add(R.drawable.ahmdmhasn);
-        mList.add(R.drawable.delete);
+        mList.add(R.drawable.srcshot00);
+        mList.add(R.drawable.srcshot01);
+        mList.add(R.drawable.srcshot02);
+        mList.add(R.drawable.srcshot03);
+        mList.add(R.drawable.srcshot04);
+        mList.add(R.drawable.srcshot05);
 
     }
 
