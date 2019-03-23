@@ -43,7 +43,7 @@
     <string name="reset_password">Reset Password</string>
     <string name="sign_out">Sign out</string>
     <string name="account_settings">Account Settings</string>
-    <string name="current_password">Current Password</string>
+    <string name="current_password">Confirm current Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="Create_Trip">Create_Trip</string>
@@ -94,6 +94,7 @@
     <string name="meet_the_makers">Meet the Makers!</string>
     <string name="title_activity_team">About us</string>
     <string name="str_about_us">About Us</string>
+    <string name="prompt_first_name">Your name</string>
 
     <string-array name="typeoftrip">
         <item>One Direction</item>
