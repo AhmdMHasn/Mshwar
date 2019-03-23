@@ -1,5 +1,13 @@
 package eg.com.iti.mshwar.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+
 public final class Utils {
 
     // Tables
@@ -8,7 +16,7 @@ public final class Utils {
 
     // Trip Table
     public static final String COLUMN_TRIP_ID = "id";
-    public static final String COLUMN_TRIP_ALARM_ID = "alarm_id";
+    public static final String COLUMN_TRIP_ALARM_ID = "alarmIds";
     public static final String COLUMN_TRIP_NAME = "name";
     public static final String COLUMN_TRIP_START_POINT = "startPoint";
     public static final String COLUMN_TRIP_END_POINT = "endPoint";
@@ -19,10 +27,10 @@ public final class Utils {
     public static final String COLUMN_TRIP_Date = "date";
     public static final String COLUMN_TRIP_Time = "time";
     public static final String COLUMN_TRIP_USER_ID = "user_id";
-    public static final String COLUMN_TRIP_START_POINT_LATITUDE ="startPointLatitude";
-    public static final String COLUMN_TRIP_START_POINT_LONGITUDE ="startPointLongitude";
-    public static final String COLUMN_TRIP_END_POINT_LATITUDE ="endPointLatitude";
-    public static final String COLUMN_TRIP_END_POINT_LONGITUDE ="endPointLongitude";
+    public static final String COLUMN_TRIP_START_POINT_LATITUDE = "startPointLatitude";
+    public static final String COLUMN_TRIP_START_POINT_LONGITUDE = "startPointLongitude";
+    public static final String COLUMN_TRIP_END_POINT_LATITUDE = "endPointLatitude";
+    public static final String COLUMN_TRIP_END_POINT_LONGITUDE = "endPointLongitude";
 
     // User Table
     public static final String COLUMN_USER_ID = "id";
@@ -47,4 +55,19 @@ public final class Utils {
     // Direction
     public static final int ONE_DIRECTION = 0;
     public static final int TWO_DIRECTIONS = 1;
+
+    public static byte[] convertToBytes(Object object) throws IOException {
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+             ObjectOutput out = new ObjectOutputStream(bos)) {
+            out.writeObject(object);
+            return bos.toByteArray();
+        }
+    }
+
+    public static Object convertFromBytes(byte[] bytes) throws IOException, ClassNotFoundException {
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+             ObjectInput in = new ObjectInputStream(bis)) {
+            return in.readObject();
+        }
+    }
 }

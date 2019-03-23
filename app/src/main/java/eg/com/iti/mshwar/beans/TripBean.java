@@ -1,5 +1,8 @@
 package eg.com.iti.mshwar.beans;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +10,7 @@ import java.util.List;
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.util.Utils;
 
-public class TripBean implements Serializable {
+public class TripBean implements Parcelable {
 
     // please add alarm id
     private String userId;
@@ -27,6 +30,62 @@ public class TripBean implements Serializable {
     private  ArrayList<String> alarmIds = new ArrayList<>();
     private  ArrayList<String> time = new ArrayList<>();
     private  ArrayList<String> date = new ArrayList<>();
+
+    protected TripBean(Parcel in) {
+        userId = in.readString();
+        key = in.readString();
+        name = in.readString();
+        startPoint = in.readString();
+        endPoint = in.readString();
+        repetition = in.readString();
+        type = in.readString();
+        status = in.readString();
+        if (in.readByte() == 0) {
+            startPointLongitude = null;
+        } else {
+            startPointLongitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            startPointLatitude = null;
+        } else {
+            startPointLatitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            endPointLongitude = null;
+        } else {
+            endPointLongitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            endPointLatitude = null;
+        } else {
+            endPointLatitude = in.readDouble();
+        }
+        notes = in.createStringArrayList();
+        alarmIds = in.createStringArrayList();
+        time = in.createStringArrayList();
+        date = in.createStringArrayList();
+        statusImage = in.readInt();
+    }
+
+    public void setTime(ArrayList<String> time) {
+        this.time = time;
+    }
+
+    public void setDate(ArrayList<String> date) {
+        this.date = date;
+    }
+
+    public static final Creator<TripBean> CREATOR = new Creator<TripBean>() {
+        @Override
+        public TripBean createFromParcel(Parcel in) {
+            return new TripBean(in);
+        }
+
+        @Override
+        public TripBean[] newArray(int size) {
+            return new TripBean[size];
+        }
+    };
 
     public ArrayList<String> getAlarmIds() {
         return alarmIds;
@@ -249,5 +308,51 @@ public class TripBean implements Serializable {
                 ", endPointLatitude=" + endPointLatitude +
                 ", statusImage=" + statusImage +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(userId);
+        dest.writeString(key);
+        dest.writeString(name);
+        dest.writeString(startPoint);
+        dest.writeString(endPoint);
+        dest.writeString(repetition);
+        dest.writeString(type);
+        dest.writeString(status);
+        if (startPointLongitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(startPointLongitude);
+        }
+        if (startPointLatitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(startPointLatitude);
+        }
+        if (endPointLongitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(endPointLongitude);
+        }
+        if (endPointLatitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(endPointLatitude);
+        }
+        dest.writeStringList(notes);
+        dest.writeStringList(alarmIds);
+        dest.writeStringList(time);
+        dest.writeStringList(date);
+        dest.writeInt(statusImage);
     }
 }

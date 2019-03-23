@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
+
 import eg.com.iti.mshwar.service.NoteHeadService;
 
 import eg.com.iti.mshwar.beans.TripBean;
@@ -36,7 +37,26 @@ public class DialogActivity extends Activity {
         if (receivedIntent.getStringExtra("ringtone") == null)
             ringtone.play();
 
-        tripBean = (TripBean) receivedIntent.getSerializableExtra(Utils.TRIP_TABLE);
+        tripBean = new TripBean();
+
+        tripBean.setKey(receivedIntent.getStringExtra("key"));
+        tripBean.setName(receivedIntent.getStringExtra(Utils.COLUMN_TRIP_NAME));
+        tripBean.setStartPoint(receivedIntent.getStringExtra(Utils.COLUMN_TRIP_START_POINT));
+        tripBean.setEndPoint(receivedIntent.getStringExtra(Utils.COLUMN_TRIP_END_POINT));
+        tripBean.setRepetition(receivedIntent.getStringExtra(Utils.COLUMN_TRIP_REPETITION));
+        tripBean.setType(receivedIntent.getStringExtra(Utils.COLUMN_TRIP_TRIP_TYPE));
+        tripBean.setStatus(receivedIntent.getStringExtra(Utils.COLUMN_TRIP_STATUS));
+
+        tripBean.setStartPointLatitude(receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0));
+        tripBean.setStartPointLongitude(receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0));
+        tripBean.setEndPointLatitude(receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0));
+        tripBean.setEndPointLongitude(receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0));
+
+        tripBean.setNotes(receivedIntent.getStringArrayListExtra(Utils.COLUMN_TRIP_NOTES));
+        tripBean.setAlarmIds(receivedIntent.getStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID));
+        tripBean.setTime(receivedIntent.getStringArrayListExtra(Utils.COLUMN_TRIP_Time));
+        tripBean.setDate(receivedIntent.getStringArrayListExtra(Utils.COLUMN_TRIP_Date));
+
         String title = tripBean.getName();
         String msg = "It's time for your trip from " + tripBean.getStartPoint()
                 + " to " + tripBean.getEndPoint();
@@ -65,9 +85,6 @@ public class DialogActivity extends Activity {
 
                         }
 
-
-
-
                         dao.startTrip(DialogActivity.this, tripBean);
                         DialogActivity.this.finish();
                     }
@@ -76,8 +93,24 @@ public class DialogActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(DialogActivity.this, service.class);
-                        intent.putExtra(Utils.TRIP_TABLE, tripBean);
+//                        intent.putExtra(Utils.TRIP_TABLE, tripBean);
+                        intent.putExtra("key", tripBean.getKey());
+                        intent.putExtra(Utils.COLUMN_TRIP_NAME, tripBean.getName());
+                        intent.putExtra(Utils.COLUMN_TRIP_START_POINT, tripBean.getStartPoint());
+                        intent.putExtra(Utils.COLUMN_TRIP_END_POINT, tripBean.getEndPoint());
+                        intent.putExtra(Utils.COLUMN_TRIP_REPETITION, tripBean.getRepetition());
+                        intent.putExtra(Utils.COLUMN_TRIP_TRIP_TYPE, tripBean.getType());
+                        intent.putExtra(Utils.COLUMN_TRIP_STATUS, tripBean.getStatus());
+                        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, tripBean.getStartPointLatitude());
+                        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, tripBean.getStartPointLongitude());
+                        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
+                        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
 
+                        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
+                        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
+                        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_Time, tripBean.getTime());
+                        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_Date, tripBean.getDate());
+                        intent.putExtra(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
                         startService(intent);
                         finish();
                     }
@@ -116,17 +149,17 @@ public class DialogActivity extends Activity {
 
     }
 
-    public void openMap(){
+    public void openMap() {
 
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse("http://maps.google.com/maps?saddr="
-                        +ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0)+ ","
-                        +ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0)
-                        +"(" + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT, 0) +")"
-                        +"&daddr="
-                        +ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0)+ ","
-                        +ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0)
-                        +"(" + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT, 0) +")"
+                        + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0) + ","
+                        + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0)
+                        + "(" + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT, 0) + ")"
+                        + "&daddr="
+                        + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0) + ","
+                        + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0)
+                        + "(" + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT, 0) + ")"
                 ));
 
         startActivity(intent);

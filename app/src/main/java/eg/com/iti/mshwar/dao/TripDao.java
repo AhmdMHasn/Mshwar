@@ -11,9 +11,11 @@ public interface TripDao {
 
     List<TripBean> getTripsFromFirebase(String tripStatus, TripAdapter adapter);
 
-    boolean deleteTripFromFirebase(String key);
+    boolean deleteTripFromFirebase(Context context, TripBean tripBean);
 
     void updateTripStatus(String tripKey, String updatedStatus);
 
     void startTrip(Context context, TripBean trip);
+
+    void updateTripInfo(TripBean tripBean);
 }

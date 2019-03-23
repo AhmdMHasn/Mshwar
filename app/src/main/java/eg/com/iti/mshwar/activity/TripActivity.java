@@ -32,6 +32,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -280,16 +287,39 @@ public class TripActivity extends AppCompatActivity {
     private void setAlarm(Calendar mCalendar, String alarmID) {
         intent = new Intent(TripActivity.this, MyReceiver.class);
 
-        intent.putExtra(Utils.TRIP_TABLE, tripBean);
-        int alarmId = Integer.valueOf(alarmID);
+//        intent.putExtra(Utils.TRIP_TABLE, tripBean);
+//        try {
+//            byte[] arr = Utils.convertToBytes(tripBean);
+//            intent.putExtra(Utils.TRIP_TABLE, arr);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
+        intent.putExtra("key", tripBean.getKey());
+        intent.putExtra(Utils.COLUMN_TRIP_NAME, tripBean.getName());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT, tripBean.getStartPoint());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT, tripBean.getEndPoint());
+        intent.putExtra(Utils.COLUMN_TRIP_REPETITION, tripBean.getRepetition());
+        intent.putExtra(Utils.COLUMN_TRIP_TRIP_TYPE, tripBean.getType());
+        intent.putExtra(Utils.COLUMN_TRIP_STATUS, tripBean.getStatus());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, tripBean.getStartPointLatitude());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, tripBean.getStartPointLongitude());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
+
+        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
+        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
+        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_Time, tripBean.getTime());
+        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_Date, tripBean.getDate());
+        intent.putExtra(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
+
+        int alarmId = Integer.valueOf(alarmID);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TripActivity.this, alarmId,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager manager = (AlarmManager) TripActivity.this.getSystemService(Context.ALARM_SERVICE);
         manager.setRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), 0, pendingIntent);
-
     }
 
     @Override
@@ -343,5 +373,6 @@ public class TripActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
 }
 

@@ -1,5 +1,8 @@
 package eg.com.iti.mshwar.dao;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,10 +24,10 @@ import java.util.List;
 
 import eg.com.iti.mshwar.adapter.TripAdapter;
 import eg.com.iti.mshwar.beans.TripBean;
+import eg.com.iti.mshwar.service.MyReceiver;
 import eg.com.iti.mshwar.util.Utils;
 
 public class TripDaoImpl implements TripDao {
-
 
     public static final String TAG = "TripDao";
     public static DatabaseReference reference;
@@ -32,12 +35,7 @@ public class TripDaoImpl implements TripDao {
     public static String currentUserId;
     List<TripBean> tripList;
 
-
-    public TripDaoImpl() {
-
-        getDatabase();
-
-    }
+    public TripDaoImpl() {getDatabase();}
 
     // To allow firebase to cache data
     public static FirebaseDatabase getDatabase() {
@@ -157,10 +155,19 @@ public class TripDaoImpl implements TripDao {
         return tripList;
     }
 
-    public boolean deleteTripFromFirebase(String key) {
+    public boolean deleteTripFromFirebase(Context context,TripBean tripBean) {
 
         // handle removing the alarm here .. if succeed return true ya Sallam
-        reference.child(Utils.TRIP_TABLE).child(key).removeValue();
+        for (String alarmId : tripBean.getAlarmIds()){
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.valueOf(alarmId),
+                    new Intent(context, MyReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+            AlarmManager alarmManager = (AlarmManager) context
+                    .getSystemService(Context.ALARM_SERVICE);
+
+            alarmManager.cancel(pendingIntent);
+        }
+        reference.child(Utils.TRIP_TABLE).child(tripBean.getKey()).removeValue();
         return true;
     }
 
@@ -178,6 +185,30 @@ public class TripDaoImpl implements TripDao {
 
         context.startActivity(intent);
         updateTripStatus(trip.getKey(), Utils.DONE);
+    }
+
+    @Override
+    public void updateTripInfo(TripBean tripBean) {
+        DatabaseReference ref = reference.child(Utils.TRIP_TABLE).child(tripBean.getKey());
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put(Utils.COLUMN_TRIP_NAME, tripBean.getName());
+        map.put(Utils.COLUMN_TRIP_START_POINT, tripBean.getStartPoint());
+        map.put(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, tripBean.getStartPointLongitude());
+        map.put(Utils.COLUMN_TRIP_START_POINT_LATITUDE, tripBean.getStartPointLatitude());
+        map.put(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
+        map.put(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
+        map.put(Utils.COLUMN_TRIP_END_POINT, tripBean.getEndPoint());
+        map.put(Utils.COLUMN_TRIP_TRIP_TYPE, tripBean.getType());
+        map.put(Utils.COLUMN_TRIP_REPETITION, tripBean.getRepetition());
+        map.put(Utils.COLUMN_TRIP_Date, tripBean.getDate());
+        map.put(Utils.COLUMN_TRIP_Time, tripBean.getTime());
+        map.put(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
+        map.put(Utils.COLUMN_TRIP_STATUS, tripBean.getStatus());
+        map.put(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
+        map.put(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
+
+        ref.updateChildren(map);
     }
 
 
