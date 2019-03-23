@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -75,7 +76,26 @@ public class EditTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_trip);
 
-        tripBean = (TripBean) getIntent().getSerializableExtra(Utils.TRIP_TABLE);
+        intent = getIntent();
+        tripBean = new TripBean();
+
+        tripBean.setKey(intent.getStringExtra("key"));
+        tripBean.setName(intent.getStringExtra(Utils.COLUMN_TRIP_NAME));
+        tripBean.setStartPoint(intent.getStringExtra(Utils.COLUMN_TRIP_START_POINT));
+        tripBean.setEndPoint(intent.getStringExtra(Utils.COLUMN_TRIP_END_POINT));
+        tripBean.setRepetition(intent.getStringExtra(Utils.COLUMN_TRIP_REPETITION));
+        tripBean.setType(intent.getStringExtra(Utils.COLUMN_TRIP_TRIP_TYPE));
+        tripBean.setStatus(intent.getStringExtra(Utils.COLUMN_TRIP_STATUS));
+
+        tripBean.setStartPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0));
+        tripBean.setStartPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0));
+        tripBean.setEndPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0));
+        tripBean.setEndPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0));
+
+        tripBean.setNotes(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_NOTES));
+        tripBean.setAlarmIds(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID));
+        tripBean.setTime(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Time));
+        tripBean.setDate(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Date));
 
         notesList = findViewById(R.id.list_view_notes_EditActivity);
         editTxtTripName = findViewById(R.id.editTxt_trip_name_EditActivity);
@@ -121,7 +141,7 @@ public class EditTripActivity extends AppCompatActivity {
             getDateDetails(tripBean.getDate().get(1), calendar2);
         }
 
-            // Setup upper toolbar with title and back button
+        // Setup upper toolbar with title and back button
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main_Edit_EditActivity);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -131,6 +151,9 @@ public class EditTripActivity extends AppCompatActivity {
         btnAddTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                for (String id : tripBean.getAlarmIds()) {
+                    cancelOldAlarm(Integer.valueOf(id));
+                }
                 // code to start trip
                 tripBean.setName(editTxtTripName.getText().toString());
 
@@ -244,6 +267,14 @@ public class EditTripActivity extends AppCompatActivity {
         });
     }
 
+    private void cancelOldAlarm(int alarmId) {
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmId,
+                new Intent(getApplicationContext(), MyReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager manager = (AlarmManager) EditTripActivity.this.getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingIntent);
+    }
+
     void showDatePickerDialog(final String tripDirection) {
         Calendar mcurrentDate = Calendar.getInstance();
         int mYear = mcurrentDate.get(Calendar.YEAR);
@@ -322,7 +353,6 @@ public class EditTripActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -371,7 +401,7 @@ public class EditTripActivity extends AppCompatActivity {
         } else Toast.makeText(this, "Problem with loading page", Toast.LENGTH_LONG).show();
     }
 
-    void getTimeDetails(String time, Calendar calendar5){
+    void getTimeDetails(String time, Calendar calendar5) {
         String[] details = time.split(":");
         int hourOfDay = Integer.valueOf(details[0]);
         int minute = Integer.valueOf(details[1]);
@@ -380,7 +410,7 @@ public class EditTripActivity extends AppCompatActivity {
         calendar5.set(Calendar.MINUTE, minute);
     }
 
-    void getDateDetails(String date, Calendar calendar5){
+    void getDateDetails(String date, Calendar calendar5) {
         String[] details = date.split("/");
         int dayOfMonth = Integer.valueOf(details[0]);
         int month = Integer.valueOf(details[1]) - 1;

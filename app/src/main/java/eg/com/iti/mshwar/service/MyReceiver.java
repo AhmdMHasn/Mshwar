@@ -23,6 +23,15 @@ public class MyReceiver extends BroadcastReceiver {
         dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_START_POINT,
                 intent.getStringExtra(Utils.COLUMN_TRIP_START_POINT));
 
+        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_Time,
+                intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Time));
+
+        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_Date,
+                intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Date));
+
+        dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_NOTES,
+                intent.getStringArrayListExtra(Utils.COLUMN_TRIP_NOTES));
+
         dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_END_POINT,
                 intent.getStringExtra(Utils.COLUMN_TRIP_END_POINT));
 
@@ -46,6 +55,8 @@ public class MyReceiver extends BroadcastReceiver {
 
         dialogActivityIntent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE,
                 intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0));
+
+
 
         dialogActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(dialogActivityIntent);

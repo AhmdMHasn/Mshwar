@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import eg.com.iti.mshwar.service.NoteHeadService;
@@ -20,7 +21,7 @@ import eg.com.iti.mshwar.service.service;
 import eg.com.iti.mshwar.util.Utils;
 
 public class DialogActivity extends Activity {
-    Intent ReceivedIntent;
+    Intent receivedIntent;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     TripBean tripBean;
     Ringtone ringtone;
@@ -33,7 +34,7 @@ public class DialogActivity extends Activity {
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         ringtone = RingtoneManager.getRingtone(getApplicationContext(), alarmUri);
 
-        Intent receivedIntent = getIntent();
+        receivedIntent = getIntent();
         if (receivedIntent.getStringExtra("ringtone") == null)
             ringtone.play();
 
@@ -78,14 +79,13 @@ public class DialogActivity extends Activity {
                             //to grant the permission.
                             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                                     Uri.parse("package:" + getPackageName()));
+                            intent.putExtra(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
                             startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
                         } else {
                             showNoteHead();
-                            openMap();
+                            dao.startTrip(DialogActivity.this, tripBean);
                         }
 
-                        dao.startTrip(DialogActivity.this, tripBean);
-                        DialogActivity.this.finish();
                     }
                 })
                 .setNeutralButton("later", new DialogInterface.OnClickListener() {
@@ -105,10 +105,10 @@ public class DialogActivity extends Activity {
                         intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
                         intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
 
-                        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
-                        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
-                        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_Time, tripBean.getTime());
-                        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_Date, tripBean.getDate());
+                        intent.putExtra(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
+                        intent.putExtra(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
+                        intent.putExtra(Utils.COLUMN_TRIP_Time, tripBean.getTime());
+                        intent.putExtra(Utils.COLUMN_TRIP_Date, tripBean.getDate());
                         intent.putExtra(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
                         startService(intent);
                         finish();
@@ -142,23 +142,28 @@ public class DialogActivity extends Activity {
     }
 
     private void showNoteHead() {
+        Intent serviceIntent = new Intent(DialogActivity.this, NoteHeadService.class);
 
-        startService(new Intent(DialogActivity.this, NoteHeadService.class));
-        finish();
+        if (tripBean.getNotes() != null) {
+            serviceIntent.putExtra(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
+            serviceIntent.putExtra("key", tripBean.getKey());
+        }
+//        Toast.makeText(DialogActivity.this, tripBean.getNotes().get(0), Toast.LENGTH_LONG).show();
+        startService(serviceIntent);
 
     }
 
     public void openMap() {
 
-        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+        Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://maps.google.com/maps?saddr="
-                        + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0) + ","
-                        + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0)
-                        + "(" + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT, 0) + ")"
+                        + receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0) + ","
+                        + receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0)
+                        + "(" + receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT, 0) + ")"
                         + "&daddr="
-                        + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0) + ","
-                        + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0)
-                        + "(" + ReceivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT, 0) + ")"
+                        + receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0) + ","
+                        + receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0)
+                        + "(" + receivedIntent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT, 0) + ")"
                 ));
 
         startActivity(intent);

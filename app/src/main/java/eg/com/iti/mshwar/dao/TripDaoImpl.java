@@ -35,7 +35,9 @@ public class TripDaoImpl implements TripDao {
     public static String currentUserId;
     List<TripBean> tripList;
 
-    public TripDaoImpl() {getDatabase();}
+    public TripDaoImpl() {
+        getDatabase();
+    }
 
     // To allow firebase to cache data
     public static FirebaseDatabase getDatabase() {
@@ -155,10 +157,9 @@ public class TripDaoImpl implements TripDao {
         return tripList;
     }
 
-    public boolean deleteTripFromFirebase(Context context,TripBean tripBean) {
-
+    public boolean deleteTripFromFirebase(Context context, TripBean tripBean) {
         // handle removing the alarm here .. if succeed return true ya Sallam
-        for (String alarmId : tripBean.getAlarmIds()){
+        for (String alarmId : tripBean.getAlarmIds()) {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.valueOf(alarmId),
                     new Intent(context, MyReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -182,7 +183,7 @@ public class TripDaoImpl implements TripDao {
                         + trip.getStartPointLongitude()
                         + "(" + trip.getEndPoint() + ")"
                 ));
-
+        intent.putExtra(Utils.COLUMN_TRIP_NOTES, trip.getNotes());
         context.startActivity(intent);
         updateTripStatus(trip.getKey(), Utils.DONE);
     }

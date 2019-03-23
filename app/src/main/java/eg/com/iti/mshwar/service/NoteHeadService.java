@@ -3,9 +3,11 @@ package eg.com.iti.mshwar.service;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,18 +19,39 @@ import java.util.ArrayList;
 
 import eg.com.iti.mshwar.R;
 import eg.com.iti.mshwar.adapter.NoteMapAdapter;
+import eg.com.iti.mshwar.util.Utils;
 
 public class NoteHeadService extends Service {
 
     private WindowManager mWindowManager;
     private View mChatHeadView;
     private RecyclerView mRecyclerView;
+    private ArrayList<String> notesArrayList = new ArrayList<>();
+
     public NoteHeadService() {
+
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        String key = intent.getStringExtra("key");
+        notesArrayList = intent.getStringArrayListExtra(Utils.COLUMN_TRIP_NOTES);
+        if (notesArrayList != null) {
+            NoteMapAdapter noteAdapter = new NoteMapAdapter(notesArrayList);
+//        NoteMapAdapter noteAdapter = new NoteMapAdapter(notes);
+            mRecyclerView = mChatHeadView.findViewById(R.id.note_recycle_view);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setAdapter(noteAdapter);
+        }
+        Log.e("gggggggggggggg", intent.getStringArrayListExtra(Utils.COLUMN_TRIP_NOTES).get(0));
+        return super.onStartCommand(intent, flags, startId);
+
     }
 
     @Override
@@ -38,12 +61,31 @@ public class NoteHeadService extends Service {
         mChatHeadView = LayoutInflater.from(this).inflate(R.layout.layout_note_head, null);
 
         //Add the view to the window.
+//        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+//                WindowManager.LayoutParams.WRAP_CONTENT,
+//                WindowManager.LayoutParams.WRAP_CONTENT,
+//                WindowManager.LayoutParams.TYPE_PHONE,
+//                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+//                PixelFormat.TRANSLUCENT);
+        int LAYOUT_FLAG;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+        }
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
+                LAYOUT_FLAG,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
+
+//        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+//                WindowManager.LayoutParams.WRAP_CONTENT,
+//                WindowManager.LayoutParams.WRAP_CONTENT,
+//                LAYOUT_FLAG,
+//                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+//                PixelFormat.TRANSLUCENT);
 
         //Specify the chat head position
         params.gravity = Gravity.TOP | Gravity.LEFT;        //Initially view will be added to top-left corner
@@ -64,28 +106,23 @@ public class NoteHeadService extends Service {
             }
         });
 
-        ArrayList<String> notes = new ArrayList<String>(){{
-            add("hello from the other side");
-            add("i wish i not call you thouthent time");
-            add("i wish i not call you thouthent time");
-            add("i wish i not call you thouthent time");
-            add("i wish i not call you thouthent time");
-            add("i wish i not call you thouthent time");
-            add("i wish i not call you thouthent time");
-            add("i wish i not call you thouthent time");
-            add("i wish i not call you thouthent time");
-        }};
+//        ArrayList<String> notes = new ArrayList<String>() {{
+//            add("hello from the other side");
+//            add("i wish i not call you thouthent time");
+//            add("i wish i not call you thouthent time");
+//            add("i wish i not call you thouthent time");
+//            add("i wish i not call you thouthent time");
+//            add("i wish i not call you thouthent time");
+//            add("i wish i not call you thouthent time");
+//            add("i wish i not call you thouthent time");
+//            add("i wish i not call you thouthent time");
+//        }};
 
-        mRecyclerView=mChatHeadView.findViewById(R.id.note_recycle_view);
-        mRecyclerView.setVisibility(View.GONE);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(layoutManager);
 
-        NoteMapAdapter noteAdapter = new NoteMapAdapter(notes);
-        mRecyclerView.setAdapter(noteAdapter);
+
 
         //Drag and move chat head using user's touch action.
-        final ImageView chatHeadImage =  mChatHeadView.findViewById(R.id.chat_head_profile_iv);
+        final ImageView chatHeadImage = mChatHeadView.findViewById(R.id.chat_head_profile_iv);
         chatHeadImage.setOnTouchListener(new View.OnTouchListener() {
             private int lastAction;
             private int initialX;
@@ -120,11 +157,9 @@ public class NoteHeadService extends Service {
                             startActivity(intent);
                             */
                             //TODO get note array and show it
-                            mRecyclerView.setVisibility(View.VISIBLE);
-                           // editText.setText("Hello Somaa");
+                            mRecyclerView.setVisibility(View.GONE);
 
-                            //close the service and remove the chat heads
-                         //   stopSelf();
+
                         }
                         lastAction = event.getAction();
                         return true;

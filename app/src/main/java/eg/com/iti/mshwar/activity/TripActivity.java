@@ -142,10 +142,6 @@ public class TripActivity extends AppCompatActivity {
 
                     Toast.makeText(TripActivity.this,
                             "Trip added successfully", Toast.LENGTH_LONG).show();
-
-                    Toast.makeText(TripActivity.this,
-                            tripBean.getName()+"," , Toast.LENGTH_LONG).show();
-
                     finish();
                 } else
                     Toast.makeText(TripActivity.this,
@@ -219,6 +215,7 @@ public class TripActivity extends AppCompatActivity {
                 if (editTxtAddNote.getText().toString().length() > 0) {
                     notesArrayList.add(editTxtAddNote.getText().toString());
                     editTxtAddNote.setText("");
+
                     notesAdapter.notifyDataSetChanged();
                 }
             }
@@ -311,10 +308,10 @@ public class TripActivity extends AppCompatActivity {
         intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, tripBean.getEndPointLongitude());
         intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, tripBean.getEndPointLatitude());
 
-        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
-        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
-        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_Time, tripBean.getTime());
-        intent.putStringArrayListExtra(Utils.COLUMN_TRIP_Date, tripBean.getDate());
+        intent.putExtra(Utils.COLUMN_TRIP_NOTES, tripBean.getNotes());
+        intent.putExtra(Utils.COLUMN_TRIP_ALARM_ID, tripBean.getAlarmIds());
+        intent.putExtra(Utils.COLUMN_TRIP_Time, tripBean.getTime());
+        intent.putExtra(Utils.COLUMN_TRIP_Date, tripBean.getDate());
         intent.putExtra(Utils.COLUMN_TRIP_USER_ID, tripBean.getUserId());
 
         int alarmId = Integer.valueOf(alarmID);
