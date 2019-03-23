@@ -87,11 +87,18 @@ public class SettingsActivity extends AppCompatActivity {
                 if ( uName .length() > 0){
 
                     mSave.setClickable(false);
+                    UserProfileChangeRequest profileUpdates;
 
-                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(uName)
-                            .setPhotoUri(Uri.parse(imageUri.toString()))
-                            .build();
+                    if (imageUri != null){
+                        profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(uName)
+                                .setPhotoUri(Uri.parse(imageUri.toString()))
+                                .build();
+                    } else {
+                        profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(uName)
+                                .build();
+                    }
 
                     user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

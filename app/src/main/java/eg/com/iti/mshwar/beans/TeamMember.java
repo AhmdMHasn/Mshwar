@@ -7,6 +7,27 @@ public class TeamMember {
     private String urlLinkedIn;
     private String urlGitHub;
 
+    @Override
+    public String toString() {
+        return "TeamMember{" +
+                "name='" + name + '\'' +
+                ", image=" + image +
+                ", urlLinkedIn='" + urlLinkedIn + '\'' +
+                ", urlGitHub='" + urlGitHub + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
+
     public String getName() {
         return name;
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,60 +16,73 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_margin="15dp">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/my_toolbar">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/iti_logo"
-            android:layout_margin="5dp"/>
-
-        <ImageView
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:src="@drawable/btn_rounded_grey"
-            android:layout_gravity="center"/>
-        
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/logo"
-            android:layout_margin="5dp"/>
-
-    </LinearLayout>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:text="@string/meet_the_makers"
-        android:textColor="@color/Grey"
-        android:textSize="24dp" />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/teamViewPager"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_margin="15dp">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/indicator"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabBackground="@drawable/indicator_selector"
-            app:tabGravity="center"
-            app:tabIndicatorHeight="0dp"
-            />
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/iti_logo"
+                    android:layout_margin="5dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mshwar App®, Information Technology Institute"/>
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/btn_rounded_grey"
+                    android:layout_gravity="center"/>
 
-</LinearLayout >
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/logo"
+                    android:layout_margin="5dp"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="@string/meet_the_makers"
+                android:textColor="@color/Grey"
+                android:textSize="24dp" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/teamViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/indicator"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabBackground="@drawable/indicator_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mshwar App®, Information Technology Institute"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout >

@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
         headerView = navigationView.getHeaderView(0);
 
@@ -101,7 +100,6 @@ public class MainActivity extends AppCompatActivity
             userEmail.setText(user.getEmail());
             userImage.setImageURI(user.getPhotoUrl());
 
-//            Log.d(TAG, user.getPhotoUrl().toString() + "~~~~~~~~");
             if (userImage.getDrawable() == null) userImage.setImageResource(R.drawable.nav_user);
         }
     }
@@ -198,7 +196,8 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_help:
-
+                intent = new Intent(this, HowItWorksActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.nav_about_us:
@@ -220,7 +219,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     /*----------------------------- Firebase setup ---------------------------------*/
     private void setupFirebaseAuth(){

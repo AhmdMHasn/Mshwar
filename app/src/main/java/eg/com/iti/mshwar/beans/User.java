@@ -12,6 +12,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.image = image;
+        this.email = email;
     }
 
     @Override
