@@ -197,7 +197,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
                     Intent intent = new Intent(context, EditTripActivity.class);
                     intent.putExtra(Utils.TRIP_TABLE, tripsList.get(position));
                     context.startActivity(intent);
-                    Toast.makeText(v.getContext(), "Click at Position " + position, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(v.getContext(), "Click at Position " + position, Toast.LENGTH_SHORT).show();
                     break;
             }
         }

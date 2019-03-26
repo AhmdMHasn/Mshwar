@@ -76,25 +76,14 @@ public class EditTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_trip);
 
         intent = getIntent();
-        trip = new Trip();
+        trip = intent.getExtras().getParcelable(Utils.TRIP_TABLE);
 
-        trip.setKey(intent.getStringExtra("key"));
-        trip.setName(intent.getStringExtra(Utils.COLUMN_TRIP_NAME));
-        trip.setStartPoint(intent.getStringExtra(Utils.COLUMN_TRIP_START_POINT));
-        trip.setEndPoint(intent.getStringExtra(Utils.COLUMN_TRIP_END_POINT));
-        trip.setRepetition(intent.getStringExtra(Utils.COLUMN_TRIP_REPETITION));
-        trip.setType(intent.getStringExtra(Utils.COLUMN_TRIP_TRIP_TYPE));
-        trip.setStatus(intent.getStringExtra(Utils.COLUMN_TRIP_STATUS));
-
-        trip.setStartPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0));
-        trip.setStartPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0));
-        trip.setEndPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0));
-        trip.setEndPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0));
-
-        trip.setNotes(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_NOTES));
-        trip.setAlarmIds(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID));
-        trip.setTime(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Time));
-        trip.setDate(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Date));
+        // Setup upper toolbar with title and back button
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(trip.getName());
 
         notesList = findViewById(R.id.list_view_notes_EditActivity);
         editTxtTripName = findViewById(R.id.editTxt_trip_name_EditActivity);
@@ -108,6 +97,7 @@ public class EditTripActivity extends AppCompatActivity {
         btnAddTrip = findViewById(R.id.btn_save_changes);
         imageViewAddNote = findViewById(R.id.image_add_note_EditActivity);
         roundTripTimeAndDate = findViewById(R.id.round_trip_layout_EditActivity);
+        btnAddTrip.setText("Edit");
 
         editTxtTripName.setText(trip.getName());
         spinnerTripType.setSelection(((ArrayAdapter) spinnerTripType.getAdapter()).getPosition(trip.getType()));
@@ -139,13 +129,6 @@ public class EditTripActivity extends AppCompatActivity {
             getTimeDetails(trip.getTime().get(1), calendar2);
             getDateDetails(trip.getDate().get(1), calendar2);
         }
-
-        // Setup upper toolbar with title and back button
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main_Edit_EditActivity);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.add_trip));
 
         btnAddTrip.setOnClickListener(new View.OnClickListener() {
             @Override
