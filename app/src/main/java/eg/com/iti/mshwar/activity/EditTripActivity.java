@@ -76,7 +76,26 @@ public class EditTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_trip);
 
         intent = getIntent();
-        trip = intent.getExtras().getParcelable(Utils.TRIP_TABLE);
+        trip = new Trip();
+
+        trip.setKey(intent.getStringExtra("key"));
+        trip.setName(intent.getStringExtra(Utils.COLUMN_TRIP_NAME));
+        trip.setStartPoint(intent.getStringExtra(Utils.COLUMN_TRIP_START_POINT));
+        trip.setEndPoint(intent.getStringExtra(Utils.COLUMN_TRIP_END_POINT));
+        trip.setRepetition(intent.getStringExtra(Utils.COLUMN_TRIP_REPETITION));
+        trip.setType(intent.getStringExtra(Utils.COLUMN_TRIP_TRIP_TYPE));
+        trip.setStatus(intent.getStringExtra(Utils.COLUMN_TRIP_STATUS));
+        trip.setUserId(user.getUid());
+
+        trip.setStartPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, 0));
+        trip.setStartPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, 0));
+        trip.setEndPointLatitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, 0));
+        trip.setEndPointLongitude(intent.getDoubleExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, 0));
+
+        trip.setNotes(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_NOTES));
+        trip.setAlarmIds(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_ALARM_ID));
+        trip.setTime(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Time));
+        trip.setDate(intent.getStringArrayListExtra(Utils.COLUMN_TRIP_Date));
 
         // Setup upper toolbar with title and back button
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
@@ -169,7 +188,7 @@ public class EditTripActivity extends AppCompatActivity {
                     }
 
                     Toast.makeText(EditTripActivity.this,
-                            "Trip added successfully", Toast.LENGTH_LONG).show();
+                            "Trip modified successfully", Toast.LENGTH_LONG).show();
                     finish();
                 } else
                     Toast.makeText(EditTripActivity.this,
