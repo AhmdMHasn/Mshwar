@@ -340,7 +340,24 @@ public class EditTripActivity extends AppCompatActivity {
     private void setAlarm(Calendar mCalendar, String alarmID) {
         intent = new Intent(EditTripActivity.this, AlarmReceiver.class);
 
-        intent.putExtra(Utils.TRIP_TABLE, trip);
+        intent.putExtra("key", trip.getKey());
+        intent.putExtra(Utils.COLUMN_TRIP_NAME, trip.getName());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT, trip.getStartPoint());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT, trip.getEndPoint());
+        intent.putExtra(Utils.COLUMN_TRIP_REPETITION, trip.getRepetition());
+        intent.putExtra(Utils.COLUMN_TRIP_TRIP_TYPE, trip.getType());
+        intent.putExtra(Utils.COLUMN_TRIP_STATUS, trip.getStatus());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, trip.getStartPointLatitude());
+        intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, trip.getStartPointLongitude());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, trip.getEndPointLongitude());
+        intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, trip.getEndPointLatitude());
+
+        intent.putExtra(Utils.COLUMN_TRIP_NOTES, trip.getNotes());
+        intent.putExtra(Utils.COLUMN_TRIP_ALARM_ID, trip.getAlarmIds());
+        intent.putExtra(Utils.COLUMN_TRIP_Time, trip.getTime());
+        intent.putExtra(Utils.COLUMN_TRIP_Date, trip.getDate());
+        intent.putExtra(Utils.COLUMN_TRIP_USER_ID, trip.getUserId());
+
         int alarmId = Integer.valueOf(alarmID);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(EditTripActivity.this, alarmId,

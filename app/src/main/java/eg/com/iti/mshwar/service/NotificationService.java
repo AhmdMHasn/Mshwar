@@ -1,10 +1,12 @@
 package eg.com.iti.mshwar.service;
 
 import android.app.IntentService;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -79,15 +81,23 @@ public class NotificationService extends IntentService {
 
         String msg = "from " + trip.getStartPoint() + " to " + trip.getEndPoint();
 
-        NotificationCompat.Builder alarmNotificationBuilder =
-                new NotificationCompat.Builder(this, "")
-                        .setContentTitle(trip.getName())
-                        .setSmallIcon(R.drawable.logo)
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-                        .setContentText(msg).setAutoCancel(true).setOngoing(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("id",
+                    "Notification Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT);
 
-        alarmNotificationBuilder.setContentIntent(contentIntent);
-        alarmNotificationManager.notify(1, alarmNotificationBuilder.build());
+            alarmNotificationManager.createNotificationChannel(channel);
+
+            NotificationCompat.Builder alarmNotificationBuilder =
+                    new NotificationCompat.Builder(this, "id")
+                            .setContentTitle(trip.getName())
+                            .setSmallIcon(R.drawable.logo)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                            .setContentText(msg).setAutoCancel(true).setOngoing(true);
+
+            alarmNotificationBuilder.setContentIntent(contentIntent);
+            alarmNotificationManager.notify(1, alarmNotificationBuilder.build());
+        }
         Log.d("AlarmService", "Notification sent.");
     }
 }

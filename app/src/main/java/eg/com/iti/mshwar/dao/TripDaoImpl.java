@@ -210,6 +210,4 @@ public class TripDaoImpl implements TripDao {
 
         ref.updateChildren(map);
     }
-
-
 }

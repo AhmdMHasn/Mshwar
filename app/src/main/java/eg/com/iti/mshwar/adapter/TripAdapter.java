@@ -33,13 +33,12 @@ import static android.view.View.GONE;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> {
 
+    private final int TYPE_EMPTY_LIST = 0;
+    private final int TYPE_FULL_LIST = 1;
     private List<Trip> tripsList;
     private LayoutInflater inflater;
     private Context context;
     private LinearLayout emptyLayout;
-
-    private final int TYPE_EMPTY_LIST = 0;
-    private final int TYPE_FULL_LIST = 1;
 
 
     public TripAdapter(Context context, LinearLayout empty) {
@@ -195,9 +194,27 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
                     break;
                 default:
                     Intent intent = new Intent(context, EditTripActivity.class);
-                    intent.putExtra(Utils.TRIP_TABLE, tripsList.get(position));
+//                    intent.putExtra(Utils.TRIP_TABLE, tripsList.get(position));
+                    Trip trip = tripsList.get(position);
+                    intent.putExtra("key", trip.getKey());
+                    intent.putExtra(Utils.COLUMN_TRIP_NAME, trip.getName());
+                    intent.putExtra(Utils.COLUMN_TRIP_START_POINT, trip.getStartPoint());
+                    intent.putExtra(Utils.COLUMN_TRIP_END_POINT, trip.getEndPoint());
+                    intent.putExtra(Utils.COLUMN_TRIP_REPETITION, trip.getRepetition());
+                    intent.putExtra(Utils.COLUMN_TRIP_TRIP_TYPE, trip.getType());
+                    intent.putExtra(Utils.COLUMN_TRIP_STATUS, trip.getStatus());
+                    intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LATITUDE, trip.getStartPointLatitude());
+                    intent.putExtra(Utils.COLUMN_TRIP_START_POINT_LONGITUDE, trip.getStartPointLongitude());
+                    intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LONGITUDE, trip.getEndPointLongitude());
+                    intent.putExtra(Utils.COLUMN_TRIP_END_POINT_LATITUDE, trip.getEndPointLatitude());
+
+                    intent.putExtra(Utils.COLUMN_TRIP_NOTES, trip.getNotes());
+                    intent.putExtra(Utils.COLUMN_TRIP_ALARM_ID, trip.getAlarmIds());
+                    intent.putExtra(Utils.COLUMN_TRIP_Time, trip.getTime());
+                    intent.putExtra(Utils.COLUMN_TRIP_Date, trip.getDate());
+                    intent.putExtra(Utils.COLUMN_TRIP_USER_ID, trip.getUserId());
                     context.startActivity(intent);
-                    Toast.makeText(v.getContext(), "Click at Position " + position, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(v.getContext(), "Click at Position " + position, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
